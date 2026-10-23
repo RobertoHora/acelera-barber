@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Redirecionando...</title>
+  <script>
+    // GitHub Pages SPA router: redireciona caminhos como /nobreak para /?b=nobreak
+    var pathname = window.location.pathname;
+    var base = '/acelera-barber';
+    var cleanPath = pathname;
+
+    if (cleanPath.startsWith(base)) {
+      cleanPath = cleanPath.slice(base.length);
+    }
+    cleanPath = cleanPath.replace(/^\/+|\/+$/g, '');
+
+    if (cleanPath && cleanPath !== 'index.html' && cleanPath !== '404.html') {
+      window.location.replace(base + '/?b=' + encodeURIComponent(cleanPath) + window.location.search.replace('?', '&') + window.location.hash);
+    } else {
+      window.location.replace(base + '/' + window.location.search + window.location.hash);
+    }
+  </script>
+</head>
+<body style="background:#0A0E17; color:#F3F4F6; font-family:sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; margin:0;">
+  <p>Carregando sua barbearia...</p>
+</body>
+</html>
