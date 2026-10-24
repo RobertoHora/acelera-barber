@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Acelera Barber • Kit Oficial Google</title>
-  <meta name="description" content="Guia visual oficial de ativação do Instagram, Serviços, Comodidades, Plaquinha e Wi-Fi para barbearias no Google." />
+  <meta name="description" content="Guia visual oficial de ativação do Instagram, Serviços, Comodidades e Plaquinha 2 em 1 no Google." />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -64,13 +64,12 @@
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
     }
     .step-content {
-      animation: fadeIn 0.3s ease-in-out;
+      animation: fadeIn 0.25s ease-in-out;
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
+      from { opacity: 0; transform: translateY(3px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    /* Estilo sutil de scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -90,45 +89,52 @@
   </div>
 
   <!-- CONTAINER PRINCIPAL -->
-  <main class="max-w-xl mx-auto px-4 pt-6 sm:pt-10 space-y-5">
+  <main class="max-w-xl mx-auto px-4 pt-6 sm:pt-8 space-y-4">
 
-    <!-- CABEÇALHO LIMPO E DISCRETO -->
-    <header class="text-center space-y-2">
-      <!-- Badge Minimalista -->
-      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-semibold shadow-2xs">
-        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-        <span>Acelera Barber • Kit Oficial Google</span>
-      </div>
-
-      <!-- Nome da Barbearia -->
-      <div>
-        <h1 id="shop-name" class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight leading-tight">
-          Carregando barbearia...
-        </h1>
-        <p id="shop-location" class="text-xs sm:text-sm text-gray-500 font-medium flex items-center justify-center gap-1 mt-0.5">
-          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gray-400"></i>
-          <span>Governador Valadares - MG</span>
-        </p>
-      </div>
-
-      <!-- SELETOR UNIVERSAL DE BARBEARIAS (Oculto automaticamente para o lead com link próprio!) -->
-      <div id="selector-container" class="hidden pt-2 text-left max-w-sm mx-auto">
-        <label for="barber-select" class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1 text-center">
-          Painel de Demonstração (Escolha a Barbearia)
-        </label>
-        <select id="barber-select" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-black">
-          <option value="">Carregando barbearias...</option>
-        </select>
-      </div>
-    </header>
+    <!-- SELETOR UNIVERSAL (Exibido apenas em modo demonstração sem ?b=slug) -->
+    <div id="selector-container" class="hidden text-left max-w-sm mx-auto mb-2">
+      <label for="barber-select" class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1 text-center">
+        Modo Demonstração (Escolha a Barbearia)
+      </label>
+      <select id="barber-select" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-black">
+        <option value="">Carregando barbearias...</option>
+      </select>
+    </div>
 
     <!-- CARD CENTRAL PRINCIPAL (WIZARD SAAS NO PADRÃO DO PRINT) -->
-    <div class="bg-white rounded-[28px] border border-gray-200/90 shadow-sm p-5 sm:p-8 relative">
+    <div class="bg-white rounded-[28px] border border-gray-200/90 shadow-sm p-5 sm:p-8 relative space-y-6">
 
-      <!-- STEPPER MULTIETAPAS (IDÊNTICO AO DESIGN DE REFERÊNCIA) -->
-      <div class="mb-7">
-        <div id="stepper-track" class="flex items-center justify-between relative">
-          <!-- Renderizado dinamicamente via JS com 6 etapas -->
+      <!-- IDENTIFICAÇÃO SUTIL DA BARBEARIA NO TOPO DO CARD -->
+      <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span id="shop-name" class="text-xs sm:text-sm font-bold text-gray-900 tracking-tight">Carregando barbearia...</span>
+        </div>
+        <span id="shop-location" class="text-[11px] text-gray-500 font-medium truncate max-w-[150px] sm:max-w-none">
+          Governador Valadares - MG
+        </span>
+      </div>
+
+      <!-- TERMÔMETRO DE FORÇA DO PERFIL (PROFILE STRENGTH SCORE) -->
+      <div class="space-y-1.5 bg-gray-50/70 border border-gray-200/70 rounded-xl p-3">
+        <div class="flex items-center justify-between text-xs font-semibold">
+          <span class="text-gray-700 flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-4 h-4 text-gray-900"></i>
+            Força do Perfil no Google
+          </span>
+          <span class="text-gray-900 font-bold">
+            <span id="profile-strength-pct">20%</span> • <span id="profile-strength-label" class="text-gray-600 font-medium">Perfil Inicial</span>
+          </span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+          <div id="profile-strength-bar" class="h-full bg-black rounded-full transition-all duration-500" style="width: 20%;"></div>
+        </div>
+      </div>
+
+      <!-- STEPPER MULTIETAPAS (5 PASSOS - ESPELHO EXATO DO PRINT) -->
+      <div>
+        <div id="stepper-track" class="flex items-center justify-between relative px-1">
+          <!-- Renderizado dinamicamente via JS com 5 etapas -->
         </div>
       </div>
 
@@ -143,8 +149,8 @@
           </p>
         </div>
 
-        <!-- Campo Interativo do @ -->
-        <div class="space-y-1.5">
+        <!-- Campo de Digitação Limpo (Sem Linha de Link Oficial) -->
+        <div class="space-y-1.5 max-w-md mx-auto">
           <label class="block text-xs font-semibold text-gray-700">
             Seu perfil do Instagram:
           </label>
@@ -161,31 +167,19 @@
               class="w-full bg-transparent text-gray-900 font-medium text-sm focus:outline-none placeholder:text-gray-400 lowercase"
             />
           </div>
-          <p class="text-[11px] text-gray-500 truncate">
-            Link oficial: <span id="preview-insta-link" class="text-gray-700 font-mono">https://www.instagram.com/...</span>
-          </p>
         </div>
 
-        <!-- Inner Box Padrão Print de Referência -->
-        <div class="bg-[#F9FAFB] border border-gray-200/80 rounded-2xl p-4 flex items-center gap-3.5">
-          <div class="w-11 h-11 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-xs shrink-0 text-gray-900">
-            <i data-lucide="check" class="w-5 h-5 text-gray-900"></i>
-          </div>
-          <div>
-            <h4 class="font-semibold text-gray-900 text-xs sm:text-sm">Link pronto para colar no Google</h4>
-            <p class="text-xs text-gray-600 mt-0.5 leading-relaxed">Ao clicar em copiar, o link vai direto para sua área de transferência.</p>
-          </div>
+        <!-- Botão Principal de Ação Direto (Sem Caixas Extras) -->
+        <div class="max-w-md mx-auto">
+          <button 
+            id="btn-copy-insta" 
+            type="button" 
+            class="w-full py-3.5 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs active:scale-[0.99]"
+          >
+            <i id="btn-copy-icon" data-lucide="copy" class="w-4 h-4"></i>
+            <span id="btn-copy-text">Copiar Link do Instagram</span>
+          </button>
         </div>
-
-        <!-- Botão Principal de Ação -->
-        <button 
-          id="btn-copy-insta" 
-          type="button" 
-          class="w-full py-3.5 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs active:scale-[0.99]"
-        >
-          <i id="btn-copy-icon" data-lucide="copy" class="w-4 h-4"></i>
-          <span id="btn-copy-text">Copiar Link do Instagram</span>
-        </button>
       </div>
 
       <!-- ================= ETAPA 2: CONECTAR NO GOOGLE ================= -->
@@ -199,7 +193,7 @@
           </p>
         </div>
 
-        <!-- Mockups Minimalistas Oficiais Google (Limpos) -->
+        <!-- Mockups Minimalistas Oficiais Google (Com as tags exatas aprovadas) -->
         <div class="space-y-3">
           <!-- Mockup 1: Busca do Google -->
           <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-xs space-y-2.5">
@@ -223,9 +217,10 @@
               </div>
 
               <div class="grid grid-cols-3 gap-1.5 pt-1">
+                <!-- Tag Exata: No Google: toque aqui -->
                 <div class="relative bg-white border-2 border-google-blue rounded-lg p-2 text-center shadow-xs">
                   <span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-google-blue text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full whitespace-nowrap">
-                    1º Toque aqui
+                    No Google: toque aqui
                   </span>
                   <i data-lucide="edit-3" class="w-3.5 h-3.5 text-google-blue mx-auto mb-0.5"></i>
                   <span class="text-[10px] font-bold text-google-blue block leading-none">Editar perfil</span>
@@ -249,31 +244,37 @@
               <span class="text-xs font-bold text-gray-900">Informações comerciais</span>
             </div>
 
-            <!-- Abas -->
+            <!-- Abas com Tag Exata: 1º Selecione aqui -->
             <div class="flex border-b border-gray-200 text-[11px] font-medium text-gray-500">
               <span class="py-1 px-2">Sobre</span>
               <span class="py-1 px-2 border-b-2 border-google-blue text-google-blue font-bold relative">
                 Contato
-                <span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-google-blue text-white text-[8px] font-bold px-1 rounded-full whitespace-nowrap">
-                  2º Selecione aqui
+                <span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-google-blue text-white text-[8px] font-bold px-1.5 py-0.2 rounded-full whitespace-nowrap">
+                  1º Selecione aqui
                 </span>
               </span>
               <span class="py-1 px-2">Local</span>
               <span class="py-1 px-2">Horário</span>
             </div>
 
-            <!-- Campo Instagram -->
+            <!-- Campo Instagram com Tag Exata: 2º Depois aqui -->
             <div class="space-y-1 pt-1">
-              <p class="text-[11px] font-semibold text-gray-700">Perfis de redes sociais</p>
-              <div class="relative bg-gray-50 border border-gray-300 rounded-lg p-2 text-xs">
-                <span class="absolute -top-2 right-2 bg-google-blue text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full">
-                  3º Cole o link aqui
+              <div class="flex items-center justify-between text-[11px] font-semibold text-gray-700">
+                <span>Perfis de redes sociais</span>
+                <span class="bg-google-blue text-white text-[8px] font-bold px-1.5 py-0.2 rounded-full">
+                  2º Depois aqui
                 </span>
-                <span class="text-gray-400 font-mono text-[11px]">https://www.instagram.com/...</span>
               </div>
+              <div class="relative bg-gray-50 border border-gray-300 rounded-lg p-2 text-xs flex items-center justify-between">
+                <span class="text-gray-400 font-mono text-[11px]">https://www.instagram.com/...</span>
+                <span class="text-[9px] font-bold text-blue-700 bg-blue-100 px-1.5 py-0.2 rounded">
+                  Cole o link aqui
+                </span>
+              </div>
+              <!-- Tag Exata: 3º Clique em 'Salvar' -->
               <div class="flex justify-end pt-1">
-                <span class="inline-flex items-center gap-1 bg-google-blue text-white text-[10px] font-bold px-3 py-1 rounded-md shadow-xs">
-                  4º Clique em Salvar ✓
+                <span class="inline-flex items-center gap-1 bg-google-blue text-white text-[9px] font-bold px-2.5 py-1 rounded shadow-xs">
+                  3º Clique em 'Salvar'
                 </span>
               </div>
             </div>
@@ -281,7 +282,7 @@
         </div>
 
         <!-- Botões de Ação -->
-        <div class="space-y-2 pt-1">
+        <div class="space-y-2 pt-1 max-w-md mx-auto">
           <a 
             id="btn-open-google" 
             href="#" 
@@ -298,7 +299,7 @@
             onclick="completeAndAdvance(2)" 
             class="w-full py-3 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
           >
-            <span>Já conectei no Google 👉 Avançar</span>
+            <span>Já colei no Google 👉 Próxima Etapa</span>
           </button>
         </div>
 
@@ -317,11 +318,11 @@
             Cadastre seus Principais Serviços e Preços
           </h2>
           <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
-            Barbearias com valores visíveis recebem até o dobro de cliques e sobem no ranking do Google Maps.
+            Barbearias com valores visíveis recebem o dobro de cliques e sobem no ranking do Google Maps.
           </p>
         </div>
 
-        <!-- Mockup Google Serviços -->
+        <!-- Mockup Google Serviços (Limpo) -->
         <div class="bg-white rounded-xl border border-gray-200 p-3.5 shadow-xs space-y-2.5">
           <div class="flex items-center justify-between border-b border-gray-100 pb-2">
             <div class="flex items-center gap-1.5">
@@ -353,19 +354,8 @@
           </div>
         </div>
 
-        <!-- Inner Box Padrão Print -->
-        <div class="bg-[#F9FAFB] border border-gray-200/80 rounded-2xl p-4 flex items-center gap-3.5">
-          <div class="w-11 h-11 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-xs shrink-0 text-gray-900">
-            <i data-lucide="check" class="w-5 h-5 text-gray-900"></i>
-          </div>
-          <div>
-            <h4 class="font-semibold text-gray-900 text-xs sm:text-sm">Preços geram agendamentos imediatos</h4>
-            <p class="text-xs text-gray-600 mt-0.5 leading-relaxed">O cliente já vê o preço na busca e não precisa perguntar no WhatsApp.</p>
-          </div>
-        </div>
-
         <!-- Botões de Ação -->
-        <div class="space-y-2 pt-1">
+        <div class="space-y-2 pt-1 max-w-md mx-auto">
           <a 
             id="btn-open-google-services" 
             href="#" 
@@ -382,7 +372,7 @@
             onclick="completeAndAdvance(3)" 
             class="w-full py-3 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
           >
-            <span>Serviços cadastrados 👉 Avançar</span>
+            <span>Serviços cadastrados 👉 Próxima Etapa</span>
           </button>
         </div>
 
@@ -405,7 +395,7 @@
           </p>
         </div>
 
-        <!-- Mockup Google Atributos -->
+        <!-- Mockup Google Atributos (Limpo) -->
         <div class="bg-white rounded-xl border border-gray-200 p-3.5 shadow-xs space-y-2.5">
           <div class="flex items-center justify-between border-b border-gray-100 pb-2">
             <div class="flex items-center gap-1.5">
@@ -449,19 +439,8 @@
           </div>
         </div>
 
-        <!-- Inner Box Padrão Print -->
-        <div class="bg-[#F9FAFB] border border-gray-200/80 rounded-2xl p-4 flex items-center gap-3.5">
-          <div class="w-11 h-11 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-xs shrink-0 text-gray-900">
-            <i data-lucide="check" class="w-5 h-5 text-gray-900"></i>
-          </div>
-          <div>
-            <h4 class="font-semibold text-gray-900 text-xs sm:text-sm">Destaque imediato em buscas por conveniência</h4>
-            <p class="text-xs text-gray-600 mt-0.5 leading-relaxed">O Google prioriza perfis com dados completos quando o cliente usa filtros no Maps.</p>
-          </div>
-        </div>
-
         <!-- Botões de Ação -->
-        <div class="space-y-2 pt-1">
+        <div class="space-y-2 pt-1 max-w-md mx-auto">
           <a 
             id="btn-open-google-attributes" 
             href="#" 
@@ -478,7 +457,7 @@
             onclick="completeAndAdvance(4)" 
             class="w-full py-3 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
           >
-            <span>Comodidades preenchidas 👉 Avançar</span>
+            <span>Comodidades preenchidas 👉 Próxima Etapa</span>
           </button>
         </div>
 
@@ -490,90 +469,21 @@
         </div>
       </div>
 
-      <!-- ================= ETAPA 5: PLAQUINHA OFICIAL DE BALCÃO (A6 - 300 DPI) ================= -->
+      <!-- ================= ETAPA 5: PLAQUINHA OFICIAL 2 EM 1 (GOOGLE + WI-FI) ================= -->
       <div id="step-5" class="step-content hidden space-y-5">
         <div class="text-center space-y-1.5">
           <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
-            Sua Plaquinha Oficial de Balcão
+            Sua Plaquinha Oficial de Balcão (2 em 1)
           </h2>
           <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
-            Display gráfico em alta resolução com o QR Code de 5 estrelas do Google. Pronta para imprimir em papel fotográfico A6 (10x15cm).
+            Display gráfico em alta resolução unindo a <b>Avaliação 5 Estrelas do Google</b> e o <b>Wi-Fi Grátis</b> para seus clientes no mesmo papel fotográfico A6 (10x15cm).
           </p>
         </div>
 
-        <!-- Preview da Plaquinha (Simulação Fiel da Arte A6) -->
-        <div class="bg-gradient-to-b from-gray-900 to-gray-950 rounded-2xl p-4 text-center text-white border border-gray-800 shadow-sm space-y-3 max-w-xs mx-auto">
-          <div class="space-y-0.5">
-            <p class="text-amber-400 text-xs tracking-widest font-bold">★ ★ ★ ★ ★</p>
-            <p class="text-[10px] text-gray-300 font-semibold uppercase tracking-wider">Avalie nosso trabalho no</p>
-            <p class="text-sm font-black tracking-tight"><span class="text-blue-400">G</span><span class="text-red-400">o</span><span class="text-amber-400">o</span><span class="text-blue-400">g</span><span class="text-green-400">l</span><span class="text-red-400">e</span></p>
-            <p id="preview-shop-name" class="text-xs font-bold text-amber-200 truncate pt-1">Barbearia Central</p>
-          </div>
-
-          <div class="bg-white rounded-xl p-2 inline-block shadow-inner">
-            <canvas id="qr-preview-canvas" width="130" height="130" class="rounded-lg"></canvas>
-          </div>
-
-          <p class="text-[10px] text-gray-400 font-medium leading-tight">
-            Aponte a câmera do seu celular<br />
-            <span class="text-gray-500 text-[9px]">Sua nota 5 estrelas fortalece nossa barbearia</span>
-          </p>
-        </div>
-
-        <!-- Inner Box Padrão Print -->
-        <div class="bg-[#F9FAFB] border border-gray-200/80 rounded-2xl p-4 flex items-center gap-3.5">
-          <div class="w-11 h-11 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-xs shrink-0 text-gray-900">
-            <i data-lucide="check" class="w-5 h-5 text-gray-900"></i>
-          </div>
-          <div>
-            <h4 class="font-semibold text-gray-900 text-xs sm:text-sm">Seu QR Code do Google está ativo</h4>
-            <p class="text-xs text-gray-600 mt-0.5 leading-relaxed">Ao apontar a câmera, o cliente abre direto a tela de 5 estrelas da sua barbearia.</p>
-          </div>
-        </div>
-
-        <!-- Botões de Ação -->
-        <div class="space-y-2 pt-1">
-          <button 
-            id="btn-download-plaque" 
-            type="button" 
-            class="w-full py-3.5 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-[0.99]"
-          >
-            <i data-lucide="download" class="w-4 h-4"></i>
-            <span>Baixar Plaquinha A6 Pronta pra Imprimir</span>
-          </button>
-
-          <button 
-            type="button" 
-            onclick="completeAndAdvance(5)" 
-            class="w-full py-3 px-5 bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-          >
-            <span>Avançar para Gerar QR Code de Wi-Fi 👉</span>
-          </button>
-        </div>
-
-        <!-- Navegação Voltar -->
-        <div class="flex justify-start pt-1">
-          <button type="button" onclick="goToStep(4)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
-            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar
-          </button>
-        </div>
-      </div>
-
-      <!-- ================= ETAPA 6: GERADOR DE QR CODE WI-FI ================= -->
-      <div id="step-6" class="step-content hidden space-y-5">
-        <div class="text-center space-y-1.5">
-          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
-            Crie o QR Code de Wi-Fi da Barbearia
-          </h2>
-          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
-            Seus clientes conectam no Wi-Fi apontando a câmera do celular, sem precisar perguntar ou digitar a senha.
-          </p>
-        </div>
-
-        <!-- Inputs de Configuração do Wi-Fi -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Configuração Rápida do Wi-Fi da Barbearia -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md mx-auto">
           <div class="space-y-1 text-left">
-            <label class="block text-xs font-semibold text-gray-700">Nome da Rede (SSID):</label>
+            <label class="block text-xs font-semibold text-gray-700">Nome da Rede Wi-Fi (SSID):</label>
             <div class="flex items-center bg-gray-50 border border-gray-300 rounded-xl px-3 py-2.5 focus-within:ring-2 focus-within:ring-black focus-within:bg-white transition-all">
               <i data-lucide="wifi" class="w-4 h-4 text-gray-400 mr-2"></i>
               <input 
@@ -592,65 +502,71 @@
               <input 
                 id="input-wifi-password" 
                 type="text" 
-                placeholder="Ex: senha1234" 
+                placeholder="Ex: cortes2026" 
                 class="w-full bg-transparent text-xs font-medium text-gray-900 focus:outline-none"
               />
             </div>
           </div>
         </div>
 
-        <!-- Live Preview do QR Code de Wi-Fi -->
-        <div class="bg-gray-50 rounded-2xl border border-gray-200/90 p-4 text-center max-w-xs mx-auto space-y-2">
-          <p class="text-[11px] font-bold text-gray-600 uppercase tracking-wider">Preview do Wi-Fi Automático</p>
-          <div class="bg-white rounded-xl p-2.5 inline-block border border-gray-200 shadow-2xs">
-            <canvas id="qr-wifi-canvas" width="140" height="140" class="rounded-lg"></canvas>
-          </div>
-          <div class="text-[11px] text-gray-600">
-            <p>Rede: <span id="label-wifi-ssid" class="font-bold text-gray-900">Barbearia Wi-Fi</span></p>
-            <p>Senha: <span id="label-wifi-password" class="font-mono text-gray-700">••••••••</span></p>
+        <!-- Preview ao Vivo da Plaquinha 2 em 1 -->
+        <div class="text-center">
+          <div class="inline-block bg-white border border-gray-300 rounded-2xl p-2.5 shadow-xs max-w-xs mx-auto">
+            <canvas id="plaque-preview-canvas" width="280" height="395" class="rounded-xl shadow-2xs"></canvas>
+            <p class="text-[10px] text-gray-400 font-medium mt-1.5">
+              Preview da Plaquinha A6 (Atualiza em tempo real com seu Wi-Fi)
+            </p>
           </div>
         </div>
 
-        <!-- Inner Box Idêntico ao Print de Referência -->
-        <div class="bg-[#F9FAFB] border border-gray-200/80 rounded-2xl p-4 flex items-center gap-3.5">
-          <div class="w-11 h-11 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-xs shrink-0 text-gray-900">
-            <i data-lucide="check" class="w-5 h-5 text-gray-900"></i>
+        <!-- COMPARATIVO LOCAL DO BAIRRO (BENCHMARK DE CONCORRENTES) -->
+        <div class="bg-gray-50 border border-gray-200/90 rounded-2xl p-4 max-w-md mx-auto space-y-1.5 text-left">
+          <div class="flex items-center gap-2 text-xs font-bold text-gray-900">
+            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600"></i>
+            <span>Radar Local de Concorrentes</span>
           </div>
-          <div>
-            <h4 class="font-semibold text-gray-900 text-xs sm:text-sm">Seu código QR de Wi-Fi pode ser escaneado</h4>
-            <p class="text-xs text-gray-600 mt-0.5 leading-relaxed">Ele conecta o celular automaticamente na rede assim que a câmera apontar.</p>
-          </div>
+          <p id="competitor-bench-text" class="text-xs text-gray-600 leading-relaxed">
+            Calculando dados das barbearias do seu bairro...
+          </p>
         </div>
 
-        <!-- Botão de Download do Display Wi-Fi -->
-        <div class="space-y-2 pt-1">
+        <!-- Botões de Download -->
+        <div class="space-y-2 pt-1 max-w-md mx-auto">
           <button 
-            id="btn-download-wifi" 
+            id="btn-download-dual" 
             type="button" 
             class="w-full py-3.5 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-[0.99]"
           >
             <i data-lucide="download" class="w-4 h-4"></i>
-            <span>Baixar Display de Wi-Fi para o Balcão</span>
+            <span>Baixar Plaquinha 2 em 1 Pronta pra Imprimir</span>
+          </button>
+
+          <button 
+            id="btn-download-single" 
+            type="button" 
+            class="w-full py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl text-xs text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+          >
+            <span>Baixar Apenas Versão Google (Sem Wi-Fi)</span>
           </button>
         </div>
 
         <!-- Banner Comemorativo de 100% Concluído -->
-        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center space-y-1">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center space-y-1 max-w-md mx-auto">
           <p class="text-xs sm:text-sm font-bold text-emerald-800">
             🎉 Parabéns! Sua barbearia está 100% configurada
           </p>
           <p class="text-xs text-emerald-700 leading-relaxed">
-            Seu perfil no Google está blindado com Instagram, serviços e comodidades, e seus displays de balcão estão prontos.
+            Perfil no Google blindado com Instagram, serviços e comodidades, e display inteligente pronto para o balcão.
           </p>
         </div>
 
-        <!-- Navegação Voltar ou Reiniciar -->
-        <div class="flex items-center justify-between pt-1">
-          <button type="button" onclick="goToStep(5)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
-            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar para Plaquinha
+        <!-- Navegação Voltar e Reiniciar -->
+        <div class="flex items-center justify-between pt-1 max-w-md mx-auto">
+          <button type="button" onclick="goToStep(4)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar
           </button>
           <button type="button" onclick="goToStep(1)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
-            <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Recomeçar
+            <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Recomeçar do Início
           </button>
         </div>
       </div>
@@ -658,7 +574,7 @@
     </div>
 
     <!-- RODAPÉ AUXILIAR MINIMALISTA (IDÊNTICO AO PADRÃO DA REFERÊNCIA) -->
-    <footer class="text-center pt-2 pb-6 space-y-2">
+    <footer class="text-center pt-2 pb-6 space-y-1.5">
       <p class="text-xs sm:text-sm text-gray-500">
         Precisa de ajuda? 
         <a 
@@ -679,15 +595,24 @@
   </main>
 
   <!-- CANVASES OCULTOS PARA RENDERIZAÇÃO EM ALTA RESOLUÇÃO (1240x1748 @ 300 DPI) -->
-  <canvas id="plaque-canvas" width="1240" height="1748" class="hidden"></canvas>
-  <canvas id="wifi-canvas" width="1240" height="1748" class="hidden"></canvas>
+  <canvas id="plaque-dual-canvas" width="1240" height="1748" class="hidden"></canvas>
+  <canvas id="plaque-single-canvas" width="1240" height="1748" class="hidden"></canvas>
 
   <script>
     // ESTADO GLOBAL DO WIZARD
     let currentStep = 1;
     const completedSteps = new Set();
-    const TOTAL_STEPS = 6;
-    const STEP_LABELS = ['Instagram', 'Google', 'Serviços', 'Comodidades', 'Plaquinha', 'Wi-Fi'];
+    const TOTAL_STEPS = 5;
+    const STEP_LABELS = ['Instagram', 'Google', 'Serviços', 'Comodidades', 'Plaquinha 2 em 1'];
+
+    // Força do Perfil por etapa
+    const STRENGTH_CONFIG = {
+      1: { pct: 20, label: 'Perfil Inicial' },
+      2: { pct: 45, label: 'Instagram Conectado' },
+      3: { pct: 65, label: 'Serviços & Preços Visíveis' },
+      4: { pct: 85, label: 'Filtros Ativados' },
+      5: { pct: 100, label: 'Perfil Blindado para o Topo' }
+    };
 
     let currentBarber = {
       id: 'default',
@@ -705,6 +630,27 @@
     };
 
     let allLeads = [];
+
+    // ATUALIZA O TERMÔMETRO DE FORÇA DO PERFIL
+    function updateProfileStrength() {
+      const config = STRENGTH_CONFIG[currentStep] || STRENGTH_CONFIG[1];
+      const pctEl = document.getElementById('profile-strength-pct');
+      const labelEl = document.getElementById('profile-strength-label');
+      const barEl = document.getElementById('profile-strength-bar');
+
+      if (pctEl) pctEl.innerText = `${config.pct}%`;
+      if (labelEl) labelEl.innerText = config.label;
+      if (barEl) {
+        barEl.style.width = `${config.pct}%`;
+        if (config.pct === 100) {
+          barEl.classList.remove('bg-black');
+          barEl.classList.add('bg-emerald-600');
+        } else {
+          barEl.classList.remove('bg-emerald-600');
+          barEl.classList.add('bg-black');
+        }
+      }
+    }
 
     // RENDERIZA A BARRA MULTIETAPAS (STEPPER)
     function renderStepper() {
@@ -753,7 +699,7 @@
               <div class="shrink-0">${circleHtml}</div>
               ${i < TOTAL_STEPS ? `<div class="h-[1.5px] flex-1 ${i < currentStep ? 'bg-black' : 'bg-gray-200'}"></div>` : '<div class="flex-1"></div>'}
             </div>
-            <span onclick="goToStep(${i})" class="text-[9px] sm:text-[11px] ${labelClass} mt-1.5 cursor-pointer text-center truncate max-w-[54px] sm:max-w-none">
+            <span onclick="goToStep(${i})" class="text-[9px] sm:text-[11px] ${labelClass} mt-1.5 cursor-pointer text-center truncate max-w-[58px] sm:max-w-none">
               ${label}
             </span>
           </div>
@@ -761,6 +707,7 @@
       }
 
       track.innerHTML = html;
+      updateProfileStrength();
     }
 
     // NAVEGAÇÃO ENTRE ETAPAS
@@ -785,12 +732,10 @@
 
       // Renderizações específicas de etapas
       if (currentStep === 5) {
-        renderGooglePlaquePreview();
-      } else if (currentStep === 6) {
-        renderWifiPreview();
+        renderDualPlaquePreview();
+        updateCompetitorBenchText();
       }
 
-      // Rola suavemente até o topo do card no mobile
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -859,16 +804,12 @@
       return copied;
     }
 
-    // Atualiza preview de link do Instagram
     function updateInstagramFromHandle(handle) {
       const clean = sanitizeInstagramHandle(handle);
-      const previewEl = document.getElementById('preview-insta-link');
       if (clean) {
         currentBarber.instagram = `https://www.instagram.com/${clean}/`;
-        if (previewEl) previewEl.innerText = currentBarber.instagram;
       } else {
         currentBarber.instagram = '';
-        if (previewEl) previewEl.innerText = 'https://www.instagram.com/...';
       }
     }
 
@@ -895,100 +836,484 @@
       return null;
     }
 
-    // Renderiza o Preview do QR Code da Plaquinha Google
-    function renderGooglePlaquePreview() {
-      const previewCanvas = document.getElementById('qr-preview-canvas');
-      if (!previewCanvas) return;
-      QRCode.toCanvas(previewCanvas, currentBarber.reviewUrl, {
-        width: 130,
-        margin: 1,
-        color: { dark: '#111827', light: '#FFFFFF' },
-        errorCorrectionLevel: 'H'
-      });
+    // ATUALIZA O TEXTO DE BENCHMARK DE CONCORRENTES DO BAIRRO
+    function updateCompetitorBenchText() {
+      const benchEl = document.getElementById('competitor-bench-text');
+      if (!benchEl) return;
+
+      const currentBairro = currentBarber.neighborhood || 'Governador Valadares';
+      const count = allLeads.filter(l => (l.neighborhood || '').toLowerCase().trim() === currentBairro.toLowerCase().trim()).length;
+
+      if (count > 1) {
+        benchEl.innerHTML = `No bairro <b>${currentBairro}</b>, existem <b>${count} barbearias</b> no Google Maps. A maioria não tem plaquinha física nem comodidades preenchidas. Com esta Plaquinha 2 em 1 gerando avaliações contínuas, sua barbearia assume o topo das buscas locais.`;
+      } else {
+        benchEl.innerHTML = `Barbearias com plaquinha oficial no balcão recebem até <b>5x mais avaliações 5 estrelas</b> no Google Maps do que a média de Governador Valadares, garantindo o primeiro lugar quando clientes pesquisarem no seu bairro.`;
+      }
     }
 
-    // Renderiza o Preview do QR Code de Wi-Fi
-    function renderWifiPreview() {
-      const canvas = document.getElementById('qr-wifi-canvas');
+    // PREVIEW EM TEMPO REAL DA PLAQUINHA 2 EM 1 (CANVAS NA TELA)
+    async function renderDualPlaquePreview() {
+      const canvas = document.getElementById('plaque-preview-canvas');
       if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = 280;
+      const h = 395;
 
+      // Fundo Branco Nobre com Borda Dupla
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.strokeStyle = '#0F172A';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(6, 6, w - 12, h - 12);
+
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(10, 10, w - 20, h - 20);
+
+      // Logomarca Google + 5 Estrelas
+      drawGoogleLogo(ctx, w / 2 - 40, 20, 0.32);
+
+      ctx.fillStyle = '#FBBC05';
+      ctx.font = 'bold 9px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('★ ★ ★ ★ ★', w / 2, 54);
+
+      // Nome da Barbearia
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 12px sans-serif';
+      let nameText = currentBarber.name.toUpperCase();
+      if (nameText.length > 20) ctx.font = 'bold 10px sans-serif';
+      ctx.fillText(nameText, w / 2, 70);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '500 8px sans-serif';
+      ctx.fillText(currentBarber.neighborhood.toUpperCase(), w / 2, 82);
+
+      // Divisória sutil
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(20, 92);
+      ctx.lineTo(w - 20, 92);
+      ctx.stroke();
+
+      // COLUNA ESQUERDA: WI-FI
+      const colW = 118;
+      const colLeftX = 16;
+      const colRightX = 146;
+      const colY = 100;
+      const colH = 240;
+
+      // Card Wi-Fi
+      ctx.fillStyle = '#F8FAFC';
+      ctx.beginPath();
+      ctx.roundRect(colLeftX, colY, colW, colH, 8);
+      ctx.fill();
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('📶 WI-FI GRÁTIS', colLeftX + colW / 2, colY + 18);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '500 7px sans-serif';
+      ctx.fillText('Conecte sem digitar senha', colLeftX + colW / 2, colY + 28);
+
+      // QR Code Wi-Fi no Preview
       const ssid = wifiState.ssid || `${currentBarber.name} Wi-Fi`;
-      const pass = wifiState.password || '';
-
-      // Padrão Universal Apple iOS & Android ZXing
+      const pass = wifiState.password || 'cortes2026';
       const wifiString = `WIFI:S:${ssid};T:WPA;P:${pass};;`;
 
-      QRCode.toCanvas(canvas, wifiString, {
-        width: 140,
+      const tempWifiCanvas = document.createElement('canvas');
+      await QRCode.toCanvas(tempWifiCanvas, wifiString, {
+        width: 90,
         margin: 1,
         color: { dark: '#0F172A', light: '#FFFFFF' },
         errorCorrectionLevel: 'Q'
       });
+      ctx.drawImage(tempWifiCanvas, colLeftX + (colW - 90) / 2, colY + 36);
 
-      const labelSsid = document.getElementById('label-wifi-ssid');
-      const labelPass = document.getElementById('label-wifi-password');
-      if (labelSsid) labelSsid.innerText = ssid;
-      if (labelPass) labelPass.innerText = pass ? pass : '(sem senha)';
+      // Dados Rede / Senha no Preview
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(colLeftX + 6, colY + 135, colW - 12, 90);
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.strokeRect(colLeftX + 6, colY + 135, colW - 12, 90);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 7px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('REDE:', colLeftX + 10, colY + 150);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 8px sans-serif';
+      let displaySsid = ssid;
+      if (displaySsid.length > 13) displaySsid = displaySsid.slice(0, 12) + '...';
+      ctx.fillText(displaySsid, colLeftX + 10, colY + 163);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 7px sans-serif';
+      ctx.fillText('SENHA:', colLeftX + 10, colY + 183);
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 8px sans-serif';
+      let displayPass = pass ? pass : '(sem senha)';
+      if (displayPass.length > 13) displayPass = displayPass.slice(0, 12) + '...';
+      ctx.fillText(displayPass, colLeftX + 10, colY + 196);
+
+      // COLUNA DIREITA: GOOGLE AVALIAÇÕES
+      ctx.fillStyle = '#F8FAFC';
+      ctx.beginPath();
+      ctx.roundRect(colRightX, colY, colW, colH, 8);
+      ctx.fill();
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 10px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('⭐ AVALIE NO GOOGLE', colRightX + colW / 2, colY + 18);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '500 7px sans-serif';
+      ctx.fillText('Sua opinião vale muito!', colRightX + colW / 2, colY + 28);
+
+      // QR Code Google no Preview
+      const tempGoogleCanvas = document.createElement('canvas');
+      await QRCode.toCanvas(tempGoogleCanvas, currentBarber.reviewUrl, {
+        width: 90,
+        margin: 1,
+        color: { dark: '#0F172A', light: '#FFFFFF' },
+        errorCorrectionLevel: 'H'
+      });
+      ctx.drawImage(tempGoogleCanvas, colRightX + (colW - 90) / 2, colY + 36);
+
+      // Card Avaliação no Preview
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(colRightX + 6, colY + 135, colW - 12, 90);
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.strokeRect(colRightX + 6, colY + 135, colW - 12, 90);
+
+      ctx.fillStyle = '#FBBC05';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('★ ★ ★ ★ ★', colRightX + colW / 2, colY + 160);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 8px sans-serif';
+      ctx.fillText('DEIXE 5 ESTRELAS', colRightX + colW / 2, colY + 178);
+
+      ctx.fillStyle = '#166534';
+      ctx.font = 'bold 7px sans-serif';
+      ctx.fillText('Ajuda nossa barbearia!', colRightX + colW / 2, colY + 195);
+
+      // Rodapé da Plaquinha no Preview
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 8px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('APONTE A CÂMERA DO CELULAR', w / 2, 360);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '600 7px sans-serif';
+      ctx.fillText('DISPLAY OFICIAL DE BALCÃO • ACELERA BARBER', w / 2, 375);
     }
 
-    // Gera imagem da Plaquinha Google em 1240 x 1748 px @ 300 DPI (Padrão Gráfico A6)
-    async function generateHighResPlaqueDownload() {
-      const canvas = document.getElementById('plaque-canvas');
+    // GERAÇÃO EM ALTA RESOLUÇÃO: PLAQUINHA 2 EM 1 (1240 x 1748 px @ 300 DPI)
+    async function generateHighResDualPlaqueDownload() {
+      const canvas = document.getElementById('plaque-dual-canvas');
       const ctx = canvas.getContext('2d');
       const width = 1240;
       const height = 1748;
 
-      // Fundo Gradiente Escuro Luxo
+      const ssid = wifiState.ssid || `${currentBarber.name} Wi-Fi`;
+      const pass = wifiState.password || 'cortes2026';
+
+      // Fundo Nobre Off-White Gráfico
       const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-      bgGrad.addColorStop(0, '#1E2430');
-      bgGrad.addColorStop(1, '#0F131B');
+      bgGrad.addColorStop(0, '#FFFFFF');
+      bgGrad.addColorStop(1, '#F8F9FA');
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // Moldura Externa Dourada
-      ctx.strokeStyle = '#D4AF37';
-      ctx.lineWidth = 6;
+      // Moldura Externa Dupla
+      ctx.strokeStyle = '#0F172A';
+      ctx.lineWidth = 8;
       ctx.strokeRect(36, 36, width - 72, height - 72);
 
-      // Moldura Interna Fina
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 2.5;
       ctx.strokeRect(48, 48, width - 96, height - 96);
 
-      // Estrelas Douradas no Topo
+      // Topo: Logomarca Google Multicolorida Oficial
+      drawGoogleLogo(ctx, width / 2 - 180, 80, 1.3);
+
+      // 5 Estrelas Douradas
+      ctx.fillStyle = '#FBBC05';
+      ctx.font = 'bold 36px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('★  ★  ★  ★  ★', width / 2, 220);
+
+      // Nome da Barbearia em destaque
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 50px sans-serif';
+      let nameText = currentBarber.name.toUpperCase();
+      if (nameText.length > 22) ctx.font = 'bold 40px sans-serif';
+      ctx.fillText(nameText, width / 2, 290);
+
+      // Subtítulo Bairro / Cidade
+      ctx.fillStyle = '#64748B';
+      ctx.font = '600 26px sans-serif';
+      ctx.fillText(currentBarber.neighborhood.toUpperCase() + ' • GOVERNADOR VALADARES - MG', width / 2, 340);
+
+      // Linha Divisória
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(80, 380);
+      ctx.lineTo(width - 80, 380);
+      ctx.stroke();
+
+      // DUAS COLUNAS PRINCIPAIS (LADO A LADO)
+      const colW = 520;
+      const colGap = 40;
+      const leftColX = 80;
+      const rightColX = leftColX + colW + colGap;
+      const colY = 410;
+      const colH = 990;
+
+      // ================= COLUNA ESQUERDA: WI-FI GRÁTIS =================
+      ctx.fillStyle = '#F8FAFC';
+      ctx.beginPath();
+      ctx.roundRect(leftColX, colY, colW, colH, 24);
+      ctx.fill();
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Topo Wi-Fi
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 40px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('📶  WI-FI GRÁTIS', leftColX + colW / 2, colY + 70);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '500 24px sans-serif';
+      ctx.fillText('Conecte sem digitar senha', leftColX + colW / 2, colY + 115);
+
+      // QR Code Wi-Fi Alta Definição (380x380 px)
+      const wifiString = `WIFI:S:${ssid};T:WPA;P:${pass};;`;
+      const tempWifiCanvas = document.createElement('canvas');
+      await QRCode.toCanvas(tempWifiCanvas, wifiString, {
+        width: 380,
+        margin: 2,
+        color: { dark: '#0F172A', light: '#FFFFFF' },
+        errorCorrectionLevel: 'Q'
+      });
+
+      const qrBoxW = 420;
+      const qrBoxH = 420;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.roundRect(leftColX + (colW - qrBoxW) / 2, colY + 150, qrBoxW, qrBoxH, 20);
+      ctx.fill();
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.drawImage(tempWifiCanvas, leftColX + (colW - 380) / 2, colY + 170);
+
+      // Caixa de Informações Rede / Senha
+      const infoBoxW = 440;
+      const infoBoxH = 310;
+      const infoBoxX = leftColX + (colW - infoBoxW) / 2;
+      const infoBoxY = colY + 610;
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.roundRect(infoBoxX, infoBoxY, infoBoxW, infoBoxH, 18);
+      ctx.fill();
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Rede
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('NOME DA REDE (SSID):', infoBoxX + 30, infoBoxY + 55);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 30px sans-serif';
+      let printSsid = ssid;
+      if (printSsid.length > 18) printSsid = printSsid.slice(0, 17) + '...';
+      ctx.fillText(printSsid, infoBoxX + 30, infoBoxY + 100);
+
+      // Senha
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.fillText('SENHA DO WI-FI:', infoBoxX + 30, infoBoxY + 165);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 30px sans-serif';
+      let printPass = pass ? pass : '(sem senha)';
+      if (printPass.length > 18) printPass = printPass.slice(0, 17) + '...';
+      ctx.fillText(printPass, infoBoxX + 30, infoBoxY + 210);
+
+      ctx.fillStyle = '#166534';
+      ctx.font = '600 18px sans-serif';
+      ctx.fillText('✓ Conexão automática para clientes', infoBoxX + 30, infoBoxY + 265);
+
+      // ================= COLUNA DIREITA: GOOGLE AVALIAÇÕES =================
+      ctx.fillStyle = '#F8FAFC';
+      ctx.beginPath();
+      ctx.roundRect(rightColX, colY, colW, colH, 24);
+      ctx.fill();
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Topo Google
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 40px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('⭐  AVALIE NO GOOGLE', rightColX + colW / 2, colY + 70);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '500 24px sans-serif';
+      ctx.fillText('Sua opinião vale muito para nós!', rightColX + colW / 2, colY + 115);
+
+      // QR Code Google Alta Definição (380x380 px)
+      const tempGoogleCanvas = document.createElement('canvas');
+      await QRCode.toCanvas(tempGoogleCanvas, currentBarber.reviewUrl, {
+        width: 380,
+        margin: 2,
+        color: { dark: '#0F172A', light: '#FFFFFF' },
+        errorCorrectionLevel: 'H'
+      });
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.roundRect(rightColX + (colW - qrBoxW) / 2, colY + 150, qrBoxW, qrBoxH, 20);
+      ctx.fill();
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.drawImage(tempGoogleCanvas, rightColX + (colW - 380) / 2, colY + 170);
+
+      // Caixa de Chamada Google Avaliações
+      const infoGoogleX = rightColX + (colW - infoBoxW) / 2;
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.roundRect(infoGoogleX, infoBoxY, infoBoxW, infoBoxH, 18);
+      ctx.fill();
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = '#FBBC05';
+      ctx.font = 'bold 44px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('★  ★  ★  ★  ★', infoGoogleX + infoBoxW / 2, infoBoxY + 70);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 30px sans-serif';
+      ctx.fillText('AVALIE COM 5 ESTRELAS', infoGoogleX + infoBoxW / 2, infoBoxY + 130);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '500 22px sans-serif';
+      ctx.fillText('Leva menos de 10 segundos', infoGoogleX + infoBoxW / 2, infoBoxY + 175);
+
+      ctx.fillStyle = '#166534';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.fillText('Fortalece o comércio local!', infoGoogleX + infoBoxW / 2, infoBoxY + 230);
+
+      // ================= RODAPÉ DA PLAQUINHA =================
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 34px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('APONTE A CÂMERA DO SEU CELULAR', width / 2, 1490);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '500 26px sans-serif';
+      ctx.fillText('Conecte no Wi-Fi ou avalie nossa barbearia no Google', width / 2, 1545);
+
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(180, 1590);
+      ctx.lineTo(width - 180, 1590);
+      ctx.stroke();
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '600 22px sans-serif';
+      ctx.fillText('DISPLAY OFICIAL DE BALCÃO • ACELERA BARBER • GOV. VALADARES', width / 2, 1640);
+
+      // Dispara Download
+      const link = document.createElement('a');
+      const safeSlug = (currentBarber.slug || currentBarber.name).toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 25);
+      link.download = `plaquinha_2em1_${safeSlug}_a6_300dpi.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+
+      showToast('Baixando Plaquinha 2 em 1 em alta definição!');
+    }
+
+    // GERAÇÃO EM ALTA RESOLUÇÃO: VERSÃO APENAS GOOGLE (1240 x 1748 px @ 300 DPI)
+    async function generateHighResSinglePlaqueDownload() {
+      const canvas = document.getElementById('plaque-single-canvas');
+      const ctx = canvas.getContext('2d');
+      const width = 1240;
+      const height = 1748;
+
+      // Fundo Nobre Off-White
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+      bgGrad.addColorStop(0, '#FFFFFF');
+      bgGrad.addColorStop(1, '#F8F9FA');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      // Moldura Externa Dupla
+      ctx.strokeStyle = '#0F172A';
+      ctx.lineWidth = 8;
+      ctx.strokeRect(36, 36, width - 72, height - 72);
+
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 2.5;
+      ctx.strokeRect(48, 48, width - 96, height - 96);
+
+      // 5 Estrelas
       ctx.fillStyle = '#FBBC05';
       ctx.font = 'bold 44px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('★  ★  ★  ★  ★', width / 2, 220);
 
-      // Texto de Cabeçalho
-      ctx.fillStyle = '#E5E7EB';
+      // Texto
+      ctx.fillStyle = '#64748B';
       ctx.font = '600 32px sans-serif';
       ctx.fillText('AVALIE NOSSO TRABALHO NO', width / 2, 290);
 
-      // Logomarca Oficial Google
       drawGoogleLogo(ctx, width / 2 - 190, 340, 1.4);
 
-      // Nome da Barbearia em Dourado
-      ctx.fillStyle = '#FDE68A';
+      // Nome da Barbearia
+      ctx.fillStyle = '#0F172A';
       ctx.font = 'bold 54px sans-serif';
-      let shopNameText = currentBarber.name.toUpperCase();
-      if (shopNameText.length > 26) {
-        ctx.font = 'bold 42px sans-serif';
-      }
-      ctx.fillText(shopNameText, width / 2, 540);
+      let nameText = currentBarber.name.toUpperCase();
+      if (nameText.length > 24) ctx.font = 'bold 42px sans-serif';
+      ctx.fillText(nameText, width / 2, 540);
 
-      // Subtítulo Bairro / Cidade
-      ctx.fillStyle = '#9CA3AF';
+      ctx.fillStyle = '#64748B';
       ctx.font = '500 28px sans-serif';
-      ctx.fillText(currentBarber.neighborhood.toUpperCase(), width / 2, 595);
+      ctx.fillText(currentBarber.neighborhood.toUpperCase() + ' • GOVERNADOR VALADARES - MG', width / 2, 595);
 
-      // QR Code em Alta Resolução (580x580 px)
+      // QR Code Google Gigante em Alta Definição (580x580 px)
       const tempQrCanvas = document.createElement('canvas');
       await QRCode.toCanvas(tempQrCanvas, currentBarber.reviewUrl, {
         width: 580,
         margin: 2,
-        color: { dark: '#0A0E17', light: '#FFFFFF' },
+        color: { dark: '#0F172A', light: '#FFFFFF' },
         errorCorrectionLevel: 'H'
       });
 
@@ -1000,27 +1325,29 @@
       ctx.beginPath();
       ctx.roundRect(qrLeft, qrTop, qrBoxSize, qrBoxSize, 28);
       ctx.fill();
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.lineWidth = 3;
+      ctx.stroke();
 
       ctx.drawImage(tempQrCanvas, (width - 580) / 2, qrTop + 30);
 
       // Rodapé
-      ctx.fillStyle = '#FFFFFF';
+      ctx.fillStyle = '#0F172A';
       ctx.font = 'bold 36px sans-serif';
       ctx.fillText('APONTE A CÂMERA DO SEU CELULAR', width / 2, 1420);
 
-      ctx.fillStyle = '#9CA3AF';
+      ctx.fillStyle = '#64748B';
       ctx.font = '30px sans-serif';
       ctx.fillText('Sua nota 5 estrelas fortalece o comércio local!', width / 2, 1480);
 
-      // Linha Divisória
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.strokeStyle = '#CBD5E1';
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(180, 1550);
       ctx.lineTo(width - 180, 1550);
       ctx.stroke();
 
-      ctx.fillStyle = '#6B7280';
+      ctx.fillStyle = '#94A3B8';
       ctx.font = '600 24px sans-serif';
       ctx.fillText('DISPLAY OFICIAL DE BALCÃO • GOOGLE MEU NEGÓCIO', width / 2, 1610);
 
@@ -1032,136 +1359,6 @@
       link.click();
 
       showToast('Baixando placa Google A6 (300 DPI)!');
-    }
-
-    // Gera imagem do Display de Wi-Fi em 1240 x 1748 px @ 300 DPI (Padrão Gráfico A6)
-    async function generateHighResWifiDisplayDownload() {
-      const canvas = document.getElementById('wifi-canvas');
-      const ctx = canvas.getContext('2d');
-      const width = 1240;
-      const height = 1748;
-
-      const ssid = wifiState.ssid || `${currentBarber.name} Wi-Fi`;
-      const pass = wifiState.password || 'cortes2026';
-
-      // Fundo Elegante Off-White Nobre
-      const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-      bgGrad.addColorStop(0, '#FFFFFF');
-      bgGrad.addColorStop(1, '#F4F5F7');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, width, height);
-
-      // Moldura Externa Grafite
-      ctx.strokeStyle = '#1E293B';
-      ctx.lineWidth = 6;
-      ctx.strokeRect(36, 36, width - 72, height - 72);
-
-      // Moldura Interna Fina
-      ctx.strokeStyle = '#CBD5E1';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(48, 48, width - 96, height - 96);
-
-      // Topo: Faixa Grafite
-      ctx.fillStyle = '#0F172A';
-      ctx.fillRect(48, 48, width - 96, 200);
-
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = '900 56px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('📶  WI-FI GRÁTIS', width / 2, 165);
-
-      // Nome da Barbearia
-      ctx.fillStyle = '#0F172A';
-      ctx.font = 'bold 48px sans-serif';
-      let shopNameText = currentBarber.name.toUpperCase();
-      if (shopNameText.length > 26) {
-        ctx.font = 'bold 38px sans-serif';
-      }
-      ctx.fillText(shopNameText, width / 2, 330);
-
-      ctx.fillStyle = '#64748B';
-      ctx.font = '500 28px sans-serif';
-      ctx.fillText('Aponte a câmera do celular para conectar sem digitar a senha', width / 2, 385);
-
-      // QR Code Wi-Fi em Alta Resolução (580x580 px)
-      const wifiString = `WIFI:S:${ssid};T:WPA;P:${pass};;`;
-      const tempQrCanvas = document.createElement('canvas');
-      await QRCode.toCanvas(tempQrCanvas, wifiString, {
-        width: 580,
-        margin: 2,
-        color: { dark: '#0F172A', light: '#FFFFFF' },
-        errorCorrectionLevel: 'Q'
-      });
-
-      const qrBoxSize = 640;
-      const qrLeft = (width - qrBoxSize) / 2;
-      const qrTop = 450;
-
-      ctx.fillStyle = '#FFFFFF';
-      ctx.beginPath();
-      ctx.roundRect(qrLeft, qrTop, qrBoxSize, qrBoxSize, 28);
-      ctx.fill();
-      ctx.strokeStyle = '#E2E8F0';
-      ctx.lineWidth = 3;
-      ctx.stroke();
-
-      ctx.drawImage(tempQrCanvas, (width - 580) / 2, qrTop + 30);
-
-      // Caixa Informativa de Rede e Senha
-      const boxW = 860;
-      const boxH = 260;
-      const boxLeft = (width - boxW) / 2;
-      const boxTop = 1140;
-
-      ctx.fillStyle = '#F8FAFC';
-      ctx.beginPath();
-      ctx.roundRect(boxLeft, boxTop, boxW, boxH, 20);
-      ctx.fill();
-      ctx.strokeStyle = '#CBD5E1';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      // Rede
-      ctx.fillStyle = '#64748B';
-      ctx.font = 'bold 24px sans-serif';
-      ctx.textAlign = 'left';
-      ctx.fillText('NOME DA REDE (SSID):', boxLeft + 50, boxTop + 70);
-
-      ctx.fillStyle = '#0F172A';
-      ctx.font = 'bold 36px sans-serif';
-      ctx.fillText(ssid, boxLeft + 50, boxTop + 115);
-
-      // Senha
-      ctx.fillStyle = '#64748B';
-      ctx.font = 'bold 24px sans-serif';
-      ctx.fillText('SENHA DO WI-FI:', boxLeft + 50, boxTop + 175);
-
-      ctx.fillStyle = '#0F172A';
-      ctx.font = 'bold 36px sans-serif';
-      ctx.fillText(pass, boxLeft + 50, boxTop + 220);
-
-      // Rodapé
-      ctx.fillStyle = '#0F172A';
-      ctx.font = 'bold 34px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('CONEXÃO AUTOMÁTICA EM 1 TOQUE', width / 2, 1490);
-
-      ctx.fillStyle = '#64748B';
-      ctx.font = '26px sans-serif';
-      ctx.fillText('Compatível nativamente com iPhone e Android', width / 2, 1545);
-
-      ctx.fillStyle = '#94A3B8';
-      ctx.font = '600 22px sans-serif';
-      ctx.fillText('DISPLAY OFICIAL DE BALCÃO • ACELERA BARBER', width / 2, 1630);
-
-      // Dispara Download
-      const link = document.createElement('a');
-      const safeSlug = (currentBarber.slug || currentBarber.name).toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 25);
-      link.download = `display_wifi_${safeSlug}_a6_300dpi.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-
-      showToast('Baixando display de Wi-Fi A6 (300 DPI)!');
     }
 
     function drawGoogleLogo(ctx, startX, startY, scale = 1.0) {
@@ -1251,30 +1448,30 @@
               goToStep(2);
             }, 600);
           } else {
-            showToast('Link pronto! Selecione e copie acima.');
+            showToast('Selecione e copie seu link acima.');
           }
         });
       }
 
-      // 3. Inputs de Wi-Fi em tempo real
+      // 3. Inputs de Wi-Fi em tempo real na Etapa 5
       const ssidInput = document.getElementById('input-wifi-ssid');
       const passInput = document.getElementById('input-wifi-password');
 
       const handleWifiChange = () => {
         wifiState.ssid = (ssidInput.value || '').trim();
         wifiState.password = (passInput.value || '').trim();
-        renderWifiPreview();
+        renderDualPlaquePreview();
       };
 
       if (ssidInput) ['input', 'keyup', 'change'].forEach(ev => ssidInput.addEventListener(ev, handleWifiChange));
       if (passInput) ['input', 'keyup', 'change'].forEach(ev => passInput.addEventListener(ev, handleWifiChange));
 
       // 4. Botões de Download
-      const dlBtnPlaque = document.getElementById('btn-download-plaque');
-      if (dlBtnPlaque) dlBtnPlaque.onclick = () => generateHighResPlaqueDownload();
+      const dlBtnDual = document.getElementById('btn-download-dual');
+      if (dlBtnDual) dlBtnDual.onclick = () => generateHighResDualPlaqueDownload();
 
-      const dlBtnWifi = document.getElementById('btn-download-wifi');
-      if (dlBtnWifi) dlBtnWifi.onclick = () => generateHighResWifiDisplayDownload();
+      const dlBtnSingle = document.getElementById('btn-download-single');
+      if (dlBtnSingle) dlBtnSingle.onclick = () => generateHighResSinglePlaqueDownload();
 
       // 5. Carrega base de leads
       try {
@@ -1394,20 +1591,13 @@
       // Textos principais
       const shopNameEl = document.getElementById('shop-name');
       const mockupShopNameEl = document.getElementById('mockup-shop-name');
-      const previewShopNameEl = document.getElementById('preview-shop-name');
       const searchQueryEl = document.getElementById('google-search-query');
       const shopLocEl = document.getElementById('shop-location');
 
       if (shopNameEl) shopNameEl.innerText = currentBarber.name;
       if (mockupShopNameEl) mockupShopNameEl.innerText = currentBarber.name;
-      if (previewShopNameEl) previewShopNameEl.innerText = currentBarber.name;
       if (searchQueryEl) searchQueryEl.innerText = currentBarber.name.toLowerCase();
-      if (shopLocEl) {
-        shopLocEl.innerHTML = `
-          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gray-400"></i>
-          <span>${currentBarber.neighborhood}</span>
-        `;
-      }
+      if (shopLocEl) shopLocEl.innerText = `${currentBarber.neighborhood} • GV`;
 
       // Links Google em Nova Aba
       const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(currentBarber.name + ' ' + currentBarber.neighborhood)}`;
@@ -1438,9 +1628,9 @@
         wifiState.password = passInput.value;
       }
 
-      // Renderiza previews iniciais
-      renderGooglePlaquePreview();
-      renderWifiPreview();
+      // Renderiza previews iniciais e benchmark
+      renderDualPlaquePreview();
+      updateCompetitorBenchText();
       renderStepper();
       lucide.createIcons();
     }
