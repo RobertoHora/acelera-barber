@@ -322,27 +322,18 @@
           </p>
         </div>
 
-        <!-- Barra de Status do Instagram / Apify -->
+        <!-- Barra de Status do Instagram (Automática) -->
         <div class="flex items-center justify-between bg-white rounded-xl border border-gray-200 px-3.5 py-2.5 shadow-xs text-xs">
-          <div class="flex items-center gap-2 truncate">
+          <div class="flex items-center gap-2 truncate w-full">
             <svg class="w-4 h-4 shrink-0 text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
               <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
             </svg>
             <span id="insta-status-label" class="font-semibold text-gray-800 truncate">
-              Cortes sincronizados
+              Fotos do Instagram
             </span>
           </div>
-          <button 
-            type="button" 
-            onclick="triggerInstagramRefresh()" 
-            class="text-[11px] font-bold text-gray-600 hover:text-black flex items-center gap-1 cursor-pointer shrink-0 ml-2"
-            title="Atualizar fotos via Apify"
-          >
-            <i data-lucide="refresh-cw" class="w-3 h-3"></i>
-            <span>Atualizar</span>
-          </button>
         </div>
 
         <!-- Grade de Fotos e Cortes (2 colunas no mobile, 3 no desktop) -->
@@ -782,6 +773,9 @@
       lucide.createIcons();
 
       // Renderizações específicas de etapas
+      if (currentStep === 3) {
+        loadInstagramPhotosForCurrentBarber();
+      }
       if (currentStep === 5) {
         renderDualPlaquePreview();
         updateCompetitorBenchText();
@@ -862,7 +856,9 @@
       } else {
         currentBarber.instagram = '';
       }
-      loadInstagramPhotosForCurrentBarber(false);
+      if (currentStep === 3) {
+        loadInstagramPhotosForCurrentBarber();
+      }
     }
 
     // BAIXA A IMAGEM DO CORTE DIRETAMENTE PARA O DISPOSITIVO
@@ -972,75 +968,107 @@
       lucide.createIcons();
     }
 
-    // CARREGA FOTOS DO INSTAGRAM OU ATIVA APIFY DINÂMICO
-    async function loadInstagramPhotosForCurrentBarber(forceFetch = false) {
+    // SKELETON ANIMADO DURANTE O CARREGAMENTO AUTOMÁTICO
+    function renderProductPhotosSkeleton(handle) {
+      const grid = document.getElementById('product-photos-grid');
+      const labelEl = document.getElementById('insta-status-label');
+      if (labelEl) {
+        labelEl.innerHTML = `
+          <span class="inline-flex items-center gap-1.5 text-gray-700 font-medium truncate">
+            <span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full shrink-0"></span>
+            <span>Carregando fotos de @${handle}...</span>
+          </span>
+        `;
+      }
+      if (!grid) return;
+
+      let html = '';
+      for (let i = 0; i < 4; i++) {
+        html += `
+          <div class="bg-white border border-gray-200 rounded-xl p-2.5 space-y-2 animate-pulse shadow-xs">
+            <div class="aspect-square w-full rounded-lg bg-gray-200"></div>
+            <div class="h-3 bg-gray-200 rounded w-3/4"></div>
+            <div class="h-2 bg-gray-150 rounded w-1/2"></div>
+            <div class="grid grid-cols-2 gap-1 pt-1">
+              <div class="h-6 bg-gray-200 rounded-lg"></div>
+              <div class="h-6 bg-gray-200 rounded-lg"></div>
+            </div>
+          </div>
+        `;
+      }
+      grid.innerHTML = html;
+    }
+
+    let isFetchingInstagram = false;
+
+    // CARREGA FOTOS DO INSTAGRAM OU ATIVA APIFY AUTOMATICAMENTE
+    async function loadInstagramPhotosForCurrentBarber() {
       const instaInput = document.getElementById('input-instagram-handle');
       const rawHandle = instaInput ? instaInput.value : '';
       const handle = sanitizeInstagramHandle(rawHandle || currentBarber.instagram || '');
 
-      // 1. Busca no cache local pré-carregado
-      if (!forceFetch && handle && instagramCache && instagramCache[handle] && instagramCache[handle].length > 0) {
+      // 1. Busca no cache local pré-carregado (instantâneo)
+      if (handle && instagramCache && instagramCache[handle] && instagramCache[handle].length > 0) {
         renderProductPhotos(instagramCache[handle], `Fotos do feed @${handle}`);
         return;
       }
 
-      // 2. Se for forceFetch ou requisição dinâmica com handle válido
-      if (forceFetch && handle) {
-        const labelEl = document.getElementById('insta-status-label');
-        if (labelEl) {
-          labelEl.innerHTML = `<span class="inline-flex items-center gap-1 text-gray-600"><span class="animate-spin inline-block w-3 h-3 border-2 border-black border-t-transparent rounded-full"></span> Buscando cortes de @${handle}...</span>`;
-        }
+      // 2. Se temos um @handle e não está em cache, busca automaticamente via Apify oficial
+      if (handle && !isFetchingInstagram) {
+        isFetchingInstagram = true;
+        renderProductPhotosSkeleton(handle);
 
         try {
           const defaultKey = atob('YXBpZnlfYXBpX0JkN1dFVlpZc0EzczdzT2EzY2Y2UVdFaExVd0h1dzQyejJFdg==');
           const apifyToken = (typeof localStorage !== 'undefined' && localStorage.getItem('apify_token')) || defaultKey;
-          const apiUrl = `https://api.apify.com/v2/acts/apidojo~instagram-scraper-api/run-sync-get-dataset-items?token=${apifyToken}`;
+          const apiUrl = `https://api.apify.com/v2/acts/apify~instagram-scraper/run-sync-get-dataset-items?token=${apifyToken}`;
+          
           const res = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              startUrls: [`https://www.instagram.com/${handle}/`]
+              directUrls: [`https://www.instagram.com/${handle}/`],
+              resultsLimit: 6,
+              resultsType: 'posts'
             })
           });
 
           if (res.ok) {
             const items = await res.json();
-            if (Array.isArray(items) && items.length > 0) {
+            const validItems = Array.isArray(items) ? items.filter(it => it.displayUrl) : [];
+
+            if (validItems.length > 0) {
               const defaults = (instagramCache && instagramCache['_default']) || CURATED_BARBER_CUTS;
-              const parsed = items.map((it, idx) => {
-                const imgUrl = (it.image && it.image.url) ? it.image.url : it.displayUrl;
+              const parsed = validItems.map((it, idx) => {
+                const caption = it.caption || '';
+                const firstLine = caption.split('\n')[0].trim().slice(0, 45);
                 const def = defaults[idx % defaults.length] || { title: 'Corte Moderno', price: 'R$ 35,00', caption: '' };
                 return {
-                  id: it.id || it.code || String(idx),
-                  imageUrl: imgUrl || def.imageUrl,
-                  title: def.title,
+                  id: it.id || it.shortCode || String(idx),
+                  imageUrl: it.displayUrl,
+                  title: firstLine || def.title,
                   price: def.price,
-                  caption: it.caption ? it.caption.slice(0, 140) : def.caption,
-                  likes: it.likeCount || 0
+                  caption: caption ? caption.slice(0, 140) : def.caption,
+                  likes: it.likesCount || 0
                 };
-              }).filter(p => p.imageUrl);
+              });
 
-              if (parsed.length > 0) {
-                instagramCache[handle] = parsed.slice(0, 6);
-                renderProductPhotos(parsed.slice(0, 6), `Fotos do feed @${handle}`);
-                showToast('Fotos sincronizadas via Apify!');
-                return;
-              }
+              instagramCache[handle] = parsed;
+              renderProductPhotos(parsed, `Fotos do feed @${handle}`);
+              isFetchingInstagram = false;
+              showToast('Fotos sincronizadas com sucesso!');
+              return;
             }
           }
         } catch (err) {
-          console.warn('Busca dinâmica Apify falhou ou bloqueada, usando catálogo:', err);
+          console.warn('Erro na busca Apify:', err);
         }
+        isFetchingInstagram = false;
       }
 
       // 3. Fallback inteligente com fotos profissionais curadas
       const defaultPhotos = (instagramCache && instagramCache['_default']) || CURATED_BARBER_CUTS;
       renderProductPhotos(defaultPhotos, handle ? `@${handle} • Catálogo Sugerido` : 'Cortes Recomendados');
-    }
-
-    function triggerInstagramRefresh() {
-      showToast('Buscando atualizações no Instagram...');
-      loadInstagramPhotosForCurrentBarber(true);
     }
 
     // Identifica o Slug da URL
@@ -1867,7 +1895,9 @@
       // Renderiza previews iniciais e benchmark
       renderDualPlaquePreview();
       updateCompetitorBenchText();
-      loadInstagramPhotosForCurrentBarber(false);
+      if (currentStep === 3) {
+        loadInstagramPhotosForCurrentBarber();
+      }
       renderStepper();
       lucide.createIcons();
     }
