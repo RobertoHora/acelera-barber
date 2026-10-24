@@ -53,8 +53,8 @@
   <style>
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: #F8F9FA;
-      color: #111827;
+      background-color: #19181D;
+      color: #FFFFFF;
       -webkit-tap-highlight-color: transparent;
     }
     .google-font {
@@ -75,15 +75,15 @@
       height: 6px;
     }
     ::-webkit-scrollbar-thumb {
-      background: #CBD5E1;
+      background: #3F3F42;
       border-radius: 9999px;
     }
   </style>
 </head>
-<body class="min-h-screen pb-16 selection:bg-gray-200">
+<body class="min-h-screen pb-16 selection:bg-[#3D3C3A] text-white">
 
   <!-- TOAST DE NOTIFICAÇÃO -->
-  <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 transform -translate-y-20 opacity-0 pointer-events-none flex items-center gap-2 bg-gray-900 text-white font-medium px-4 py-2.5 rounded-full shadow-lg text-xs sm:text-sm transition-all duration-300">
+  <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 transform -translate-y-20 opacity-0 pointer-events-none flex items-center gap-2 bg-[#111111] text-white font-medium px-4 py-2.5 rounded-full shadow-lg border border-[#3D3C3A] text-xs sm:text-sm transition-all duration-300">
     <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
     <span id="toast-msg">Link copiado com sucesso!</span>
   </div>
@@ -94,32 +94,32 @@
 
 
     <!-- CARD CENTRAL PRINCIPAL (WIZARD SAAS NO PADRÃO DO PRINT) -->
-    <div class="bg-white rounded-[28px] border border-gray-200/90 shadow-sm p-5 sm:p-8 relative space-y-6">
+    <div class="bg-[#2B2B29] rounded-[28px] border border-[#3D3C3A] shadow-sm p-5 sm:p-8 relative space-y-6 text-white">
 
       <!-- IDENTIFICAÇÃO SUTIL DA BARBEARIA NO TOPO DO CARD -->
-      <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+      <div class="flex items-center justify-between border-b border-[#383735] pb-3">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span id="shop-name" class="text-xs sm:text-sm font-bold text-gray-900 tracking-tight">Carregando barbearia...</span>
+          <span id="shop-name" class="text-xs sm:text-sm font-bold text-white tracking-tight">Carregando barbearia...</span>
         </div>
-        <span id="shop-location" class="text-[11px] text-gray-500 font-medium truncate max-w-[150px] sm:max-w-none">
+        <span id="shop-location" class="text-[11px] text-[#9CA3AF] font-medium truncate max-w-[150px] sm:max-w-none">
           Governador Valadares - MG
         </span>
       </div>
 
       <!-- TERMÔMETRO DE FORÇA DO PERFIL (PROFILE STRENGTH SCORE) -->
-      <div class="space-y-1.5 bg-gray-50/70 border border-gray-200/70 rounded-xl p-3">
+      <div class="space-y-1.5 bg-[#242422]/90 border border-[#454441] rounded-xl p-3">
         <div class="flex items-center justify-between text-xs font-semibold">
-          <span class="text-gray-700 flex items-center gap-1.5">
-            <i data-lucide="shield-check" class="w-4 h-4 text-gray-900"></i>
+          <span class="text-[#D4D4D8] flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
             Força do Perfil no Google
           </span>
-          <span class="text-gray-900 font-bold">
-            <span id="profile-strength-pct">20%</span> • <span id="profile-strength-label" class="text-gray-600 font-medium">Perfil Inicial</span>
+          <span class="text-white font-bold">
+            <span id="profile-strength-pct">20%</span> • <span id="profile-strength-label" class="text-[#A1A1AA] font-medium">Perfil Inicial</span>
           </span>
         </div>
-        <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-          <div id="profile-strength-bar" class="h-full bg-black rounded-full transition-all duration-500" style="width: 20%;"></div>
+        <div class="w-full bg-[#3F3F42] rounded-full h-2 overflow-hidden">
+          <div id="profile-strength-bar" class="h-full bg-white rounded-full transition-all duration-500" style="width: 20%;"></div>
         </div>
       </div>
 
@@ -133,21 +133,21 @@
       <!-- ================= ETAPA 1: COPIAR INSTAGRAM ================= -->
       <div id="step-1" class="step-content space-y-5">
         <div class="text-center space-y-1.5">
-          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
+          <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
             Copie o link do seu Instagram
           </h2>
-          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
-            O Google exige o link completo com <span class="font-medium text-gray-800">https://</span> para ativar o carrossel automático com suas fotos e Reels no Maps.
+          <p class="text-xs sm:text-sm text-[#A1A1AA] max-w-md mx-auto leading-relaxed">
+            O Google exige o link completo com <span class="font-medium text-white">https://</span> para ativar o carrossel automático com suas fotos e Reels no Maps.
           </p>
         </div>
 
         <!-- Campo de Digitação Limpo (Sem Linha de Link Oficial) -->
         <div class="space-y-1.5 max-w-md mx-auto">
-          <label class="block text-xs font-semibold text-gray-700">
+          <label class="block text-xs font-semibold text-[#D4D4D8]">
             Seu perfil do Instagram:
           </label>
-          <div class="flex items-center bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-3 focus-within:ring-2 focus-within:ring-black focus-within:bg-white transition-all">
-            <span class="text-gray-400 font-semibold text-sm mr-1">@</span>
+          <div class="flex items-center bg-[#242422] border border-[#4A4A48] rounded-xl px-3.5 py-3 focus-within:ring-2 focus-within:ring-white/40 focus-within:border-white focus-within:bg-[#1E1E1C] transition-all">
+            <span class="text-[#71717A] font-semibold text-sm mr-1">@</span>
             <input 
               id="input-instagram-handle"
               type="text" 
@@ -156,7 +156,7 @@
               autocorrect="off"
               autocapitalize="none"
               spellcheck="false"
-              class="w-full bg-transparent text-gray-900 font-medium text-sm focus:outline-none placeholder:text-gray-400 lowercase"
+              class="w-full bg-transparent text-white font-medium text-sm focus:outline-none placeholder:text-[#71717A] lowercase"
             />
           </div>
         </div>
@@ -166,7 +166,7 @@
           <button 
             id="btn-copy-insta" 
             type="button" 
-            class="w-full py-3.5 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs active:scale-[0.99]"
+            class="w-full py-3.5 px-5 bg-[#EFECE5] hover:bg-[#E2DED6] text-[#111111] font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs active:scale-[0.99]"
           >
             <i id="btn-copy-icon" data-lucide="copy" class="w-4 h-4"></i>
             <span id="btn-copy-text">Copiar Link do Instagram</span>
@@ -177,18 +177,18 @@
       <!-- ================= ETAPA 2: CONECTAR NO GOOGLE ================= -->
       <div id="step-2" class="step-content hidden space-y-5">
         <div class="text-center space-y-1.5">
-          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
+          <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
             Conecte o Instagram no Perfil do Google
           </h2>
-          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+          <p class="text-xs sm:text-sm text-[#A1A1AA] max-w-md mx-auto leading-relaxed">
             Abra seu perfil do Google, toque em <b>Editar perfil</b>, vá na aba <b>Contato</b> e cole o link copiado.
           </p>
         </div>
 
         <!-- Mockups Minimalistas Oficiais Google (Com as tags exatas aprovadas) -->
         <div class="space-y-3">
-          <!-- Mockup 1: Busca do Google -->
-          <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-xs space-y-2.5">
+          <!-- Mockup 1: Busca do Google (ESTRITAMENTE FUNDO BRANCO E CORES DO GOOGLE) -->
+          <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-xs space-y-2.5 text-gray-900">
             <div class="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-600">
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -229,8 +229,8 @@
             </div>
           </div>
 
-          <!-- Mockup 2: Tela de Contato -->
-          <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-xs space-y-2">
+          <!-- Mockup 2: Tela de Contato (ESTRITAMENTE FUNDO BRANCO E CORES DO GOOGLE) -->
+          <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-xs space-y-2 text-gray-900">
             <div class="flex items-center gap-1.5 border-b border-gray-100 pb-1.5">
               <i data-lucide="arrow-left" class="w-3.5 h-3.5 text-gray-600"></i>
               <span class="text-xs font-bold text-gray-900">Informações comerciais</span>
@@ -289,7 +289,7 @@
           <button 
             type="button" 
             onclick="completeAndAdvance(2)" 
-            class="w-full py-3 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+            class="w-full py-3.5 px-5 bg-[#EFECE5] hover:bg-[#E2DED6] text-[#111111] font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs active:scale-[0.99]"
           >
             <span>Já colei no Google 👉 Próxima Etapa</span>
           </button>
@@ -297,7 +297,7 @@
 
         <!-- Navegação Voltar -->
         <div class="flex justify-start pt-1">
-          <button type="button" onclick="goToStep(1)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+          <button type="button" onclick="goToStep(1)" class="text-xs font-semibold text-[#71717A] hover:text-white flex items-center gap-1">
             <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar
           </button>
         </div>
@@ -306,23 +306,23 @@
       <!-- ================= ETAPA 3: CADASTRAR CORTES & PRODUTOS COM FOTOS ================= -->
       <div id="step-3" class="step-content hidden space-y-4">
         <div class="text-center space-y-1.5">
-          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
+          <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
             Cadastre seus Cortes & Fotos no Google
           </h2>
-          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+          <p class="text-xs sm:text-sm text-[#A1A1AA] max-w-md mx-auto leading-relaxed">
             Fotos de cortes no Google atraem novos clientes. Baixe a foto do corte e copie o texto pronto para colar no painel de Produtos.
           </p>
         </div>
 
         <!-- Barra de Status do Instagram (Automática) -->
-        <div class="flex items-center justify-between bg-white rounded-xl border border-gray-200 px-3.5 py-2.5 shadow-xs text-xs">
+        <div class="flex items-center justify-between bg-[#242422] rounded-xl border border-[#454441] px-3.5 py-2.5 shadow-xs text-xs">
           <div class="flex items-center gap-2 truncate w-full">
-            <svg class="w-4 h-4 shrink-0 text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="w-4 h-4 shrink-0 text-pink-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
               <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
               <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
             </svg>
-            <span id="insta-status-label" class="font-semibold text-gray-800 truncate">
+            <span id="insta-status-label" class="font-semibold text-[#D4D4D8] truncate">
               Fotos do Instagram
             </span>
           </div>
@@ -334,10 +334,10 @@
         </div>
 
         <!-- Dica sutil de como colar no Google -->
-        <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 flex items-start gap-2.5 text-xs text-gray-600">
+        <div class="bg-[#242422] border border-[#454441] rounded-xl p-3 flex items-start gap-2.5 text-xs text-[#A1A1AA]">
           <i data-lucide="info" class="w-4 h-4 text-google-blue shrink-0 mt-0.5"></i>
           <p class="leading-relaxed">
-            <b>Como cadastrar:</b> Toque em <b>Baixar Foto</b>, depois em <b>Copiar Texto</b>. Ao abrir o Google, toque em <b>Adicionar produto</b>, anexe a foto da sua galeria e cole o texto copiado.
+            <b class="text-white">Como cadastrar:</b> Toque em <b>Baixar Foto</b>, depois em <b>Copiar Texto</b>. Ao abrir o Google, toque em <b>Adicionar produto</b>, anexe a foto da sua galeria e cole o texto copiado.
           </p>
         </div>
 
@@ -357,7 +357,7 @@
           <button 
             type="button" 
             onclick="completeAndAdvance(3)" 
-            class="w-full py-3 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+            class="w-full py-3.5 px-5 bg-[#EFECE5] hover:bg-[#E2DED6] text-[#111111] font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs active:scale-[0.99]"
           >
             <span>Produtos cadastrados 👉 Próxima Etapa</span>
           </button>
@@ -365,7 +365,7 @@
 
         <!-- Navegação Voltar -->
         <div class="flex justify-start pt-1">
-          <button type="button" onclick="goToStep(2)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+          <button type="button" onclick="goToStep(2)" class="text-xs font-semibold text-[#71717A] hover:text-white flex items-center gap-1">
             <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar
           </button>
         </div>
@@ -374,16 +374,16 @@
       <!-- ================= ETAPA 4: PREENCHER COMODIDADES ================= -->
       <div id="step-4" class="step-content hidden space-y-5">
         <div class="text-center space-y-1.5">
-          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
+          <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
             Ative as Comodidades da Barbearia
           </h2>
-          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+          <p class="text-xs sm:text-sm text-[#A1A1AA] max-w-md mx-auto leading-relaxed">
             Esses atributos ativam os filtros do Google Maps quando clientes pesquisam por barbearias com ar, Wi-Fi ou Pix.
           </p>
         </div>
 
-        <!-- Mockup Google Atributos (Limpo) -->
-        <div class="bg-white rounded-xl border border-gray-200 p-3.5 shadow-xs space-y-2.5">
+        <!-- Mockup Google Atributos (ESTRITAMENTE FUNDO BRANCO E CORES DO GOOGLE) -->
+        <div class="bg-white rounded-xl border border-gray-200 p-3.5 shadow-xs space-y-2.5 text-gray-900">
           <div class="flex items-center justify-between border-b border-gray-100 pb-2">
             <div class="flex items-center gap-1.5">
               <i data-lucide="check-circle-2" class="w-4 h-4 text-google-blue"></i>
@@ -442,7 +442,7 @@
           <button 
             type="button" 
             onclick="completeAndAdvance(4)" 
-            class="w-full py-3 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+            class="w-full py-3.5 px-5 bg-[#EFECE5] hover:bg-[#E2DED6] text-[#111111] font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs active:scale-[0.99]"
           >
             <span>Comodidades preenchidas 👉 Próxima Etapa</span>
           </button>
@@ -450,7 +450,7 @@
 
         <!-- Navegação Voltar -->
         <div class="flex justify-start pt-1">
-          <button type="button" onclick="goToStep(3)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+          <button type="button" onclick="goToStep(3)" class="text-xs font-semibold text-[#71717A] hover:text-white flex items-center gap-1">
             <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar
           </button>
         </div>
@@ -459,60 +459,60 @@
       <!-- ================= ETAPA 5: PLAQUINHA OFICIAL 2 EM 1 (GOOGLE + WI-FI) ================= -->
       <div id="step-5" class="step-content hidden space-y-5">
         <div class="text-center space-y-1.5">
-          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
+          <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight leading-snug">
             Sua Plaquinha Oficial de Balcão (2 em 1)
           </h2>
-          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
-            Display gráfico em alta resolução unindo a <b>Avaliação 5 Estrelas do Google</b> e o <b>Wi-Fi Grátis</b> para seus clientes no mesmo papel fotográfico A6 (10x15cm).
+          <p class="text-xs sm:text-sm text-[#A1A1AA] max-w-md mx-auto leading-relaxed">
+            Display gráfico em alta resolução unindo a <b class="text-white">Avaliação 5 Estrelas do Google</b> e o <b class="text-white">Wi-Fi Grátis</b> para seus clientes no mesmo papel fotográfico A6 (10x15cm).
           </p>
         </div>
 
         <!-- Configuração Rápida do Wi-Fi da Barbearia -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md mx-auto">
           <div class="space-y-1 text-left">
-            <label class="block text-xs font-semibold text-gray-700">Nome da Rede Wi-Fi (SSID):</label>
-            <div class="flex items-center bg-gray-50 border border-gray-300 rounded-xl px-3 py-2.5 focus-within:ring-2 focus-within:ring-black focus-within:bg-white transition-all">
-              <i data-lucide="wifi" class="w-4 h-4 text-gray-400 mr-2"></i>
+            <label class="block text-xs font-semibold text-[#D4D4D8]">Nome da Rede Wi-Fi (SSID):</label>
+            <div class="flex items-center bg-[#242422] border border-[#4A4A48] rounded-xl px-3 py-2.5 focus-within:ring-2 focus-within:ring-white/40 focus-within:border-white focus-within:bg-[#1E1E1C] transition-all">
+              <i data-lucide="wifi" class="w-4 h-4 text-[#71717A] mr-2"></i>
               <input 
                 id="input-wifi-ssid" 
                 type="text" 
                 placeholder="Ex: Barbearia Wi-Fi" 
-                class="w-full bg-transparent text-xs font-medium text-gray-900 focus:outline-none"
+                class="w-full bg-transparent text-xs font-medium text-white focus:outline-none placeholder:text-[#71717A]"
               />
             </div>
           </div>
 
           <div class="space-y-1 text-left">
-            <label class="block text-xs font-semibold text-gray-700">Senha do Wi-Fi:</label>
-            <div class="flex items-center bg-gray-50 border border-gray-300 rounded-xl px-3 py-2.5 focus-within:ring-2 focus-within:ring-black focus-within:bg-white transition-all">
-              <i data-lucide="key" class="w-4 h-4 text-gray-400 mr-2"></i>
+            <label class="block text-xs font-semibold text-[#D4D4D8]">Senha do Wi-Fi:</label>
+            <div class="flex items-center bg-[#242422] border border-[#4A4A48] rounded-xl px-3 py-2.5 focus-within:ring-2 focus-within:ring-white/40 focus-within:border-white focus-within:bg-[#1E1E1C] transition-all">
+              <i data-lucide="key" class="w-4 h-4 text-[#71717A] mr-2"></i>
               <input 
                 id="input-wifi-password" 
                 type="text" 
                 placeholder="Ex: cortes2026" 
-                class="w-full bg-transparent text-xs font-medium text-gray-900 focus:outline-none"
+                class="w-full bg-transparent text-xs font-medium text-white focus:outline-none placeholder:text-[#71717A]"
               />
             </div>
           </div>
         </div>
 
-        <!-- Preview ao Vivo da Plaquinha 2 em 1 -->
+        <!-- Preview ao Vivo da Plaquinha 2 em 1 (ESTRITAMENTE FUNDO BRANCO NO DISPLAY DA PLAQUINHA) -->
         <div class="text-center">
           <div class="inline-block bg-white border border-gray-300 rounded-2xl p-2.5 shadow-xs max-w-xs mx-auto">
             <canvas id="plaque-preview-canvas" width="280" height="395" class="rounded-xl shadow-2xs"></canvas>
-            <p class="text-[10px] text-gray-400 font-medium mt-1.5">
+            <p class="text-[10px] text-gray-500 font-medium mt-1.5">
               Preview da Plaquinha A6 (Atualiza em tempo real com seu Wi-Fi)
             </p>
           </div>
         </div>
 
         <!-- COMPARATIVO LOCAL DO BAIRRO (BENCHMARK DE CONCORRENTES) -->
-        <div class="bg-gray-50 border border-gray-200/90 rounded-2xl p-4 max-w-md mx-auto space-y-1.5 text-left">
-          <div class="flex items-center gap-2 text-xs font-bold text-gray-900">
-            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600"></i>
+        <div class="bg-[#242422] border border-[#454441] rounded-2xl p-4 max-w-md mx-auto space-y-1.5 text-left">
+          <div class="flex items-center gap-2 text-xs font-bold text-white">
+            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
             <span>Radar Local de Concorrentes</span>
           </div>
-          <p id="competitor-bench-text" class="text-xs text-gray-600 leading-relaxed">
+          <p id="competitor-bench-text" class="text-xs text-[#A1A1AA] leading-relaxed">
             Calculando dados das barbearias do seu bairro...
           </p>
         </div>
@@ -522,7 +522,7 @@
           <button 
             id="btn-download-dual" 
             type="button" 
-            class="w-full py-3.5 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-[0.99]"
+            class="w-full py-3.5 px-5 bg-[#EFECE5] hover:bg-[#E2DED6] text-[#111111] font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-[0.99]"
           >
             <i data-lucide="download" class="w-4 h-4"></i>
             <span>Baixar Plaquinha 2 em 1 Pronta pra Imprimir</span>
@@ -531,28 +531,28 @@
           <button 
             id="btn-download-single" 
             type="button" 
-            class="w-full py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-xl text-xs text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+            class="w-full py-2.5 px-4 bg-[#242422] hover:bg-[#2F2F2D] text-[#D4D4D8] border border-[#454441] font-medium rounded-xl text-xs text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
           >
             <span>Baixar Apenas Versão Google (Sem Wi-Fi)</span>
           </button>
         </div>
 
         <!-- Banner Comemorativo de 100% Concluído -->
-        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center space-y-1 max-w-md mx-auto">
-          <p class="text-xs sm:text-sm font-bold text-emerald-800">
+        <div class="bg-emerald-950/60 border border-emerald-800 rounded-2xl p-4 text-center space-y-1 max-w-md mx-auto">
+          <p class="text-xs sm:text-sm font-bold text-emerald-300">
             🎉 Parabéns! Sua barbearia está 100% configurada
           </p>
-          <p class="text-xs text-emerald-700 leading-relaxed">
+          <p class="text-xs text-emerald-400/90 leading-relaxed">
             Perfil no Google blindado com Instagram, serviços e comodidades, e display inteligente pronto para o balcão.
           </p>
         </div>
 
         <!-- Navegação Voltar e Reiniciar -->
         <div class="flex items-center justify-between pt-1 max-w-md mx-auto">
-          <button type="button" onclick="goToStep(4)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+          <button type="button" onclick="goToStep(4)" class="text-xs font-semibold text-[#71717A] hover:text-white flex items-center gap-1">
             <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar
           </button>
-          <button type="button" onclick="goToStep(1)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+          <button type="button" onclick="goToStep(1)" class="text-xs font-semibold text-[#71717A] hover:text-white flex items-center gap-1">
             <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Recomeçar do Início
           </button>
         </div>
@@ -562,19 +562,19 @@
 
     <!-- RODAPÉ AUXILIAR MINIMALISTA (IDÊNTICO AO PADRÃO DA REFERÊNCIA) -->
     <footer class="text-center pt-2 pb-6 space-y-1.5">
-      <p class="text-xs sm:text-sm text-gray-500">
+      <p class="text-xs sm:text-sm text-[#71717A]">
         Precisa de ajuda? 
         <a 
           id="btn-support" 
           href="https://wa.me/5533999482287" 
           target="_blank" 
           rel="noopener noreferrer"
-          class="font-medium text-gray-800 underline underline-offset-2 hover:text-black transition-colors"
+          class="font-medium text-[#D4D4D8] underline underline-offset-2 hover:text-white transition-colors"
         >
           Falar com Suporte no WhatsApp
         </a>
       </p>
-      <p class="text-[11px] text-gray-400">
+      <p class="text-[11px] text-[#71717A]/80">
         Desenvolvido para fortalecer as barbearias de Governador Valadares • MG
       </p>
     </footer>
@@ -677,11 +677,11 @@
       if (barEl) {
         barEl.style.width = `${config.pct}%`;
         if (config.pct === 100) {
-          barEl.classList.remove('bg-black');
-          barEl.classList.add('bg-emerald-600');
+          barEl.classList.remove('bg-white');
+          barEl.classList.add('bg-emerald-500');
         } else {
-          barEl.classList.remove('bg-emerald-600');
-          barEl.classList.add('bg-black');
+          barEl.classList.remove('bg-emerald-500');
+          barEl.classList.add('bg-white');
         }
       }
     }
@@ -701,7 +701,7 @@
         let circleHtml = '';
         if (isDone) {
           circleHtml = `
-            <button type="button" onclick="goToStep(${i})" title="Ir para ${label}" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs sm:text-sm cursor-pointer shadow-xs transition-transform active:scale-95">
+            <button type="button" onclick="goToStep(${i})" title="Ir para ${label}" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-[#111111] flex items-center justify-center font-bold text-xs sm:text-sm cursor-pointer shadow-xs transition-transform active:scale-95">
               <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
               </svg>
@@ -709,13 +709,13 @@
           `;
         } else if (isActive) {
           circleHtml = `
-            <button type="button" onclick="goToStep(${i})" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-black text-black bg-white flex items-center justify-center font-bold text-xs sm:text-sm cursor-pointer shadow-xs">
+            <button type="button" onclick="goToStep(${i})" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white text-white bg-[#2B2B29] flex items-center justify-center font-bold text-xs sm:text-sm cursor-pointer shadow-xs">
               ${i}
             </button>
           `;
         } else {
           circleHtml = `
-            <button type="button" onclick="goToStep(${i})" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-gray-300 text-gray-400 bg-white flex items-center justify-center font-medium text-xs sm:text-sm cursor-pointer hover:border-gray-400">
+            <button type="button" onclick="goToStep(${i})" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#4A4A48] text-[#71717A] bg-[#2B2B29] flex items-center justify-center font-medium text-xs sm:text-sm cursor-pointer hover:border-white/60">
               ${i}
             </button>
           `;
@@ -723,15 +723,15 @@
 
         // Label
         const labelClass = isActive 
-          ? 'text-gray-900 font-bold' 
-          : (isDone ? 'text-gray-800 font-medium' : 'text-gray-400 font-medium');
+          ? 'text-white font-bold' 
+          : (isDone ? 'text-[#D4D4D8] font-medium' : 'text-[#71717A] font-medium');
 
         html += `
           <div class="flex flex-col items-center flex-1">
             <div class="flex items-center w-full">
-              ${i > 1 ? `<div class="h-[1.5px] flex-1 ${i <= currentStep ? 'bg-black' : 'bg-gray-200'}"></div>` : '<div class="flex-1"></div>'}
+              ${i > 1 ? `<div class="h-[1.5px] flex-1 ${i <= currentStep ? 'bg-white' : 'bg-[#424240]'}"></div>` : '<div class="flex-1"></div>'}
               <div class="shrink-0">${circleHtml}</div>
-              ${i < TOTAL_STEPS ? `<div class="h-[1.5px] flex-1 ${i < currentStep ? 'bg-black' : 'bg-gray-200'}"></div>` : '<div class="flex-1"></div>'}
+              ${i < TOTAL_STEPS ? `<div class="h-[1.5px] flex-1 ${i < currentStep ? 'bg-white' : 'bg-[#424240]'}"></div>` : '<div class="flex-1"></div>'}
             </div>
             <span onclick="goToStep(${i})" class="text-[9px] sm:text-[11px] ${labelClass} mt-1.5 cursor-pointer text-center truncate max-w-[58px] sm:max-w-none">
               ${label}
@@ -909,9 +909,9 @@
         const filename = `corte_${idx + 1}_${cleanSlug}.jpg`;
 
         html += `
-          <div class="bg-white border border-gray-200 rounded-xl overflow-hidden p-2 flex flex-col justify-between shadow-xs hover:border-gray-300 transition-all">
+          <div class="bg-[#242422] border border-[#454441] rounded-xl overflow-hidden p-2 flex flex-col justify-between shadow-xs hover:border-[#5A5955] transition-all">
             <div class="space-y-1.5">
-              <div class="relative aspect-square w-full rounded-lg overflow-hidden bg-gray-100">
+              <div class="relative aspect-square w-full rounded-lg overflow-hidden bg-[#1E1E1C]">
                 <img 
                   src="${photo.imageUrl}" 
                   alt="${safeTitle}" 
@@ -919,15 +919,15 @@
                   class="w-full h-full object-cover"
                   onerror="this.src='https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=600&q=80'"
                 />
-                <span class="absolute top-1 right-1 bg-black/85 backdrop-blur-xs text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-xs">
+                <span class="absolute top-1 right-1 bg-black/85 backdrop-blur-xs text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-xs border border-white/10">
                   ${safePrice}
                 </span>
               </div>
               <div>
-                <h3 class="text-xs font-bold text-gray-900 truncate" title="${safeTitle}">
+                <h3 class="text-xs font-bold text-white truncate" title="${safeTitle}">
                   ${safeTitle}
                 </h3>
-                <p class="text-[10px] text-gray-500 line-clamp-2 leading-tight">
+                <p class="text-[10px] text-[#A1A1AA] line-clamp-2 leading-tight">
                   ${rawCaption}
                 </p>
               </div>
@@ -936,7 +936,7 @@
               <button 
                 type="button" 
                 onclick="downloadProductImage('${photo.imageUrl}', '${filename}')" 
-                class="py-1.5 px-1 bg-black hover:bg-gray-800 text-white font-semibold rounded-lg text-[9px] sm:text-[10px] flex items-center justify-center gap-1 cursor-pointer transition-colors"
+                class="py-1.5 px-1 bg-[#EFECE5] hover:bg-[#E2DED6] text-[#111111] font-semibold rounded-lg text-[9px] sm:text-[10px] flex items-center justify-center gap-1 cursor-pointer transition-colors shadow-2xs"
                 title="Baixar foto para a galeria"
               >
                 <i data-lucide="download" class="w-3 h-3"></i>
@@ -945,7 +945,7 @@
               <button 
                 type="button" 
                 onclick="copyProductText('${safeTitle}', '${safePrice}', '${rawCaption}')" 
-                class="py-1.5 px-1 bg-gray-50 hover:bg-gray-100 text-gray-800 font-semibold rounded-lg text-[9px] sm:text-[10px] border border-gray-200 flex items-center justify-center gap-1 cursor-pointer transition-colors"
+                class="py-1.5 px-1 bg-[#2B2B29] hover:bg-[#353533] text-[#D4D4D8] font-semibold rounded-lg text-[9px] sm:text-[10px] border border-[#454441] flex items-center justify-center gap-1 cursor-pointer transition-colors"
                 title="Copiar título e descrição"
               >
                 <i data-lucide="copy" class="w-3 h-3"></i>
@@ -966,8 +966,8 @@
       const labelEl = document.getElementById('insta-status-label');
       if (labelEl) {
         labelEl.innerHTML = `
-          <span class="inline-flex items-center gap-1.5 text-gray-700 font-medium truncate">
-            <span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-black border-t-transparent rounded-full shrink-0"></span>
+          <span class="inline-flex items-center gap-1.5 text-[#D4D4D8] font-medium truncate">
+            <span class="animate-spin inline-block w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full shrink-0"></span>
             <span>Carregando fotos de @${handle}...</span>
           </span>
         `;
@@ -977,13 +977,13 @@
       let html = '';
       for (let i = 0; i < 4; i++) {
         html += `
-          <div class="bg-white border border-gray-200 rounded-xl p-2.5 space-y-2 animate-pulse shadow-xs">
-            <div class="aspect-square w-full rounded-lg bg-gray-200"></div>
-            <div class="h-3 bg-gray-200 rounded w-3/4"></div>
-            <div class="h-2 bg-gray-150 rounded w-1/2"></div>
+          <div class="bg-[#242422] border border-[#454441] rounded-xl p-2.5 space-y-2 animate-pulse shadow-xs">
+            <div class="aspect-square w-full rounded-lg bg-[#353533]"></div>
+            <div class="h-3 bg-[#353533] rounded w-3/4"></div>
+            <div class="h-2 bg-[#2D2D2B] rounded w-1/2"></div>
             <div class="grid grid-cols-2 gap-1 pt-1">
-              <div class="h-6 bg-gray-200 rounded-lg"></div>
-              <div class="h-6 bg-gray-200 rounded-lg"></div>
+              <div class="h-6 bg-[#353533] rounded-lg"></div>
+              <div class="h-6 bg-[#353533] rounded-lg"></div>
             </div>
           </div>
         `;
