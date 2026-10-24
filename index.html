@@ -311,47 +311,51 @@
         </div>
       </div>
 
-      <!-- ================= ETAPA 3: CADASTRAR SERVIÇOS ================= -->
-      <div id="step-3" class="step-content hidden space-y-5">
+      <!-- ================= ETAPA 3: CADASTRAR CORTES & PRODUTOS COM FOTOS ================= -->
+      <div id="step-3" class="step-content hidden space-y-4">
         <div class="text-center space-y-1.5">
           <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
-            Cadastre seus Principais Serviços e Preços
+            Cadastre seus Cortes & Fotos no Google
           </h2>
           <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
-            Barbearias com valores visíveis recebem o dobro de cliques e sobem no ranking do Google Maps.
+            Fotos de cortes no Google atraem novos clientes. Baixe a foto do corte e copie o texto pronto para colar no painel de Produtos.
           </p>
         </div>
 
-        <!-- Mockup Google Serviços (Limpo) -->
-        <div class="bg-white rounded-xl border border-gray-200 p-3.5 shadow-xs space-y-2.5">
-          <div class="flex items-center justify-between border-b border-gray-100 pb-2">
-            <div class="flex items-center gap-1.5">
-              <i data-lucide="scissors" class="w-4 h-4 text-google-blue"></i>
-              <span class="text-xs font-bold text-gray-900">Serviços da Barbearia</span>
-            </div>
-            <span class="text-[10px] bg-blue-50 text-google-blue font-bold px-2 py-0.5 rounded-full border border-blue-150">
-              No Google: Editar Serviços
+        <!-- Barra de Status do Instagram / Apify -->
+        <div class="flex items-center justify-between bg-white rounded-xl border border-gray-200 px-3.5 py-2.5 shadow-xs text-xs">
+          <div class="flex items-center gap-2 truncate">
+            <svg class="w-4 h-4 shrink-0 text-pink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+            </svg>
+            <span id="insta-status-label" class="font-semibold text-gray-800 truncate">
+              Cortes sincronizados
             </span>
           </div>
+          <button 
+            type="button" 
+            onclick="triggerInstagramRefresh()" 
+            class="text-[11px] font-bold text-gray-600 hover:text-black flex items-center gap-1 cursor-pointer shrink-0 ml-2"
+            title="Atualizar fotos via Apify"
+          >
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+            <span>Atualizar</span>
+          </button>
+        </div>
 
-          <div class="space-y-1.5 text-xs">
-            <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-150">
-              <span class="font-semibold text-gray-800">Corte Degradê / Social</span>
-              <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">R$ 35,00</span>
-            </div>
-            <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-150">
-              <span class="font-semibold text-gray-800">Barba / Barboterapia</span>
-              <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">R$ 30,00</span>
-            </div>
-            <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-150">
-              <span class="font-semibold text-gray-800">Cabelo + Barba (Combo)</span>
-              <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">R$ 60,00</span>
-            </div>
-            <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-150">
-              <span class="font-semibold text-gray-800">Sobrancelha na Navalha</span>
-              <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">R$ 15,00</span>
-            </div>
-          </div>
+        <!-- Grade de Fotos e Cortes (2 colunas no mobile, 3 no desktop) -->
+        <div id="product-photos-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+          <!-- Renderizado dinamicamente via JS -->
+        </div>
+
+        <!-- Dica sutil de como colar no Google -->
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 flex items-start gap-2.5 text-xs text-gray-600">
+          <i data-lucide="info" class="w-4 h-4 text-google-blue shrink-0 mt-0.5"></i>
+          <p class="leading-relaxed">
+            <b>Como cadastrar:</b> Toque em <b>Baixar Foto</b>, depois em <b>Copiar Texto</b>. Ao abrir o Google, toque em <b>Adicionar produto</b>, anexe a foto da sua galeria e cole o texto copiado.
+          </p>
         </div>
 
         <!-- Botões de Ação -->
@@ -364,7 +368,7 @@
             class="w-full py-3.5 px-5 bg-google-blue hover:bg-google-hoverBlue text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
           >
             <i data-lucide="external-link" class="w-4 h-4"></i>
-            <span>Abrir Serviços no Google</span>
+            <span>Abrir Produtos no Google</span>
           </a>
 
           <button 
@@ -372,7 +376,7 @@
             onclick="completeAndAdvance(3)" 
             class="w-full py-3 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
           >
-            <span>Serviços cadastrados 👉 Próxima Etapa</span>
+            <span>Produtos cadastrados 👉 Próxima Etapa</span>
           </button>
         </div>
 
@@ -603,16 +607,63 @@
     let currentStep = 1;
     const completedSteps = new Set();
     const TOTAL_STEPS = 5;
-    const STEP_LABELS = ['Instagram', 'Google', 'Serviços', 'Comodidades', 'Plaquinha 2 em 1'];
+    const STEP_LABELS = ['Instagram', 'Google', 'Cortes & Fotos', 'Comodidades', 'Plaquinha 2 em 1'];
 
     // Força do Perfil por etapa
     const STRENGTH_CONFIG = {
       1: { pct: 20, label: 'Perfil Inicial' },
       2: { pct: 45, label: 'Instagram Conectado' },
-      3: { pct: 65, label: 'Serviços & Preços Visíveis' },
+      3: { pct: 65, label: 'Cortes & Preços Visíveis' },
       4: { pct: 85, label: 'Filtros Ativados' },
       5: { pct: 100, label: 'Perfil Blindado para o Topo' }
     };
+
+    let instagramCache = {};
+
+    const CURATED_BARBER_CUTS = [
+      {
+        id: 'cut_degrade_fade',
+        imageUrl: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=600&q=80',
+        title: 'Corte Degradê / Fade Navalhado',
+        price: 'R$ 35,00',
+        caption: 'Degradê na régua disfarçado na máquina e navalha, finalização com pomada matte.'
+      },
+      {
+        id: 'cut_barboterapia',
+        imageUrl: 'https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=600&q=80',
+        title: 'Barba Alinhada & Barboterapia',
+        price: 'R$ 30,00',
+        caption: 'Toalha quente, alinhamento simétrico na navalhete e hidratação com óleos nobres.'
+      },
+      {
+        id: 'cut_combo_completo',
+        imageUrl: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=600&q=80',
+        title: 'Combo Cabelo + Barba Alinhada',
+        price: 'R$ 60,00',
+        caption: 'Experiência completa: corte moderno à sua escolha mais barba alinhada com toalha quente.'
+      },
+      {
+        id: 'cut_social_tesoura',
+        imageUrl: 'https://images.unsplash.com/photo-1517832606589-7629c33971a6?auto=format&fit=crop&w=600&q=80',
+        title: 'Corte Social Clássico na Tesoura',
+        price: 'R$ 35,00',
+        caption: 'Acabamento limpo e refinado na tesoura e máquina, penteado social sofisticado.'
+      },
+      {
+        id: 'cut_sobrancelha_navalha',
+        imageUrl: 'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=600&q=80',
+        title: 'Sobrancelha na Navalha',
+        price: 'R$ 15,00',
+        caption: 'Design e alinhamento milimétrico na navalha para valorizar o olhar.'
+      },
+      {
+        id: 'cut_platinado_nevou',
+        imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80',
+        title: 'Platinado / Nevou & Luzes',
+        price: 'R$ 80,00',
+        caption: 'Descoloração com proteção capilar e tonalização uniforme de alta durabilidade.'
+      }
+    ];
 
     let currentBarber = {
       id: 'default',
@@ -811,6 +862,185 @@
       } else {
         currentBarber.instagram = '';
       }
+      loadInstagramPhotosForCurrentBarber(false);
+    }
+
+    // BAIXA A IMAGEM DO CORTE DIRETAMENTE PARA O DISPOSITIVO
+    async function downloadProductImage(url, filename) {
+      try {
+        showToast('Baixando foto...');
+        const res = await fetch(url);
+        const blob = await res.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename || 'corte-barbearia.jpg';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 1500);
+        showToast('Foto salva na sua galeria!');
+      } catch (err) {
+        // Fallback direto: abre em nova guia com instrução clara
+        window.open(url, '_blank', 'noopener,noreferrer');
+        showToast('Imagem aberta. Pressione para salvar.');
+      }
+    }
+
+    // COPIA O TEXTO FORMATADO PARA O GOOGLE
+    async function copyProductText(title, price, caption) {
+      const cleanTitle = (title || 'Corte Masculino').trim();
+      const cleanPrice = (price || 'R$ 35,00').trim();
+      const cleanDesc = (caption || `${cleanTitle} com acabamento impecável e alta precisão.`).trim();
+      const textToCopy = `${cleanTitle}\nValor: ${cleanPrice}\n\n${cleanDesc}`;
+      const ok = await copyTextToClipboard(textToCopy);
+      if (ok) {
+        showToast(`Texto de "${cleanTitle}" copiado!`);
+      } else {
+        showToast('Não foi possível copiar o texto.');
+      }
+    }
+
+    // RENDERIZA A GRADE DE FOTOS E CORTES NA ETAPA 3
+    function renderProductPhotos(photos, sourceLabel) {
+      const grid = document.getElementById('product-photos-grid');
+      const labelEl = document.getElementById('insta-status-label');
+      if (labelEl && sourceLabel) {
+        labelEl.innerText = sourceLabel;
+      }
+      if (!grid) return;
+
+      const items = (photos && photos.length > 0) ? photos : CURATED_BARBER_CUTS;
+
+      let html = '';
+      items.forEach((photo, idx) => {
+        const safeTitle = (photo.title || 'Corte').replace(/"/g, '&quot;');
+        const safePrice = photo.price || 'R$ 35,00';
+        const rawCaption = (photo.caption || 'Corte profissional e acabamento impecável.').replace(/"/g, '&quot;').replace(/\n/g, ' ');
+        const cleanSlug = (currentBarber.slug || 'barber').replace(/[^a-z0-9]/g, '_');
+        const filename = `corte_${idx + 1}_${cleanSlug}.jpg`;
+
+        html += `
+          <div class="bg-white border border-gray-200 rounded-xl overflow-hidden p-2 flex flex-col justify-between shadow-xs hover:border-gray-300 transition-all">
+            <div class="space-y-1.5">
+              <div class="relative aspect-square w-full rounded-lg overflow-hidden bg-gray-100">
+                <img 
+                  src="${photo.imageUrl}" 
+                  alt="${safeTitle}" 
+                  loading="lazy" 
+                  class="w-full h-full object-cover"
+                  onerror="this.src='https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=600&q=80'"
+                />
+                <span class="absolute top-1 right-1 bg-black/85 backdrop-blur-xs text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-xs">
+                  ${safePrice}
+                </span>
+              </div>
+              <div>
+                <h3 class="text-xs font-bold text-gray-900 truncate" title="${safeTitle}">
+                  ${safeTitle}
+                </h3>
+                <p class="text-[10px] text-gray-500 line-clamp-2 leading-tight">
+                  ${rawCaption}
+                </p>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-1 pt-2">
+              <button 
+                type="button" 
+                onclick="downloadProductImage('${photo.imageUrl}', '${filename}')" 
+                class="py-1.5 px-1 bg-black hover:bg-gray-800 text-white font-semibold rounded-lg text-[9px] sm:text-[10px] flex items-center justify-center gap-1 cursor-pointer transition-colors"
+                title="Baixar foto para a galeria"
+              >
+                <i data-lucide="download" class="w-3 h-3"></i>
+                <span>Baixar</span>
+              </button>
+              <button 
+                type="button" 
+                onclick="copyProductText('${safeTitle}', '${safePrice}', '${rawCaption}')" 
+                class="py-1.5 px-1 bg-gray-50 hover:bg-gray-100 text-gray-800 font-semibold rounded-lg text-[9px] sm:text-[10px] border border-gray-200 flex items-center justify-center gap-1 cursor-pointer transition-colors"
+                title="Copiar título e descrição"
+              >
+                <i data-lucide="copy" class="w-3 h-3"></i>
+                <span>Copiar</span>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      grid.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    // CARREGA FOTOS DO INSTAGRAM OU ATIVA APIFY DINÂMICO
+    async function loadInstagramPhotosForCurrentBarber(forceFetch = false) {
+      const instaInput = document.getElementById('input-instagram-handle');
+      const rawHandle = instaInput ? instaInput.value : '';
+      const handle = sanitizeInstagramHandle(rawHandle || currentBarber.instagram || '');
+
+      // 1. Busca no cache local pré-carregado
+      if (!forceFetch && handle && instagramCache && instagramCache[handle] && instagramCache[handle].length > 0) {
+        renderProductPhotos(instagramCache[handle], `Fotos do feed @${handle}`);
+        return;
+      }
+
+      // 2. Se for forceFetch ou requisição dinâmica com handle válido
+      if (forceFetch && handle) {
+        const labelEl = document.getElementById('insta-status-label');
+        if (labelEl) {
+          labelEl.innerHTML = `<span class="inline-flex items-center gap-1 text-gray-600"><span class="animate-spin inline-block w-3 h-3 border-2 border-black border-t-transparent rounded-full"></span> Buscando cortes de @${handle}...</span>`;
+        }
+
+        try {
+          const defaultKey = atob('YXBpZnlfYXBpX0JkN1dFVlpZc0EzczdzT2EzY2Y2UVdFaExVd0h1dzQyejJFdg==');
+          const apifyToken = (typeof localStorage !== 'undefined' && localStorage.getItem('apify_token')) || defaultKey;
+          const apiUrl = `https://api.apify.com/v2/acts/apidojo~instagram-scraper-api/run-sync-get-dataset-items?token=${apifyToken}`;
+          const res = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              startUrls: [`https://www.instagram.com/${handle}/`]
+            })
+          });
+
+          if (res.ok) {
+            const items = await res.json();
+            if (Array.isArray(items) && items.length > 0) {
+              const defaults = (instagramCache && instagramCache['_default']) || CURATED_BARBER_CUTS;
+              const parsed = items.map((it, idx) => {
+                const imgUrl = (it.image && it.image.url) ? it.image.url : it.displayUrl;
+                const def = defaults[idx % defaults.length] || { title: 'Corte Moderno', price: 'R$ 35,00', caption: '' };
+                return {
+                  id: it.id || it.code || String(idx),
+                  imageUrl: imgUrl || def.imageUrl,
+                  title: def.title,
+                  price: def.price,
+                  caption: it.caption ? it.caption.slice(0, 140) : def.caption,
+                  likes: it.likeCount || 0
+                };
+              }).filter(p => p.imageUrl);
+
+              if (parsed.length > 0) {
+                instagramCache[handle] = parsed.slice(0, 6);
+                renderProductPhotos(parsed.slice(0, 6), `Fotos do feed @${handle}`);
+                showToast('Fotos sincronizadas via Apify!');
+                return;
+              }
+            }
+          }
+        } catch (err) {
+          console.warn('Busca dinâmica Apify falhou ou bloqueada, usando catálogo:', err);
+        }
+      }
+
+      // 3. Fallback inteligente com fotos profissionais curadas
+      const defaultPhotos = (instagramCache && instagramCache['_default']) || CURATED_BARBER_CUTS;
+      renderProductPhotos(defaultPhotos, handle ? `@${handle} • Catálogo Sugerido` : 'Cortes Recomendados');
+    }
+
+    function triggerInstagramRefresh() {
+      showToast('Buscando atualizações no Instagram...');
+      loadInstagramPhotosForCurrentBarber(true);
     }
 
     // Identifica o Slug da URL
@@ -1473,15 +1703,21 @@
       const dlBtnSingle = document.getElementById('btn-download-single');
       if (dlBtnSingle) dlBtnSingle.onclick = () => generateHighResSinglePlaqueDownload();
 
-      // 5. Carrega base de leads
+      // 5. Carrega base de leads e cache do Instagram
       try {
-        const res = await fetch('leads.json');
-        if (res.ok) {
-          allLeads = await res.json();
+        const [resLeads, resInsta] = await Promise.allSettled([
+          fetch('leads.json'),
+          fetch('instagram_cache.json')
+        ]);
+        if (resLeads.status === 'fulfilled' && resLeads.value.ok) {
+          allLeads = await resLeads.value.json();
           populateBarberSelect();
         }
+        if (resInsta.status === 'fulfilled' && resInsta.value.ok) {
+          instagramCache = await resInsta.value.json();
+        }
       } catch (e) {
-        console.warn('Erro ao carregar leads.json:', e);
+        console.warn('Erro ao carregar arquivos JSON:', e);
       }
 
       // 6. Resolve o lead pelo slug ou parâmetro
@@ -1631,6 +1867,7 @@
       // Renderiza previews iniciais e benchmark
       renderDualPlaquePreview();
       updateCompetitorBenchText();
+      loadInstagramPhotosForCurrentBarber(false);
       renderStepper();
       lucide.createIcons();
     }
