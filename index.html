@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Acelera Barber • Kit Oficial Google</title>
-  <meta name="description" content="Guia visual de ativação do Instagram no Google e material oficial para barbearias." />
+  <meta name="description" content="Guia visual oficial de ativação do Instagram no Google para barbearias." />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -22,20 +22,29 @@
               surface: '#111827',
               card: '#182234',
               border: '#27354A',
+            },
+            google: {
+              blue: '#1A73E8',
+              hoverBlue: '#1557B0',
+              grayBg: '#F8F9FA',
+              grayBorder: '#DADCE0',
+              textDark: '#202124',
+              textMuted: '#5F6368',
+              buttonBg: '#F1F3F4'
             }
           },
           fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            sans: ['Inter', 'Roboto', 'system-ui', '-apple-system', 'sans-serif'],
           }
         }
       }
     }
   </script>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Inter & Roboto (estilo Google oficial) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -49,6 +58,9 @@
       background-color: #0A0E17;
       color: #F3F4F6;
       -webkit-tap-highlight-color: transparent;
+    }
+    .google-font {
+      font-family: 'Roboto', 'Inter', system-ui, sans-serif;
     }
     .gold-gradient-text {
       background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 50%, #D97706 100%);
@@ -64,13 +76,13 @@
     #toast {
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
     }
-    @keyframes pulse-ring {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+    @keyframes pulse-yellow {
+      0% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8); }
       70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+      100% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
     }
-    .ring-pulse {
-      animation: pulse-ring 2s infinite;
+    .ring-pulse-yellow {
+      animation: pulse-yellow 1.8s infinite;
     }
   </style>
 </head>
@@ -107,12 +119,12 @@
         </p>
       </div>
 
-      <!-- SELETOR UNIVERSAL DE BARBEARIAS (Aparece se não houver slug ou para trocar) -->
-      <div id="selector-container" class="pt-2 text-left space-y-2 border-t border-slate-800/80">
+      <!-- SELETOR UNIVERSAL DE BARBEARIAS (Oculto automaticamente para o lead com link próprio!) -->
+      <div id="selector-container" class="hidden pt-3 text-left space-y-2 border-t border-slate-800/80">
         <div class="flex items-center justify-between">
           <label for="barber-select" class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
             <i data-lucide="search" class="w-3.5 h-3.5 text-amber-400"></i>
-            <span>Selecione ou Troque de Barbearia:</span>
+            <span>Selecione sua Barbearia:</span>
           </label>
           <span class="text-[10px] text-amber-400 font-semibold" id="lead-count-badge">123 barbearias de GV</span>
         </div>
@@ -133,26 +145,40 @@
       </div>
 
       <p class="text-xs text-slate-300 leading-relaxed">
-        O Google precisa saber o endereço público do seu Instagram para puxar seus cortes e Reels automaticamente para quem pesquisar no Maps.
+        O Google precisa do endereço público do seu Instagram para puxar seus cortes e Reels automaticamente para quem pesquisar sua barbearia no Maps.
       </p>
 
-      <!-- Box com o Link Formatado -->
-      <div class="bg-slate-950/80 rounded-xl p-3 border border-slate-800 flex items-center justify-between gap-2 overflow-hidden">
-        <div class="flex items-center gap-2 overflow-hidden">
-          <i data-lucide="instagram" class="w-4 h-4 text-pink-500 shrink-0"></i>
-          <span id="display-insta-url" class="text-xs text-amber-300 font-mono truncate">https://www.instagram.com/...</span>
+      <!-- CAMPO INTERATIVO DE INSTAGRAM (Permite digitar caso esteja vazio) -->
+      <div class="space-y-2">
+        <div class="bg-slate-950 rounded-xl p-3 border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="text-slate-400 flex items-center gap-1.5 font-medium">
+              <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-500"></i>
+              Seu perfil do Instagram:
+            </span>
+            <span id="insta-badge" class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold">Pronto</span>
+          </div>
+
+          <div class="flex items-center gap-2 bg-slate-900 px-3 py-2 rounded-lg border border-slate-700 focus-within:border-pink-500 transition-all">
+            <span class="text-pink-400 font-bold text-xs select-none">@</span>
+            <input id="input-instagram-handle" type="text" placeholder="digite_o_arroba_do_seu_insta" class="bg-transparent text-xs text-white focus:outline-none w-full font-mono placeholder:text-slate-600" />
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+            <span class="text-[10px] text-slate-500">Link oficial que o Google receberá:</span>
+            <span id="display-insta-url" class="text-[11px] text-amber-300 font-mono font-medium truncate max-w-[200px]">https://www.instagram.com/...</span>
+          </div>
         </div>
-        <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded uppercase font-semibold shrink-0">Pronto</span>
       </div>
 
       <!-- BOTÃO DE AÇÃO DIRETO DA ETAPA 1 -->
-      <button id="btn-copy-insta" class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 active:scale-[0.98] text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-pink-600/20">
+      <button id="btn-copy-insta" class="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 active:scale-[0.98] text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-pink-600/20">
         <i data-lucide="copy" class="w-4 h-4"></i>
         <span id="btn-copy-text">Copiar Link do meu Instagram</span>
       </button>
     </section>
 
-    <!-- ETAPA 2: ABRIR O PAINEL DO GOOGLE NO CELULAR -->
+    <!-- ETAPA 2: ABRIR O PAINEL DO GOOGLE (LAYOUT OFICIAL DO GOOGLE 1:1) -->
     <section class="glass-card rounded-2xl p-5 space-y-4 border-slate-800 shadow-lg">
       <div class="flex items-center gap-3">
         <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20">2</span>
@@ -163,52 +189,68 @@
       </div>
 
       <p class="text-xs text-slate-300 leading-relaxed">
-        Você não precisa de aplicativo nenhum. Ao tocar no botão abaixo, o Google vai abrir direto a página onde você gerencia a sua barbearia.
+        Você não precisa de aplicativo nenhum. Ao tocar no botão abaixo, o Google vai abrir direto a página de pesquisa onde você gerencia a sua barbearia.
       </p>
 
-      <!-- MOCKUP VISUAL: BUSCA DO GOOGLE COM O BOTÃO "EDITAR PERFIL" DESTACADO -->
-      <div class="bg-slate-950 rounded-xl p-3.5 border border-slate-800 space-y-3">
-        <div class="flex items-center gap-2 text-[11px] text-slate-400 border-b border-slate-800 pb-2">
-          <i data-lucide="smartphone" class="w-3.5 h-3.5 text-blue-400"></i>
-          <span>Exatamente o que vai aparecer na tela do seu celular:</span>
+      <!-- MOCKUP OFICIAL 1:1 DO GOOGLE SEARCH MOBILE -->
+      <div class="rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-white text-slate-900 google-font">
+        
+        <!-- Barra de Busca do Google Mobile -->
+        <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center gap-2.5">
+          <!-- Logo Oficial G do Google -->
+          <svg class="w-5 h-5 shrink-0" viewBox="0 0 48 48">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.77l7.97-6.18z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+          <div class="bg-white border border-slate-300 rounded-full px-3 py-1 text-xs text-slate-700 flex-1 truncate flex items-center justify-between">
+            <span id="google-search-query">barbearia...</span>
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400"></i>
+          </div>
         </div>
 
-        <!-- Simulação do Painel do Google -->
-        <div class="bg-slate-900 rounded-lg p-3 border border-slate-800 space-y-2.5">
-          <div class="flex items-center justify-between text-[11px]">
-            <span class="text-slate-400">Google • Meu Negócio</span>
-            <span class="text-emerald-400 text-[10px] font-bold">● Conectado</span>
+        <!-- Card Oficial de Gerenciamento do Google (Exatamente como o dono vê) -->
+        <div class="p-4 bg-white space-y-3">
+          <div class="flex items-start gap-2.5">
+            <div class="w-7 h-7 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
+              <i data-lucide="store" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <div class="text-[11px] font-medium text-slate-500">Seu Perfil da Empresa no Google</div>
+              <div class="text-sm font-bold text-slate-900 leading-tight" id="mockup-shop-name">Sua Barbearia</div>
+              <div class="text-[11px] text-slate-500 mt-0.5">Você gerencia este Perfil da Empresa</div>
+            </div>
           </div>
 
-          <div class="text-xs font-bold text-white" id="mockup-shop-name">Sua Barbearia</div>
-          <div class="text-[10px] text-slate-400">Você gerencia este Perfil da Empresa</div>
-
-          <!-- Botões Redondos do Google com Destaque no "Editar perfil" -->
-          <div class="grid grid-cols-3 gap-2 pt-1 text-center">
-            <!-- BOTÃO DESTACADO COM SETA -->
-            <div class="relative bg-amber-500/20 border-2 border-amber-400 rounded-xl p-2.5 ring-pulse">
-              <span class="absolute -top-3.5 -right-2 bg-amber-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded-full shadow uppercase">
-                Toque aqui 👉
+          <!-- Grade Oficial de Botões Circulares do Google -->
+          <div class="grid grid-cols-3 gap-2 pt-2 text-center">
+            
+            <!-- BOTÃO OFICIAL DESTACADO COM SETA E BORDA PULSANTE -->
+            <div class="relative bg-amber-50 border-2 border-amber-500 rounded-2xl p-2.5 ring-pulse-yellow shadow-md flex flex-col items-center">
+              <span class="absolute -top-3.5 bg-amber-500 text-slate-950 font-black text-[9px] px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider">
+                TOQUE AQUI 👉
               </span>
-              <div class="w-6 h-6 mx-auto rounded-full bg-amber-500 flex items-center justify-center text-slate-950 mb-1">
-                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+              <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mb-1 shadow-sm border border-blue-100">
+                <i data-lucide="pencil" class="w-4 h-4"></i>
               </div>
-              <span class="text-[10px] font-extrabold text-amber-300 block">Editar perfil</span>
+              <span class="text-[11px] font-bold text-blue-700 leading-tight">Editar perfil</span>
             </div>
 
-            <!-- Outros Botões Inativos -->
-            <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-2.5 opacity-40">
-              <div class="w-6 h-6 mx-auto rounded-full bg-slate-700 flex items-center justify-center text-slate-300 mb-1">
-                <i data-lucide="megaphone" class="w-3.5 h-3.5"></i>
+            <!-- Botão Oficial: Promover -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-2.5 opacity-40 flex flex-col items-center">
+              <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center mb-1">
+                <i data-lucide="megaphone" class="w-4 h-4"></i>
               </div>
-              <span class="text-[10px] text-slate-300 block">Promover</span>
+              <span class="text-[11px] font-medium text-slate-700">Promover</span>
             </div>
 
-            <div class="bg-slate-800/60 border border-slate-700/60 rounded-xl p-2.5 opacity-40">
-              <div class="w-6 h-6 mx-auto rounded-full bg-slate-700 flex items-center justify-center text-slate-300 mb-1">
-                <i data-lucide="users" class="w-3.5 h-3.5"></i>
+            <!-- Botão Oficial: Clientes -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-2.5 opacity-40 flex flex-col items-center">
+              <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center mb-1">
+                <i data-lucide="users" class="w-4 h-4"></i>
               </div>
-              <span class="text-[10px] text-slate-300 block">Clientes</span>
+              <span class="text-[11px] font-medium text-slate-700">Clientes</span>
             </div>
           </div>
         </div>
@@ -221,7 +263,7 @@
       </a>
     </section>
 
-    <!-- ETAPA 3: ONDE COLAR O INSTAGRAM NO GOOGLE -->
+    <!-- ETAPA 3: ONDE COLAR O INSTAGRAM (LAYOUT OFICIAL DO GOOGLE 1:1) -->
     <section class="glass-card rounded-2xl p-5 space-y-4 border-slate-800 shadow-lg">
       <div class="flex items-center gap-3">
         <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20">3</span>
@@ -232,56 +274,77 @@
       </div>
 
       <p class="text-xs text-slate-300 leading-relaxed">
-        Depois de tocar em <b class="text-white">"Editar perfil"</b>, siga este roteiro de 3 passos simples na tela que abrir:
+        Depois de tocar em <b class="text-white">"Editar perfil"</b>, a tela do Google vai abrir assim no seu celular. Siga o caminho das setas amarelas:
       </p>
 
-      <!-- MOCKUP VISUAL: ABA CONTATO > REDES SOCIAIS > SALVAR -->
-      <div class="bg-slate-950 rounded-xl p-3.5 border border-slate-800 space-y-3">
-        <!-- Passo 3.1: Aba Contato -->
-        <div class="space-y-1.5">
-          <div class="flex items-center gap-2">
-            <span class="w-4 h-4 rounded-full bg-slate-800 text-amber-400 text-[10px] font-bold flex items-center justify-center">A</span>
-            <p class="text-xs text-slate-300">Toque na aba <b class="text-amber-400">"Contato"</b>:</p>
-          </div>
-          <div class="flex gap-1.5 overflow-x-auto py-1 text-[11px]">
-            <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400">Sobre</span>
-            <span class="px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-extrabold flex items-center gap-1">
-              Contato 👉
-            </span>
-            <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400">Local</span>
-            <span class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400">Horário</span>
-          </div>
+      <!-- MOCKUP OFICIAL 1:1 DA TELA DE EDIÇÃO DO GOOGLE MEU NEGÓCIO -->
+      <div class="rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-white text-slate-900 google-font">
+        
+        <!-- Cabeçalho Oficial do Google -->
+        <div class="p-3 bg-white border-b border-slate-200 flex items-center gap-2 text-slate-800">
+          <i data-lucide="arrow-left" class="w-4 h-4 text-slate-600"></i>
+          <span class="text-xs font-bold">Informações comerciais</span>
         </div>
 
-        <!-- Passo 3.2: Campo de Redes Sociais -->
-        <div class="space-y-1.5 pt-2 border-t border-slate-800">
-          <div class="flex items-center gap-2">
-            <span class="w-4 h-4 rounded-full bg-slate-800 text-amber-400 text-[10px] font-bold flex items-center justify-center">B</span>
-            <p class="text-xs text-slate-300">Role até <b class="text-white">"Perfis de redes sociais"</b> e selecione <b class="text-pink-400">Instagram</b>:</p>
+        <!-- Abas Oficiais do Google com "Contato" Destacada -->
+        <div class="flex border-b border-slate-200 px-2 text-xs font-medium text-slate-600 overflow-x-auto bg-slate-50">
+          <div class="py-2.5 px-3">Sobre</div>
+          <!-- ABA CONTATO COM DESTAQUE AZUL OFICIAL DO GOOGLE E SETA -->
+          <div class="py-2.5 px-3 text-blue-600 font-bold border-b-2 border-blue-600 flex items-center gap-1 relative bg-white">
+            <span class="absolute -top-3 left-1 bg-amber-500 text-slate-950 font-black text-[8px] px-1.5 py-0.2 rounded shadow uppercase">
+              1º Toque 👉
+            </span>
+            <span>Contato</span>
           </div>
-          <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-700 space-y-2">
-            <div class="flex items-center justify-between text-[11px] text-slate-400">
-              <span>Rede social:</span>
-              <span class="text-white font-bold bg-slate-800 px-2 py-0.5 rounded">Instagram ▾</span>
-            </div>
-            <div class="bg-slate-950 p-2 rounded border border-amber-500/50 flex items-center justify-between text-xs text-slate-400">
-              <span class="italic text-slate-500">Cole aqui o link do Passo 1</span>
-              <span class="text-[10px] font-bold text-amber-400">👈 Cole aqui</span>
-            </div>
-          </div>
+          <div class="py-2.5 px-3">Local</div>
+          <div class="py-2.5 px-3">Horário</div>
         </div>
 
-        <!-- Passo 3.3: Botão Salvar -->
-        <div class="space-y-1.5 pt-2 border-t border-slate-800">
-          <div class="flex items-center gap-2">
-            <span class="w-4 h-4 rounded-full bg-slate-800 text-amber-400 text-[10px] font-bold flex items-center justify-center">C</span>
-            <p class="text-xs text-slate-300">Toque no botão <b class="text-blue-400">"Salvar"</b> no final da tela:</p>
+        <!-- Formulário Oficial da Aba Contato -->
+        <div class="p-4 space-y-3.5 bg-white text-xs">
+          
+          <!-- Seção Oficial: Perfis de redes sociais -->
+          <div class="space-y-1.5">
+            <div class="font-bold text-slate-800 text-[11px] flex items-center justify-between">
+              <span>Perfis de redes sociais</span>
+              <span class="text-[9px] text-amber-600 font-bold bg-amber-100 px-1.5 py-0.5 rounded uppercase">2º Toque</span>
+            </div>
+
+            <div class="p-3 rounded-xl border-2 border-amber-400 bg-amber-50/50 space-y-2">
+              <!-- Dropdown da Rede Social -->
+              <div class="flex items-center justify-between bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 font-medium">
+                <span class="flex items-center gap-1.5">
+                  <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-500"></i>
+                  Instagram
+                </span>
+                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500"></i>
+              </div>
+
+              <!-- Campo onde cola o link com Seta Indicativa -->
+              <div class="relative">
+                <div class="bg-white border-2 border-blue-500 rounded-lg px-3 py-2 text-[11px] text-slate-800 font-mono flex items-center justify-between shadow-sm">
+                  <span class="text-slate-400 italic">https://www.instagram.com/...</span>
+                  <span class="bg-blue-600 text-white font-bold text-[9px] px-2 py-0.5 rounded shadow">
+                    👈 Cole o link aqui
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="text-right">
-            <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-blue-600 text-white font-bold text-xs shadow-md">
-              <span>Salvar</span>
-              <i data-lucide="check" class="w-3.5 h-3.5"></i>
-            </span>
+
+          <!-- Botão Oficial de Salvar no Rodapé -->
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[10px] text-slate-400">Clique para confirmar:</span>
+            <!-- BOTÃO AZUL OFICIAL DO GOOGLE -->
+            <div class="relative">
+              <span class="absolute -top-3.5 right-0 bg-amber-500 text-slate-950 font-black text-[8px] px-1.5 py-0.2 rounded shadow uppercase">
+                3º Toque 👉
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-blue-600 text-white font-bold text-xs shadow-md shadow-blue-500/20">
+                <span>Salvar</span>
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -436,7 +499,7 @@
     <span>Dúvidas? Falar com Roberto</span>
   </a>
 
-  <!-- SCRIPT DINÂMICO DE SLUGS E GERAÇÃO DE ASSETS -->
+  <!-- SCRIPT DINÂMICO E INTERATIVO -->
   <script>
     lucide.createIcons();
 
@@ -468,24 +531,18 @@
     function detectSlugFromUrl() {
       const params = new URLSearchParams(window.location.search);
       
-      // 1. ?b=slug ou ?barbearia=slug
       if (params.get('b')) return params.get('b').toLowerCase().trim();
       if (params.get('barbearia')) return params.get('barbearia').toLowerCase().trim();
-
-      // 2. ?id=PLACE_ID
       if (params.get('id')) return params.get('id');
 
-      // 3. Bare query string (ex: ?nobreak ou ?ph-cortes)
       const rawSearch = window.location.search.replace(/^\?/, '').trim();
       if (rawSearch && !rawSearch.includes('=')) {
         return rawSearch.toLowerCase();
       }
 
-      // 4. Hash (ex: #nobreak)
       const rawHash = window.location.hash.replace(/^#/, '').trim();
       if (rawHash) return rawHash.toLowerCase();
 
-      // 5. Pathname (ex: /acelera-barber/nobreak)
       const pathSegments = window.location.pathname.split('/').filter(Boolean);
       if (pathSegments.length > 0) {
         const last = pathSegments[pathSegments.length - 1];
@@ -497,7 +554,27 @@
       return null;
     }
 
-    // Inicialização da Página
+    // Atualiza o estado do Instagram a partir do input
+    function updateInstagramFromHandle(handle) {
+      let clean = (handle || '').trim().replace(/^@+/, '').replace(/^https?:\/\/(www\.)?instagram\.com\//, '').replace(/\/+$/, '');
+      if (clean) {
+        currentBarber.instagram = `https://www.instagram.com/${clean}/`;
+        document.getElementById('display-insta-url').innerText = currentBarber.instagram;
+        document.getElementById('insta-badge').innerText = 'Pronto';
+        document.getElementById('insta-badge').className = 'text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold';
+        
+        // Salva preferência localmente por barbearia
+        if (currentBarber.slug) {
+          localStorage.setItem(`insta_${currentBarber.slug}`, clean);
+        }
+      } else {
+        currentBarber.instagram = '';
+        document.getElementById('display-insta-url').innerText = 'Digite seu @ acima';
+        document.getElementById('insta-badge').innerText = 'Pendente';
+        document.getElementById('insta-badge').className = 'text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded font-semibold';
+      }
+    }
+
     async function initPage() {
       // 1. Carrega base de leads
       try {
@@ -530,9 +607,12 @@
       }
 
       if (found) {
-        loadBarberData(found);
+        // LEAD ESPECÍFICO: Oculta o seletor 100% para o cliente não mexer!
+        document.getElementById('selector-container').classList.add('hidden');
+        loadBarberData(found, queryInsta);
       } else if (queryName) {
-        // Modo customizado via query params
+        // Link customizado via parâmetros: Oculta seletor
+        document.getElementById('selector-container').classList.add('hidden');
         loadBarberData({
           id: 'custom_lead',
           slug: 'custom',
@@ -540,9 +620,10 @@
           neighborhood: queryNeighborhood || 'Governador Valadares',
           instagram: queryInsta || '',
           reviewUrl: queryReview || 'https://search.google.com/local/writereview?placeid=ChIJJZ24PaKnsQARnf-ij6zHfIU'
-        });
+        }, queryInsta);
       } else {
-        // Acesso universal sem parâmetros: Não exibe Nobreak, exibe seletor universal
+        // Acesso universal na raiz sem parâmetros: Exibe o seletor para teste
+        document.getElementById('selector-container').classList.remove('hidden');
         loadBarberData({
           id: 'generic',
           slug: '',
@@ -550,14 +631,20 @@
           neighborhood: 'Governador Valadares - MG',
           instagram: '',
           reviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJJZ24PaKnsQARnf-ij6zHfIU'
-        });
-        showSelectorHeader(true);
+        }, null);
       }
+
+      // Input listener de Instagram em tempo real
+      const instaInput = document.getElementById('input-instagram-handle');
+      instaInput.addEventListener('input', (e) => {
+        updateInstagramFromHandle(e.target.value);
+      });
 
       // Configura Ação de Copiar Instagram
       document.getElementById('btn-copy-insta').addEventListener('click', async () => {
         if (!currentBarber.instagram) {
-          showToast('Instagram não cadastrado para esta barbearia');
+          instaInput.focus();
+          showToast('Digite o @ do seu Instagram acima!');
           return;
         }
         try {
@@ -574,14 +661,13 @@
         }
       });
 
-      // Configura seletor dropdown para troca rápida
+      // Seletor dropdown (apenas para tela universal)
       const select = document.getElementById('barber-select');
       select.addEventListener('change', (e) => {
         const selectedId = e.target.value;
         const lead = allLeads.find(l => l.id === selectedId);
         if (lead) {
-          loadBarberData(lead);
-          // Atualiza URL no navegador para o slug limpo sem recarregar a página
+          loadBarberData(lead, null);
           const newUrl = `${window.location.origin}${window.location.pathname}?b=${encodeURIComponent(lead.slug)}`;
           window.history.pushState({ slug: lead.slug }, '', newUrl);
           showToast(`Carregado: ${lead.name}`);
@@ -591,52 +677,60 @@
 
     function handleCopiedFeedback() {
       const btnText = document.getElementById('btn-copy-text');
-      btnText.innerText = '✅ Link Copiado com Sucesso!';
-      showToast('Link do Instagram copiado!');
+      btnText.innerText = '✅ Link Copiado! Cole no Google';
+      showToast('Link do Instagram copiado com sucesso!');
       setTimeout(() => {
         btnText.innerText = 'Copiar Link do meu Instagram';
       }, 3500);
     }
 
-    // Carrega dados de uma barbearia no DOM e renderiza QR
-    function loadBarberData(lead) {
+    // Carrega dados da barbearia no DOM
+    function loadBarberData(lead, overrideInsta) {
       currentBarber = {
         id: lead.id || 'lead',
         slug: lead.slug || '',
         name: lead.name || 'Sua Barbearia',
         neighborhood: lead.neighborhood || 'Governador Valadares',
-        instagram: lead.instagram || '',
+        instagram: overrideInsta || lead.instagram || '',
         reviewUrl: lead.reviewUrl || `https://search.google.com/local/writereview?placeid=${lead.placeId || lead.id || 'ChIJJZ24PaKnsQARnf-ij6zHfIU'}`,
         placeId: lead.placeId || lead.id || ''
       };
 
-      // Higieniza Instagram
-      let cleanInsta = currentBarber.instagram;
-      if (cleanInsta && !cleanInsta.startsWith('http')) {
-        const handle = cleanInsta.replace('@', '').trim();
-        cleanInsta = `https://www.instagram.com/${handle}/`;
+      // Recupera Instagram salvo no localStorage se existir
+      if (!currentBarber.instagram && currentBarber.slug) {
+        const saved = localStorage.getItem(`insta_${currentBarber.slug}`);
+        if (saved) currentBarber.instagram = `https://www.instagram.com/${saved}/`;
       }
-      currentBarber.instagram = cleanInsta;
+
+      // Preenche o input do Instagram
+      const instaInput = document.getElementById('input-instagram-handle');
+      if (currentBarber.instagram) {
+        const match = currentBarber.instagram.match(/instagram\.com\/([^/?#]+)/i);
+        const handle = match ? match[1] : currentBarber.instagram.replace(/^@/, '');
+        instaInput.value = handle;
+        updateInstagramFromHandle(handle);
+      } else {
+        instaInput.value = '';
+        updateInstagramFromHandle('');
+      }
 
       // Atualiza textos
       document.getElementById('shop-name').innerText = currentBarber.name;
       document.getElementById('mockup-shop-name').innerText = currentBarber.name;
       document.getElementById('preview-shop-name').innerText = currentBarber.name;
+      document.getElementById('google-search-query').innerText = currentBarber.name.toLowerCase();
       document.getElementById('shop-location').innerHTML = `
         <i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i>
         <span>${currentBarber.neighborhood}</span>
       `;
-      document.getElementById('display-insta-url').innerText = currentBarber.instagram || 'Instagram não informado';
 
-      // Atualiza link de suporte do WhatsApp com mensagem pronta
+      // Atualiza link de suporte do WhatsApp com mensagem contextual
       const supportMsg = encodeURIComponent(`Olá Roberto! Estou na página da ${currentBarber.name} e tenho uma dúvida rápida sobre a ativação do Google.`);
       document.getElementById('btn-support').href = `https://wa.me/5533991210973?text=${supportMsg}`;
 
-      // Atualiza select se tiver correspondência
-      const select = document.getElementById('barber-select');
-      if (select && lead.id) {
-        select.value = lead.id;
-      }
+      // Atualiza botão de abrir o Google com busca pré-preenchida
+      const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(currentBarber.name + ' ' + currentBarber.neighborhood)}`;
+      document.getElementById('btn-open-google').href = googleSearchUrl;
 
       // Renderiza QR Codes
       renderQrCodes();
@@ -647,18 +741,10 @@
       lucide.createIcons();
     }
 
-    function showSelectorHeader(isUniversal) {
-      const container = document.getElementById('selector-container');
-      if (container) {
-        container.classList.remove('hidden');
-      }
-    }
-
     function populateBarberSelect() {
       const select = document.getElementById('barber-select');
       select.innerHTML = '<option value="">-- Escolha uma barbearia da lista (123 de GV) --</option>';
 
-      // Ordena alfabeticamente
       const sorted = [...allLeads].sort((a, b) => a.name.localeCompare(b.name));
       for (const lead of sorted) {
         const opt = document.createElement('option');
@@ -774,7 +860,7 @@
       ctx.font = '600 24px sans-serif';
       ctx.fillText('DISPLAY OFICIAL DE BALCÃO • GOOGLE MEU NEGÓCIO', width / 2, 1610);
 
-      // Download
+      // Dispara Download
       const link = document.createElement('a');
       const safeSlug = (currentBarber.slug || currentBarber.name).toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 25);
       link.download = `placa_google_${safeSlug}_a6_300dpi.png`;
