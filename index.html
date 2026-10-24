@@ -1,27 +1,25 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Acelera Barber • Kit Oficial Google</title>
-  <meta name="description" content="Guia visual oficial de ativação do Instagram no Google para barbearias." />
+  <meta name="description" content="Guia visual oficial de ativação do Instagram, Serviços, Comodidades, Plaquinha e Wi-Fi para barbearias no Google." />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           colors: {
             brand: {
-              gold: '#F59E0B',
-              goldLight: '#FDE68A',
-              goldDark: '#B45309',
-              dark: '#0A0E17',
-              surface: '#111827',
-              card: '#182234',
-              border: '#27354A',
+              offwhite: '#F8F9FA',
+              card: '#FFFFFF',
+              dark: '#111827',
+              graySub: '#4B5563',
+              border: '#E5E7EB',
+              innerBg: '#F9FAFB'
             },
             google: {
               blue: '#1A73E8',
@@ -41,7 +39,7 @@
     }
   </script>
 
-  <!-- Google Fonts: Inter & Roboto (estilo Google oficial) -->
+  <!-- Google Fonts: Inter & Roboto -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -54,442 +52,645 @@
 
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #0A0E17;
-      color: #F3F4F6;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #F8F9FA;
+      color: #111827;
       -webkit-tap-highlight-color: transparent;
     }
     .google-font {
       font-family: 'Roboto', 'Inter', system-ui, sans-serif;
     }
-    .gold-gradient-text {
-      background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 50%, #D97706 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .glass-card {
-      background: rgba(24, 34, 52, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
     #toast {
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
     }
-    .input-lowercase {
-      text-transform: lowercase;
+    .step-content {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* Estilo sutil de scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
     }
   </style>
 </head>
-<body class="min-h-screen pb-28 selection:bg-amber-500/30">
+<body class="min-h-screen pb-16 selection:bg-gray-200">
 
   <!-- TOAST DE NOTIFICAÇÃO -->
-  <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 transform -translate-y-20 opacity-0 pointer-events-none flex items-center gap-2 bg-emerald-500 text-slate-950 font-bold px-4 py-2.5 rounded-full shadow-2xl text-sm transition-all duration-300">
-    <i data-lucide="check-circle" class="w-5 h-5"></i>
+  <div id="toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-50 transform -translate-y-20 opacity-0 pointer-events-none flex items-center gap-2 bg-gray-900 text-white font-medium px-4 py-2.5 rounded-full shadow-lg text-xs sm:text-sm transition-all duration-300">
+    <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
     <span id="toast-msg">Link copiado com sucesso!</span>
   </div>
 
   <!-- CONTAINER PRINCIPAL -->
-  <main class="max-w-xl mx-auto px-4 pt-6 space-y-6">
+  <main class="max-w-xl mx-auto px-4 pt-6 sm:pt-10 space-y-5">
 
-    <!-- CABEÇALHO DINÂMICO -->
-    <header class="glass-card rounded-2xl p-6 relative overflow-hidden text-center space-y-3.5 border-amber-500/20 shadow-xl">
-      <div class="absolute -top-12 -right-12 w-36 h-36 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
-      <div class="absolute -bottom-12 -left-12 w-36 h-36 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
-
-      <!-- Badge Oficial -->
-      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold tracking-wide uppercase">
-        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-        <span>Kit Oficial de Aceleração Google</span>
+    <!-- CABEÇALHO LIMPO E DISCRETO -->
+    <header class="text-center space-y-2">
+      <!-- Badge Minimalista -->
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-gray-200 text-gray-700 text-xs font-semibold shadow-2xs">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        <span>Acelera Barber • Kit Oficial Google</span>
       </div>
 
       <!-- Nome da Barbearia -->
       <div>
-        <h1 id="shop-name" class="text-2xl sm:text-3xl font-extrabold tracking-tight gold-gradient-text leading-tight">
+        <h1 id="shop-name" class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight leading-tight">
           Carregando barbearia...
         </h1>
-        <p id="shop-location" class="text-xs sm:text-sm text-slate-400 font-medium flex items-center justify-center gap-1.5 mt-1">
-          <i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i>
+        <p id="shop-location" class="text-xs sm:text-sm text-gray-500 font-medium flex items-center justify-center gap-1 mt-0.5">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gray-400"></i>
           <span>Governador Valadares - MG</span>
         </p>
       </div>
 
       <!-- SELETOR UNIVERSAL DE BARBEARIAS (Oculto automaticamente para o lead com link próprio!) -->
-      <div id="selector-container" class="hidden pt-3 text-left space-y-2 border-t border-slate-800/80">
-        <div class="flex items-center justify-between">
-          <label for="barber-select" class="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-            <i data-lucide="search" class="w-3.5 h-3.5 text-amber-400"></i>
-            <span>Selecione sua Barbearia:</span>
-          </label>
-          <span class="text-[10px] text-amber-400 font-semibold" id="lead-count-badge">123 barbearias de GV</span>
-        </div>
-        <select id="barber-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-amber-500 transition-all font-medium">
-          <option value="">Carregando lista de barbearias...</option>
+      <div id="selector-container" class="hidden pt-2 text-left max-w-sm mx-auto">
+        <label for="barber-select" class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1 text-center">
+          Painel de Demonstração (Escolha a Barbearia)
+        </label>
+        <select id="barber-select" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-black">
+          <option value="">Carregando barbearias...</option>
         </select>
       </div>
     </header>
 
-    <!-- ETAPA 1: COPIAR O LINK DO INSTAGRAM -->
-    <section class="glass-card rounded-2xl p-5 space-y-4 border-slate-800 shadow-lg">
-      <div class="flex items-center gap-3">
-        <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20">1</span>
-        <div>
-          <span class="text-[10px] uppercase font-bold tracking-wider text-pink-400">Primeira Ação</span>
-          <h2 class="text-lg font-bold text-white leading-tight">Copie o link do seu Instagram</h2>
+    <!-- CARD CENTRAL PRINCIPAL (WIZARD SAAS NO PADRÃO DO PRINT) -->
+    <div class="bg-white rounded-[28px] border border-gray-200/90 shadow-sm p-5 sm:p-8 relative">
+
+      <!-- STEPPER MULTIETAPAS (IDÊNTICO AO DESIGN DE REFERÊNCIA) -->
+      <div class="mb-7">
+        <div id="stepper-track" class="flex items-center justify-between relative">
+          <!-- Renderizado dinamicamente via JS com 6 etapas -->
         </div>
       </div>
 
-      <p class="text-xs text-slate-300 leading-relaxed">
-        O Google precisa do endereço público do seu Instagram para puxar seus cortes e Reels automaticamente para quem pesquisar sua barbearia no Maps.
-      </p>
+      <!-- ================= ETAPA 1: COPIAR INSTAGRAM ================= -->
+      <div id="step-1" class="step-content space-y-5">
+        <div class="text-center space-y-1.5">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
+            Copie o link do seu Instagram
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+            O Google exige o link completo com <span class="font-medium text-gray-800">https://</span> para ativar o carrossel automático com suas fotos e Reels no Maps.
+          </p>
+        </div>
 
-      <!-- CAMPO INTERATIVO DE INSTAGRAM (Permite digitar caso esteja vazio) -->
-      <div class="space-y-2">
-        <div class="bg-slate-950 rounded-xl p-3 border border-slate-800 space-y-2">
-          <div class="text-[11px] text-slate-400 flex items-center gap-1.5 font-medium">
-            <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-500"></i>
-            <span>Seu perfil do Instagram:</span>
-          </div>
-
-          <div class="flex items-center gap-2 bg-slate-900 px-3 py-2 rounded-lg border border-slate-700 focus-within:border-pink-500 transition-all">
-            <span class="text-pink-400 font-bold text-xs select-none">@</span>
+        <!-- Campo Interativo do @ -->
+        <div class="space-y-1.5">
+          <label class="block text-xs font-semibold text-gray-700">
+            Seu perfil do Instagram:
+          </label>
+          <div class="flex items-center bg-gray-50 border border-gray-300 rounded-xl px-3.5 py-3 focus-within:ring-2 focus-within:ring-black focus-within:bg-white transition-all">
+            <span class="text-gray-400 font-semibold text-sm mr-1">@</span>
             <input 
-              id="input-instagram-handle" 
+              id="input-instagram-handle"
               type="text" 
-              inputmode="text"
-              autocapitalize="none"
-              autocorrect="off"
-              spellcheck="false"
+              placeholder="suabarbearia" 
               autocomplete="off"
-              placeholder="digite_o_arroba_do_seu_insta" 
-              class="bg-transparent text-xs text-white focus:outline-none w-full font-mono placeholder:text-slate-600 input-lowercase" 
+              autocorrect="off"
+              autocapitalize="none"
+              spellcheck="false"
+              class="w-full bg-transparent text-gray-900 font-medium text-sm focus:outline-none placeholder:text-gray-400 lowercase"
             />
           </div>
+          <p class="text-[11px] text-gray-500 truncate">
+            Link oficial: <span id="preview-insta-link" class="text-gray-700 font-mono">https://www.instagram.com/...</span>
+          </p>
         </div>
-      </div>
 
-      <!-- BOTÃO DE AÇÃO DIRETO DA ETAPA 1 -->
-      <button id="btn-copy-insta" class="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 active:scale-[0.98] text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-pink-600/20">
-        <i id="btn-copy-icon" data-lucide="copy" class="w-4 h-4"></i>
-        <span id="btn-copy-text">Copiar Link do meu Instagram</span>
-      </button>
-    </section>
-
-    <!-- ETAPA 2: ATIVAÇÃO NO GOOGLE (FLUXO COMPLETO E CONTÍNUO) -->
-    <section id="etapa-2" class="glass-card rounded-2xl p-5 space-y-4 border-slate-800 shadow-lg scroll-mt-6">
-      <div class="flex items-center gap-3">
-        <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20">2</span>
-        <div>
-          <span class="text-[10px] uppercase font-bold tracking-wider text-blue-400">Segunda Ação</span>
-          <h2 class="text-lg font-bold text-white leading-tight">Conecte o Instagram no seu Google</h2>
-        </div>
-      </div>
-
-      <p class="text-xs text-slate-300 leading-relaxed">
-        Siga o roteiro visual abaixo e toque no botão azul ao final para abrir o seu perfil no Google e colar o link:
-      </p>
-
-      <!-- MOCKUP 1: PESQUISA GOOGLE (EDITAR PERFIL) -->
-      <div class="rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-white text-slate-900 google-font">
-        
-        <!-- Barra de Busca do Google Mobile -->
-        <div class="p-3 bg-slate-50 border-b border-slate-200 flex items-center gap-2.5">
-          <!-- Logo Oficial G do Google -->
-          <svg class="w-5 h-5 shrink-0" viewBox="0 0 48 48">
-            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.77l7.97-6.18z"/>
-            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-          </svg>
-          <div class="bg-white border border-slate-300 rounded-full px-3 py-1 text-xs text-slate-700 flex-1 truncate flex items-center justify-between">
-            <span id="google-search-query">barbearia...</span>
-            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400"></i>
+        <!-- Inner Box Padrão Print de Referência -->
+        <div class="bg-[#F9FAFB] border border-gray-200/80 rounded-2xl p-4 flex items-center gap-3.5">
+          <div class="w-11 h-11 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-xs shrink-0 text-gray-900">
+            <i data-lucide="check" class="w-5 h-5 text-gray-900"></i>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900 text-xs sm:text-sm">Link pronto para colar no Google</h4>
+            <p class="text-xs text-gray-600 mt-0.5 leading-relaxed">Ao clicar em copiar, o link vai direto para sua área de transferência.</p>
           </div>
         </div>
 
-        <!-- Card Oficial de Gerenciamento do Google (Exatamente como o dono vê) -->
-        <div class="p-4 bg-white space-y-3">
-          <div class="flex items-start gap-2.5">
-            <div class="w-7 h-7 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 mt-0.5">
-              <i data-lucide="store" class="w-4 h-4"></i>
+        <!-- Botão Principal de Ação -->
+        <button 
+          id="btn-copy-insta" 
+          type="button" 
+          class="w-full py-3.5 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs active:scale-[0.99]"
+        >
+          <i id="btn-copy-icon" data-lucide="copy" class="w-4 h-4"></i>
+          <span id="btn-copy-text">Copiar Link do Instagram</span>
+        </button>
+      </div>
+
+      <!-- ================= ETAPA 2: CONECTAR NO GOOGLE ================= -->
+      <div id="step-2" class="step-content hidden space-y-5">
+        <div class="text-center space-y-1.5">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
+            Conecte o Instagram no Perfil do Google
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+            Abra seu perfil do Google, toque em <b>Editar perfil</b>, vá na aba <b>Contato</b> e cole o link copiado.
+          </p>
+        </div>
+
+        <!-- Mockups Minimalistas Oficiais Google (Limpos) -->
+        <div class="space-y-3">
+          <!-- Mockup 1: Busca do Google -->
+          <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-xs space-y-2.5">
+            <div class="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-lg px-2.5 py-1.5 text-xs text-gray-600">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              <span id="google-search-query" class="font-medium text-gray-800">barbearia central</span>
             </div>
-            <div>
-              <div class="text-[11px] font-medium text-slate-500">Seu Perfil da Empresa no Google</div>
-              <div class="text-sm font-bold text-slate-900 leading-tight" id="mockup-shop-name">Sua Barbearia</div>
-              <div class="text-[11px] text-slate-500 mt-0.5">Você gerencia este Perfil da Empresa</div>
+
+            <div class="p-2.5 bg-gray-50/70 rounded-lg border border-gray-150 space-y-2">
+              <div class="flex items-center gap-2">
+                <i data-lucide="store" class="w-4 h-4 text-google-blue"></i>
+                <div>
+                  <p class="text-[10px] text-gray-500 font-medium">Seu Perfil da Empresa no Google</p>
+                  <p id="mockup-shop-name" class="text-xs font-bold text-gray-900">Barbearia Central</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-3 gap-1.5 pt-1">
+                <div class="relative bg-white border-2 border-google-blue rounded-lg p-2 text-center shadow-xs">
+                  <span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-google-blue text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full whitespace-nowrap">
+                    1º Toque aqui
+                  </span>
+                  <i data-lucide="edit-3" class="w-3.5 h-3.5 text-google-blue mx-auto mb-0.5"></i>
+                  <span class="text-[10px] font-bold text-google-blue block leading-none">Editar perfil</span>
+                </div>
+                <div class="bg-gray-100/70 border border-gray-200 rounded-lg p-2 text-center opacity-60">
+                  <i data-lucide="megaphone" class="w-3.5 h-3.5 text-gray-500 mx-auto mb-0.5"></i>
+                  <span class="text-[10px] font-medium text-gray-600 block leading-none">Promover</span>
+                </div>
+                <div class="bg-gray-100/70 border border-gray-200 rounded-lg p-2 text-center opacity-60">
+                  <i data-lucide="users" class="w-3.5 h-3.5 text-gray-500 mx-auto mb-0.5"></i>
+                  <span class="text-[10px] font-medium text-gray-600 block leading-none">Clientes</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Grade Oficial de Botões Circulares do Google -->
-          <div class="grid grid-cols-3 gap-2 pt-2 text-center">
-            
-            <!-- BOTÃO OFICIAL DESTACADO DE FORMA DISCRETA E ESTÁTICA -->
-            <div class="relative bg-blue-50/70 border-2 border-blue-600 rounded-2xl p-2.5 shadow-sm flex flex-col items-center">
-              <span class="absolute -top-2.5 bg-blue-600 text-white font-bold text-[8px] px-2 py-0.5 rounded-full shadow uppercase tracking-wide whitespace-nowrap">
-                No Google: toque aqui
+          <!-- Mockup 2: Tela de Contato -->
+          <div class="bg-white rounded-xl border border-gray-200 p-3 shadow-xs space-y-2">
+            <div class="flex items-center gap-1.5 border-b border-gray-100 pb-1.5">
+              <i data-lucide="arrow-left" class="w-3.5 h-3.5 text-gray-600"></i>
+              <span class="text-xs font-bold text-gray-900">Informações comerciais</span>
+            </div>
+
+            <!-- Abas -->
+            <div class="flex border-b border-gray-200 text-[11px] font-medium text-gray-500">
+              <span class="py-1 px-2">Sobre</span>
+              <span class="py-1 px-2 border-b-2 border-google-blue text-google-blue font-bold relative">
+                Contato
+                <span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-google-blue text-white text-[8px] font-bold px-1 rounded-full whitespace-nowrap">
+                  2º Selecione aqui
+                </span>
               </span>
-              <div class="w-9 h-9 rounded-full bg-white text-blue-600 flex items-center justify-center mb-1 shadow-sm border border-blue-200">
-                <i data-lucide="pencil" class="w-4 h-4"></i>
-              </div>
-              <span class="text-[11px] font-bold text-blue-800 leading-tight">Editar perfil</span>
+              <span class="py-1 px-2">Local</span>
+              <span class="py-1 px-2">Horário</span>
             </div>
 
-            <!-- Botão Oficial: Promover -->
-            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-2.5 opacity-40 flex flex-col items-center">
-              <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center mb-1">
-                <i data-lucide="megaphone" class="w-4 h-4"></i>
+            <!-- Campo Instagram -->
+            <div class="space-y-1 pt-1">
+              <p class="text-[11px] font-semibold text-gray-700">Perfis de redes sociais</p>
+              <div class="relative bg-gray-50 border border-gray-300 rounded-lg p-2 text-xs">
+                <span class="absolute -top-2 right-2 bg-google-blue text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full">
+                  3º Cole o link aqui
+                </span>
+                <span class="text-gray-400 font-mono text-[11px]">https://www.instagram.com/...</span>
               </div>
-              <span class="text-[11px] font-medium text-slate-700">Promover</span>
-            </div>
-
-            <!-- Botão Oficial: Clientes -->
-            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-2.5 opacity-40 flex flex-col items-center">
-              <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center mb-1">
-                <i data-lucide="users" class="w-4 h-4"></i>
+              <div class="flex justify-end pt-1">
+                <span class="inline-flex items-center gap-1 bg-google-blue text-white text-[10px] font-bold px-3 py-1 rounded-md shadow-xs">
+                  4º Clique em Salvar ✓
+                </span>
               </div>
-              <span class="text-[11px] font-medium text-slate-700">Clientes</span>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- MOCKUP 2: ONDE COLAR O INSTAGRAM (INFORMAÇÕES COMERCIAIS) -->
-      <div class="rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-white text-slate-900 google-font">
-        
-        <!-- Cabeçalho Oficial do Google -->
-        <div class="p-3 bg-white border-b border-slate-200 flex items-center gap-2 text-slate-800">
-          <i data-lucide="arrow-left" class="w-4 h-4 text-slate-600"></i>
-          <span class="text-xs font-bold">Informações comerciais</span>
+        <!-- Botões de Ação -->
+        <div class="space-y-2 pt-1">
+          <a 
+            id="btn-open-google" 
+            href="#" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="w-full py-3.5 px-5 bg-google-blue hover:bg-google-hoverBlue text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
+          >
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+            <span>Abrir meu Perfil no Google Agora</span>
+          </a>
+
+          <button 
+            type="button" 
+            onclick="completeAndAdvance(2)" 
+            class="w-full py-3 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+          >
+            <span>Já conectei no Google 👉 Avançar</span>
+          </button>
         </div>
 
-        <!-- Abas Oficiais do Google com "Contato" Destacada -->
-        <div class="flex border-b border-slate-200 px-2 text-xs font-medium text-slate-600 overflow-x-auto bg-slate-50 pt-2.5">
-          <div class="py-2.5 px-3">Sobre</div>
-          
-          <!-- 1º SELECIONE AQUI: ABA CONTATO -->
-          <div class="py-2.5 px-3 text-blue-600 font-bold border-b-2 border-blue-600 flex items-center gap-1 relative bg-white">
-            <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white font-bold text-[8px] px-2 py-0.5 rounded-full shadow whitespace-nowrap">
-              1º Selecione aqui
+        <!-- Navegação Voltar -->
+        <div class="flex justify-start pt-1">
+          <button type="button" onclick="goToStep(1)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= ETAPA 3: CADASTRAR SERVIÇOS ================= -->
+      <div id="step-3" class="step-content hidden space-y-5">
+        <div class="text-center space-y-1.5">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
+            Cadastre seus Principais Serviços e Preços
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+            Barbearias com valores visíveis recebem até o dobro de cliques e sobem no ranking do Google Maps.
+          </p>
+        </div>
+
+        <!-- Mockup Google Serviços -->
+        <div class="bg-white rounded-xl border border-gray-200 p-3.5 shadow-xs space-y-2.5">
+          <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="scissors" class="w-4 h-4 text-google-blue"></i>
+              <span class="text-xs font-bold text-gray-900">Serviços da Barbearia</span>
+            </div>
+            <span class="text-[10px] bg-blue-50 text-google-blue font-bold px-2 py-0.5 rounded-full border border-blue-150">
+              No Google: Editar Serviços
             </span>
-            <span>Contato</span>
           </div>
 
-          <div class="py-2.5 px-3">Local</div>
-          <div class="py-2.5 px-3">Horário</div>
-        </div>
-
-        <!-- Formulário Oficial da Aba Contato -->
-        <div class="p-4 space-y-3.5 bg-white text-xs">
-          
-          <!-- Seção Oficial: Perfis de redes sociais -->
-          <div class="space-y-1.5">
-            <div class="flex items-center justify-between font-bold text-slate-800 text-[11px]">
-              <span>Perfis de redes sociais</span>
-              <span class="bg-blue-600 text-white font-bold text-[8px] px-2 py-0.5 rounded-full shadow whitespace-nowrap">
-                2º Depois aqui
-              </span>
+          <div class="space-y-1.5 text-xs">
+            <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-150">
+              <span class="font-semibold text-gray-800">Corte Degradê / Social</span>
+              <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">R$ 35,00</span>
             </div>
-
-            <!-- Dropdown da Rede Social (Padrão limpo do Google) -->
-            <div class="flex items-center justify-between bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 font-medium">
-              <span class="flex items-center gap-2">
-                <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-500"></i>
-                <span>Instagram</span>
-              </span>
-              <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500"></i>
+            <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-150">
+              <span class="font-semibold text-gray-800">Barba / Barboterapia</span>
+              <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">R$ 30,00</span>
             </div>
-
-            <!-- Campo onde cola o link (Padrão limpo do Google com indicação discreta) -->
-            <div class="bg-slate-50 border border-blue-400 rounded-lg px-3 py-2 text-[11px] text-slate-700 font-mono flex items-center justify-between">
-              <span class="text-slate-400 italic">https://www.instagram.com/...</span>
-              <span class="text-[9px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">
-                Cole o link aqui
-              </span>
+            <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-150">
+              <span class="font-semibold text-gray-800">Cabelo + Barba (Combo)</span>
+              <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">R$ 60,00</span>
             </div>
-          </div>
-
-          <!-- Botão Oficial de Salvar no Rodapé -->
-          <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-            <span class="text-[10px] text-slate-400">Clique para confirmar:</span>
-            
-            <!-- 3º CLIQUE EM SALVAR -->
-            <div class="relative">
-              <span class="absolute -top-3.5 right-0 bg-blue-600 text-white font-bold text-[8px] px-2 py-0.5 rounded-full shadow whitespace-nowrap">
-                3º Clique em 'Salvar'
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-blue-600 text-white font-bold text-xs shadow-md shadow-blue-500/20">
-                <span>Salvar</span>
-                <i data-lucide="check" class="w-3.5 h-3.5"></i>
-              </span>
+            <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg border border-gray-150">
+              <span class="font-semibold text-gray-800">Sobrancelha na Navalha</span>
+              <span class="font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">R$ 15,00</span>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- BOTÃO DE AÇÃO DIRETO NO FINAL DO ROTEIRO -->
-      <a id="btn-open-google" href="https://www.google.com/search?q=meu+negocio" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 py-4 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 active:scale-[0.98] text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-blue-600/30">
-        <i data-lucide="external-link" class="w-4 h-4"></i>
-        <span>Abrir meu Perfil no Google Agora</span>
-      </a>
+        <!-- Inner Box Padrão Print -->
+        <div class="bg-[#F9FAFB] border border-gray-200/80 rounded-2xl p-4 flex items-center gap-3.5">
+          <div class="w-11 h-11 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-xs shrink-0 text-gray-900">
+            <i data-lucide="check" class="w-5 h-5 text-gray-900"></i>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900 text-xs sm:text-sm">Preços geram agendamentos imediatos</h4>
+            <p class="text-xs text-gray-600 mt-0.5 leading-relaxed">O cliente já vê o preço na busca e não precisa perguntar no WhatsApp.</p>
+          </div>
+        </div>
 
-      <!-- Feedback / Confirmação -->
-      <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-xl p-3 flex items-start gap-2.5">
-        <i data-lucide="sparkles" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
-        <p class="text-xs text-emerald-300 leading-relaxed">
-          <b>Pronto!</b> Em algumas horas o Google ativa o carrossel automático com as fotos do seu Instagram no Maps para quem pesquisar barbearia no seu bairro.
-        </p>
-      </div>
-    </section>
+        <!-- Botões de Ação -->
+        <div class="space-y-2 pt-1">
+          <a 
+            id="btn-open-google-services" 
+            href="#" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="w-full py-3.5 px-5 bg-google-blue hover:bg-google-hoverBlue text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
+          >
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+            <span>Abrir Serviços no Google</span>
+          </a>
 
-    <!-- ETAPA 3: SUA PLAQUINHA OFICIAL GOOGLE COM QR CODE -->
-    <section class="glass-card rounded-2xl p-5 space-y-4 border-slate-800 shadow-lg">
-      <div class="flex items-center gap-3">
-        <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20">3</span>
-        <div>
-          <span class="text-[10px] uppercase font-bold tracking-wider text-amber-400">Terceira Ação</span>
-          <h2 class="text-lg font-bold text-white leading-tight">Sua Plaquinha Oficial de Balcão</h2>
+          <button 
+            type="button" 
+            onclick="completeAndAdvance(3)" 
+            class="w-full py-3 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+          >
+            <span>Serviços cadastrados 👉 Avançar</span>
+          </button>
+        </div>
+
+        <!-- Navegação Voltar -->
+        <div class="flex justify-start pt-1">
+          <button type="button" onclick="goToStep(2)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar
+          </button>
         </div>
       </div>
 
-      <p class="text-xs text-slate-300 leading-relaxed">
-        Display em alta resolução (300 DPI) com a logomarca oficial do Google e 5 estrelas. Quando o cliente apontar a câmera do celular no balcão, abre direto a tela para te dar 5 estrelas!
-      </p>
+      <!-- ================= ETAPA 4: PREENCHER COMODIDADES ================= -->
+      <div id="step-4" class="step-content hidden space-y-5">
+        <div class="text-center space-y-1.5">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
+            Ative as Comodidades da Barbearia
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+            Esses atributos ativam os filtros do Google Maps quando clientes pesquisam por barbearias com ar, Wi-Fi ou Pix.
+          </p>
+        </div>
 
-      <!-- PREVIEW DA PLACA A6 -->
-      <div class="relative bg-slate-950 rounded-xl p-4 border border-slate-800 flex flex-col items-center justify-center">
-        <canvas id="plaque-canvas" class="hidden" width="1240" height="1748"></canvas>
-
-        <div class="w-56 sm:w-64 aspect-[1240/1748] rounded-xl bg-gradient-to-b from-[#1E232E] to-[#0D1118] border-2 border-amber-500/40 p-4 flex flex-col items-center justify-between text-center shadow-2xl relative overflow-hidden">
-          
-          <!-- Logo Oficial Google no topo -->
-          <div class="space-y-1 pt-1">
-            <svg class="h-6 mx-auto" viewBox="0 0 272 92" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#EA4335"/>
-              <path d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z" fill="#FBBC05"/>
-              <path d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.35 21.25-22.35 5.29 0 9.49 2.35 11.68 4.96h.34v-3.53h9.25zm-8.65 20.92c0-7.81-5.21-13.52-12.01-13.52-6.89 0-12.6 5.71-12.6 13.52 0 7.73 5.71 13.36 12.6 13.36 6.8 0 12.01-5.63 12.01-13.36z" fill="#4285F4"/>
-              <path d="M225 3v65h-9.5V3h9.5z" fill="#34A853"/>
-              <path d="M262.02 54.49l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.07 12.01c2.27 4.45 5.79 6.72 10.75 6.72 4.96 0 8.4-2.44 10.34-5.87zm-19.99-8.06l19.49-8.15c-1.09-2.77-4.37-4.7-8.32-4.7-4.95 0-11.84 4.36-11.17 12.85z" fill="#EA4335"/>
-              <path d="M35.15 41.52V30.8h30.08c.28 1.63.48 3.53.48 5.62 0 6.9-1.89 15.39-7.9 21.39-5.88 6.08-13.44 9.41-22.66 9.41C16.03 67.22 0 51.19 0 33.61S16.03 0 35.15 0c9.74 0 16.97 3.82 22.25 8.86l-6.28 6.28c-3.8-3.56-8.94-6.38-15.97-6.38-14.45 0-25.79 11.76-25.79 26.21 0 14.45 11.34 26.21 25.79 26.21 9.32 0 14.62-3.74 18.06-7.18 2.77-2.77 4.54-6.72 5.21-12.48H35.15z" fill="#4285F4"/>
-            </svg>
-            <div class="flex justify-center text-amber-400 gap-0.5 text-xs">
-              ★ ★ ★ ★ ★
+        <!-- Mockup Google Atributos -->
+        <div class="bg-white rounded-xl border border-gray-200 p-3.5 shadow-xs space-y-2.5">
+          <div class="flex items-center justify-between border-b border-gray-100 pb-2">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="check-circle-2" class="w-4 h-4 text-google-blue"></i>
+              <span class="text-xs font-bold text-gray-900">Comodidades & Filtros</span>
             </div>
+            <span class="text-[10px] bg-blue-50 text-google-blue font-bold px-2 py-0.5 rounded-full border border-blue-150">
+              No Google: Atributos
+            </span>
           </div>
 
-          <!-- Título Central -->
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="p-2 bg-gray-50 rounded-lg border border-gray-150 flex items-center gap-2">
+              <i data-lucide="wind" class="w-4 h-4 text-sky-600 shrink-0"></i>
+              <div>
+                <p class="font-semibold text-gray-800">Ar-condicionado</p>
+                <p class="text-[10px] text-emerald-600 font-bold">Marque: Sim</p>
+              </div>
+            </div>
+            <div class="p-2 bg-gray-50 rounded-lg border border-gray-150 flex items-center gap-2">
+              <i data-lucide="wifi" class="w-4 h-4 text-emerald-600 shrink-0"></i>
+              <div>
+                <p class="font-semibold text-gray-800">Wi-Fi Gratuito</p>
+                <p class="text-[10px] text-emerald-600 font-bold">Marque: Sim</p>
+              </div>
+            </div>
+            <div class="p-2 bg-gray-50 rounded-lg border border-gray-150 flex items-center gap-2">
+              <i data-lucide="door-open" class="w-4 h-4 text-amber-600 shrink-0"></i>
+              <div>
+                <p class="font-semibold text-gray-800">Banheiro Clientes</p>
+                <p class="text-[10px] text-emerald-600 font-bold">Marque: Sim</p>
+              </div>
+            </div>
+            <div class="p-2 bg-gray-50 rounded-lg border border-gray-150 flex items-center gap-2">
+              <i data-lucide="credit-card" class="w-4 h-4 text-indigo-600 shrink-0"></i>
+              <div>
+                <p class="font-semibold text-gray-800">Pix & Cartões</p>
+                <p class="text-[10px] text-emerald-600 font-bold">Marque: Sim</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inner Box Padrão Print -->
+        <div class="bg-[#F9FAFB] border border-gray-200/80 rounded-2xl p-4 flex items-center gap-3.5">
+          <div class="w-11 h-11 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-xs shrink-0 text-gray-900">
+            <i data-lucide="check" class="w-5 h-5 text-gray-900"></i>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900 text-xs sm:text-sm">Destaque imediato em buscas por conveniência</h4>
+            <p class="text-xs text-gray-600 mt-0.5 leading-relaxed">O Google prioriza perfis com dados completos quando o cliente usa filtros no Maps.</p>
+          </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="space-y-2 pt-1">
+          <a 
+            id="btn-open-google-attributes" 
+            href="#" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="w-full py-3.5 px-5 bg-google-blue hover:bg-google-hoverBlue text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer"
+          >
+            <i data-lucide="external-link" class="w-4 h-4"></i>
+            <span>Abrir Comodidades no Google</span>
+          </a>
+
+          <button 
+            type="button" 
+            onclick="completeAndAdvance(4)" 
+            class="w-full py-3 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+          >
+            <span>Comodidades preenchidas 👉 Avançar</span>
+          </button>
+        </div>
+
+        <!-- Navegação Voltar -->
+        <div class="flex justify-start pt-1">
+          <button type="button" onclick="goToStep(3)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= ETAPA 5: PLAQUINHA OFICIAL DE BALCÃO (A6 - 300 DPI) ================= -->
+      <div id="step-5" class="step-content hidden space-y-5">
+        <div class="text-center space-y-1.5">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
+            Sua Plaquinha Oficial de Balcão
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+            Display gráfico em alta resolução com o QR Code de 5 estrelas do Google. Pronta para imprimir em papel fotográfico A6 (10x15cm).
+          </p>
+        </div>
+
+        <!-- Preview da Plaquinha (Simulação Fiel da Arte A6) -->
+        <div class="bg-gradient-to-b from-gray-900 to-gray-950 rounded-2xl p-4 text-center text-white border border-gray-800 shadow-sm space-y-3 max-w-xs mx-auto">
           <div class="space-y-0.5">
-            <span class="text-[9px] font-bold tracking-widest text-slate-300 uppercase">Avalie nossa barbearia</span>
-            <div id="preview-shop-name" class="text-[11px] font-extrabold text-amber-300 leading-tight line-clamp-2 px-1">
-              Barbearia
+            <p class="text-amber-400 text-xs tracking-widest font-bold">★ ★ ★ ★ ★</p>
+            <p class="text-[10px] text-gray-300 font-semibold uppercase tracking-wider">Avalie nosso trabalho no</p>
+            <p class="text-sm font-black tracking-tight"><span class="text-blue-400">G</span><span class="text-red-400">o</span><span class="text-amber-400">o</span><span class="text-blue-400">g</span><span class="text-green-400">l</span><span class="text-red-400">e</span></p>
+            <p id="preview-shop-name" class="text-xs font-bold text-amber-200 truncate pt-1">Barbearia Central</p>
+          </div>
+
+          <div class="bg-white rounded-xl p-2 inline-block shadow-inner">
+            <canvas id="qr-preview-canvas" width="130" height="130" class="rounded-lg"></canvas>
+          </div>
+
+          <p class="text-[10px] text-gray-400 font-medium leading-tight">
+            Aponte a câmera do seu celular<br />
+            <span class="text-gray-500 text-[9px]">Sua nota 5 estrelas fortalece nossa barbearia</span>
+          </p>
+        </div>
+
+        <!-- Inner Box Padrão Print -->
+        <div class="bg-[#F9FAFB] border border-gray-200/80 rounded-2xl p-4 flex items-center gap-3.5">
+          <div class="w-11 h-11 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-xs shrink-0 text-gray-900">
+            <i data-lucide="check" class="w-5 h-5 text-gray-900"></i>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900 text-xs sm:text-sm">Seu QR Code do Google está ativo</h4>
+            <p class="text-xs text-gray-600 mt-0.5 leading-relaxed">Ao apontar a câmera, o cliente abre direto a tela de 5 estrelas da sua barbearia.</p>
+          </div>
+        </div>
+
+        <!-- Botões de Ação -->
+        <div class="space-y-2 pt-1">
+          <button 
+            id="btn-download-plaque" 
+            type="button" 
+            class="w-full py-3.5 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-[0.99]"
+          >
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>Baixar Plaquinha A6 Pronta pra Imprimir</span>
+          </button>
+
+          <button 
+            type="button" 
+            onclick="completeAndAdvance(5)" 
+            class="w-full py-3 px-5 bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+          >
+            <span>Avançar para Gerar QR Code de Wi-Fi 👉</span>
+          </button>
+        </div>
+
+        <!-- Navegação Voltar -->
+        <div class="flex justify-start pt-1">
+          <button type="button" onclick="goToStep(4)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= ETAPA 6: GERADOR DE QR CODE WI-FI ================= -->
+      <div id="step-6" class="step-content hidden space-y-5">
+        <div class="text-center space-y-1.5">
+          <h2 class="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight leading-snug">
+            Crie o QR Code de Wi-Fi da Barbearia
+          </h2>
+          <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto leading-relaxed">
+            Seus clientes conectam no Wi-Fi apontando a câmera do celular, sem precisar perguntar ou digitar a senha.
+          </p>
+        </div>
+
+        <!-- Inputs de Configuração do Wi-Fi -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="space-y-1 text-left">
+            <label class="block text-xs font-semibold text-gray-700">Nome da Rede (SSID):</label>
+            <div class="flex items-center bg-gray-50 border border-gray-300 rounded-xl px-3 py-2.5 focus-within:ring-2 focus-within:ring-black focus-within:bg-white transition-all">
+              <i data-lucide="wifi" class="w-4 h-4 text-gray-400 mr-2"></i>
+              <input 
+                id="input-wifi-ssid" 
+                type="text" 
+                placeholder="Ex: Barbearia Wi-Fi" 
+                class="w-full bg-transparent text-xs font-medium text-gray-900 focus:outline-none"
+              />
             </div>
           </div>
 
-          <!-- QR Code Preview -->
-          <div class="bg-white p-2 rounded-lg shadow-inner">
-            <canvas id="qr-preview-canvas" class="w-24 h-24 sm:w-28 sm:h-28 block"></canvas>
+          <div class="space-y-1 text-left">
+            <label class="block text-xs font-semibold text-gray-700">Senha do Wi-Fi:</label>
+            <div class="flex items-center bg-gray-50 border border-gray-300 rounded-xl px-3 py-2.5 focus-within:ring-2 focus-within:ring-black focus-within:bg-white transition-all">
+              <i data-lucide="key" class="w-4 h-4 text-gray-400 mr-2"></i>
+              <input 
+                id="input-wifi-password" 
+                type="text" 
+                placeholder="Ex: senha1234" 
+                class="w-full bg-transparent text-xs font-medium text-gray-900 focus:outline-none"
+              />
+            </div>
           </div>
+        </div>
 
-          <!-- Rodapé -->
-          <div class="space-y-0.5 pb-1">
-            <p class="text-[8px] text-slate-300 font-medium">Aponte a câmera do seu celular</p>
-            <p class="text-[7px] text-slate-400 uppercase tracking-wider">Sua avaliação fortalece o comércio local</p>
+        <!-- Live Preview do QR Code de Wi-Fi -->
+        <div class="bg-gray-50 rounded-2xl border border-gray-200/90 p-4 text-center max-w-xs mx-auto space-y-2">
+          <p class="text-[11px] font-bold text-gray-600 uppercase tracking-wider">Preview do Wi-Fi Automático</p>
+          <div class="bg-white rounded-xl p-2.5 inline-block border border-gray-200 shadow-2xs">
+            <canvas id="qr-wifi-canvas" width="140" height="140" class="rounded-lg"></canvas>
+          </div>
+          <div class="text-[11px] text-gray-600">
+            <p>Rede: <span id="label-wifi-ssid" class="font-bold text-gray-900">Barbearia Wi-Fi</span></p>
+            <p>Senha: <span id="label-wifi-password" class="font-mono text-gray-700">••••••••</span></p>
           </div>
         </div>
-      </div>
 
-      <!-- BOTÃO DE DOWNLOAD DA ETAPA 4 -->
-      <button id="btn-download-plaque" class="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:scale-[0.98] text-slate-950 font-bold text-sm transition-all shadow-lg shadow-amber-500/25">
-        <i data-lucide="download" class="w-4 h-4"></i>
-        <span>Baixar Plaquinha A6 Pronta pra Imprimir</span>
-      </button>
-
-      <div class="bg-slate-900/60 rounded-xl p-3 border border-slate-800 text-xs text-slate-300 space-y-1">
-        <p class="font-semibold text-white flex items-center gap-1.5">
-          <i data-lucide="printer" class="w-3.5 h-3.5 text-amber-400"></i>
-          Dica rápida de impressão:
-        </p>
-        <p class="text-slate-400 text-[11px]">
-          Envie esse arquivo pelo WhatsApp para uma papelaria ou gráfica rápida da sua rua. Peça impressão no tamanho <b>A6 em papel fotográfico ou adesivo</b> (custa cerca de R$ 3 a R$ 5) e coloque no balcão de pagamento.
-        </p>
-      </div>
-    </section>
-
-    <!-- ETAPA 5: CHECKLIST DE RANQUEAMENTO (PONTOS CEGOS) -->
-    <section class="glass-card rounded-2xl p-5 space-y-4 border-slate-800 shadow-lg">
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-full bg-emerald-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/20">
-          <i data-lucide="check-square" class="w-4 h-4"></i>
+        <!-- Inner Box Idêntico ao Print de Referência -->
+        <div class="bg-[#F9FAFB] border border-gray-200/80 rounded-2xl p-4 flex items-center gap-3.5">
+          <div class="w-11 h-11 bg-white border border-gray-200 rounded-xl flex items-center justify-center shadow-xs shrink-0 text-gray-900">
+            <i data-lucide="check" class="w-5 h-5 text-gray-900"></i>
+          </div>
+          <div>
+            <h4 class="font-semibold text-gray-900 text-xs sm:text-sm">Seu código QR de Wi-Fi pode ser escaneado</h4>
+            <p class="text-xs text-gray-600 mt-0.5 leading-relaxed">Ele conecta o celular automaticamente na rede assim que a câmera apontar.</p>
+          </div>
         </div>
-        <div>
-          <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-400">Bônus • Ranqueamento</span>
-          <h2 class="text-lg font-bold text-white leading-tight">Checklist de Pontos Cegos</h2>
+
+        <!-- Botão de Download do Display Wi-Fi -->
+        <div class="space-y-2 pt-1">
+          <button 
+            id="btn-download-wifi" 
+            type="button" 
+            class="w-full py-3.5 px-5 bg-black hover:bg-gray-800 text-white font-semibold rounded-xl text-xs sm:text-sm text-center flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-[0.99]"
+          >
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>Baixar Display de Wi-Fi para o Balcão</span>
+          </button>
+        </div>
+
+        <!-- Banner Comemorativo de 100% Concluído -->
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center space-y-1">
+          <p class="text-xs sm:text-sm font-bold text-emerald-800">
+            🎉 Parabéns! Sua barbearia está 100% configurada
+          </p>
+          <p class="text-xs text-emerald-700 leading-relaxed">
+            Seu perfil no Google está blindado com Instagram, serviços e comodidades, e seus displays de balcão estão prontos.
+          </p>
+        </div>
+
+        <!-- Navegação Voltar ou Reiniciar -->
+        <div class="flex items-center justify-between pt-1">
+          <button type="button" onclick="goToStep(5)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Voltar para Plaquinha
+          </button>
+          <button type="button" onclick="goToStep(1)" class="text-xs font-semibold text-gray-500 hover:text-gray-800 flex items-center gap-1">
+            <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Recomeçar
+          </button>
         </div>
       </div>
 
-      <p class="text-xs text-slate-300 leading-relaxed">
-        O Google pontua perfis completos. Marque os itens conforme for preenchendo no seu painel para subir nas buscas do seu bairro:
+    </div>
+
+    <!-- RODAPÉ AUXILIAR MINIMALISTA (IDÊNTICO AO PADRÃO DA REFERÊNCIA) -->
+    <footer class="text-center pt-2 pb-6 space-y-2">
+      <p class="text-xs sm:text-sm text-gray-500">
+        Precisa de ajuda? 
+        <a 
+          id="btn-support" 
+          href="https://wa.me/5533999482287" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="font-medium text-gray-800 underline underline-offset-2 hover:text-black transition-colors"
+        >
+          Fale com Roberto no WhatsApp
+        </a>
       </p>
-
-      <div class="space-y-2 pt-1" id="checklist-container">
-        <!-- Item 1 -->
-        <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 cursor-pointer transition-all">
-          <input type="checkbox" data-check-id="insta" class="mt-0.5 w-4 h-4 rounded text-amber-500 focus:ring-0 bg-slate-900 border-slate-700">
-          <div class="text-xs">
-            <b class="text-white">Conectar link do Instagram</b>
-            <p class="text-slate-400 text-[11px]">Para o Google exibir seus cortes e Reels automaticamente.</p>
-          </div>
-        </label>
-
-        <!-- Item 2 -->
-        <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 cursor-pointer transition-all">
-          <input type="checkbox" data-check-id="services" class="mt-0.5 w-4 h-4 rounded text-amber-500 focus:ring-0 bg-slate-900 border-slate-700">
-          <div class="text-xs">
-            <b class="text-white">Cadastrar serviços com preços</b>
-            <p class="text-slate-400 text-[11px]">Corte Degradê, Barba, Barboterapia, Sobrancelha com valor e tempo.</p>
-          </div>
-        </label>
-
-        <!-- Item 3 -->
-        <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 cursor-pointer transition-all">
-          <input type="checkbox" data-check-id="amenities" class="mt-0.5 w-4 h-4 rounded text-amber-500 focus:ring-0 bg-slate-900 border-slate-700">
-          <div class="text-xs">
-            <b class="text-white">Preencher comodidades</b>
-            <p class="text-slate-400 text-[11px]">Marcar Ar-condicionado, Wi-Fi, Banheiro e se aceita Pix e Cartão.</p>
-          </div>
-        </label>
-
-        <!-- Item 4 -->
-        <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 cursor-pointer transition-all">
-          <input type="checkbox" data-check-id="plaque" class="mt-0.5 w-4 h-4 rounded text-amber-500 focus:ring-0 bg-slate-900 border-slate-700">
-          <div class="text-xs">
-            <b class="text-white">Colocar a plaquinha no balcão</b>
-            <p class="text-slate-400 text-[11px]">Pedir para os próximos 5 clientes fiéis avaliarem no Pix.</p>
-          </div>
-        </label>
-      </div>
-    </section>
-
-    <!-- RODAPÉ -->
-    <footer class="text-center pt-4 pb-8 space-y-2 text-xs text-slate-500">
-      <p>Desenvolvido para fortalecer as barbearias de Governador Valadares.</p>
-      <p class="text-[10px] text-slate-600">Google e a logomarca do Google são marcas registradas da Google LLC.</p>
+      <p class="text-[11px] text-gray-400">
+        Desenvolvido para fortalecer as barbearias de Governador Valadares • MG
+      </p>
     </footer>
 
   </main>
 
-  <!-- BOTÃO FLUTUANTE DE SUPORTE NO WHATSAPP -->
-  <a id="btn-support" href="https://instagram.com/orobertohora" target="_blank" rel="noopener noreferrer" class="fixed bottom-4 right-4 z-40 flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 active:scale-95 text-white font-bold text-xs py-2.5 px-4 rounded-full shadow-2xl shadow-emerald-500/30 transition-all border border-emerald-400/30">
-    <i data-lucide="message-circle" class="w-4 h-4"></i>
-    <span>Dúvidas? Falar com Roberto</span>
-  </a>
+  <!-- CANVASES OCULTOS PARA RENDERIZAÇÃO EM ALTA RESOLUÇÃO (1240x1748 @ 300 DPI) -->
+  <canvas id="plaque-canvas" width="1240" height="1748" class="hidden"></canvas>
+  <canvas id="wifi-canvas" width="1240" height="1748" class="hidden"></canvas>
 
-  <!-- SCRIPT DINÂMICO E INTERATIVO -->
   <script>
-    lucide.createIcons();
+    // ESTADO GLOBAL DO WIZARD
+    let currentStep = 1;
+    const completedSteps = new Set();
+    const TOTAL_STEPS = 6;
+    const STEP_LABELS = ['Instagram', 'Google', 'Serviços', 'Comodidades', 'Plaquinha', 'Wi-Fi'];
 
-    let allLeads = [];
     let currentBarber = {
-      id: '',
+      id: 'default',
       slug: '',
       name: 'Sua Barbearia',
       neighborhood: 'Governador Valadares',
@@ -497,6 +698,110 @@
       reviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJJZ24PaKnsQARnf-ij6zHfIU',
       placeId: ''
     };
+
+    let wifiState = {
+      ssid: '',
+      password: ''
+    };
+
+    let allLeads = [];
+
+    // RENDERIZA A BARRA MULTIETAPAS (STEPPER)
+    function renderStepper() {
+      const track = document.getElementById('stepper-track');
+      if (!track) return;
+
+      let html = '';
+      for (let i = 1; i <= TOTAL_STEPS; i++) {
+        const isDone = completedSteps.has(i) || (i < currentStep);
+        const isActive = (i === currentStep);
+        const label = STEP_LABELS[i - 1];
+
+        // Círculo
+        let circleHtml = '';
+        if (isDone) {
+          circleHtml = `
+            <button type="button" onclick="goToStep(${i})" title="Ir para ${label}" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs sm:text-sm cursor-pointer shadow-xs transition-transform active:scale-95">
+              <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+              </svg>
+            </button>
+          `;
+        } else if (isActive) {
+          circleHtml = `
+            <button type="button" onclick="goToStep(${i})" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-black text-black bg-white flex items-center justify-center font-bold text-xs sm:text-sm cursor-pointer shadow-xs">
+              ${i}
+            </button>
+          `;
+        } else {
+          circleHtml = `
+            <button type="button" onclick="goToStep(${i})" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-gray-300 text-gray-400 bg-white flex items-center justify-center font-medium text-xs sm:text-sm cursor-pointer hover:border-gray-400">
+              ${i}
+            </button>
+          `;
+        }
+
+        // Label
+        const labelClass = isActive 
+          ? 'text-gray-900 font-bold' 
+          : (isDone ? 'text-gray-800 font-medium' : 'text-gray-400 font-medium');
+
+        html += `
+          <div class="flex flex-col items-center flex-1">
+            <div class="flex items-center w-full">
+              ${i > 1 ? `<div class="h-[1.5px] flex-1 ${i <= currentStep ? 'bg-black' : 'bg-gray-200'}"></div>` : '<div class="flex-1"></div>'}
+              <div class="shrink-0">${circleHtml}</div>
+              ${i < TOTAL_STEPS ? `<div class="h-[1.5px] flex-1 ${i < currentStep ? 'bg-black' : 'bg-gray-200'}"></div>` : '<div class="flex-1"></div>'}
+            </div>
+            <span onclick="goToStep(${i})" class="text-[9px] sm:text-[11px] ${labelClass} mt-1.5 cursor-pointer text-center truncate max-w-[54px] sm:max-w-none">
+              ${label}
+            </span>
+          </div>
+        `;
+      }
+
+      track.innerHTML = html;
+    }
+
+    // NAVEGAÇÃO ENTRE ETAPAS
+    function goToStep(stepNum) {
+      if (stepNum < 1 || stepNum > TOTAL_STEPS) return;
+      currentStep = stepNum;
+
+      // Oculta todas as etapas e revela a ativa
+      for (let i = 1; i <= TOTAL_STEPS; i++) {
+        const stepEl = document.getElementById(`step-${i}`);
+        if (stepEl) {
+          if (i === currentStep) {
+            stepEl.classList.remove('hidden');
+          } else {
+            stepEl.classList.add('hidden');
+          }
+        }
+      }
+
+      renderStepper();
+      lucide.createIcons();
+
+      // Renderizações específicas de etapas
+      if (currentStep === 5) {
+        renderGooglePlaquePreview();
+      } else if (currentStep === 6) {
+        renderWifiPreview();
+      }
+
+      // Rola suavemente até o topo do card no mobile
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function completeAndAdvance(stepNum) {
+      completedSteps.add(stepNum);
+      if (stepNum < TOTAL_STEPS) {
+        goToStep(stepNum + 1);
+      } else {
+        renderStepper();
+      }
+    }
 
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -511,34 +816,7 @@
       }, 3000);
     }
 
-    // Identifica o Slug da URL (Suporta ?b=slug, ?slug, /slug, ?id=...)
-    function detectSlugFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      
-      if (params.get('b')) return params.get('b').toLowerCase().trim();
-      if (params.get('barbearia')) return params.get('barbearia').toLowerCase().trim();
-      if (params.get('id')) return params.get('id');
-
-      const rawSearch = window.location.search.replace(/^\?/, '').trim();
-      if (rawSearch && !rawSearch.includes('=')) {
-        return rawSearch.toLowerCase();
-      }
-
-      const rawHash = window.location.hash.replace(/^#/, '').trim();
-      if (rawHash) return rawHash.toLowerCase();
-
-      const pathSegments = window.location.pathname.split('/').filter(Boolean);
-      if (pathSegments.length > 0) {
-        const last = pathSegments[pathSegments.length - 1];
-        if (last !== 'acelera-barber' && last !== 'index.html' && last !== '404.html') {
-          return last.toLowerCase();
-        }
-      }
-
-      return null;
-    }
-
-    // Sanitiza usuário do Instagram garantindo minúsculo e apenas caracteres válidos
+    // Sanitiza usuário do Instagram
     function sanitizeInstagramHandle(val) {
       return (val || '')
         .toLowerCase()
@@ -548,7 +826,7 @@
         .replace(/[^a-z0-9._]/g, '');
     }
 
-    // Copia texto de forma segura e síncrona com fallback robusto para iOS Safari
+    // Copia texto de forma segura
     async function copyTextToClipboard(text) {
       let copied = false;
       if (navigator.clipboard && window.isSecureContext) {
@@ -581,243 +859,79 @@
       return copied;
     }
 
-    // Feedback visual do botão de cópia
-    function setButtonCopiedState() {
-      const btn = document.getElementById('btn-copy-insta');
-      const btnText = document.getElementById('btn-copy-text');
-      const btnIcon = document.getElementById('btn-copy-icon');
-
-      btn.classList.remove('from-pink-600', 'to-rose-600', 'hover:from-pink-500', 'hover:to-rose-500', 'shadow-pink-600/20');
-      btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500', 'shadow-emerald-600/30');
-      btnText.innerText = '✅ Copiado!';
-      if (btnIcon) btnIcon.setAttribute('data-lucide', 'check');
-      lucide.createIcons();
-
-      showToast('Link copiado com sucesso! Agora abra o Google e cole.');
-
-      setTimeout(() => {
-        btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500', 'shadow-emerald-600/30');
-        btn.classList.add('from-pink-600', 'to-rose-600', 'hover:from-pink-500', 'hover:to-rose-500', 'shadow-pink-600/20');
-        btnText.innerText = 'Copiar Link do meu Instagram';
-        if (btnIcon) btnIcon.setAttribute('data-lucide', 'copy');
-        lucide.createIcons();
-      }, 3500);
-    }
-
-    // Atualiza o estado do Instagram a partir do input
+    // Atualiza preview de link do Instagram
     function updateInstagramFromHandle(handle) {
       const clean = sanitizeInstagramHandle(handle);
+      const previewEl = document.getElementById('preview-insta-link');
       if (clean) {
         currentBarber.instagram = `https://www.instagram.com/${clean}/`;
+        if (previewEl) previewEl.innerText = currentBarber.instagram;
       } else {
         currentBarber.instagram = '';
+        if (previewEl) previewEl.innerText = 'https://www.instagram.com/...';
       }
     }
 
-    async function initPage() {
-      // 1. Configura listener imediato de digitação do Instagram
-      const instaInput = document.getElementById('input-instagram-handle');
-      ['input', 'keyup', 'change', 'paste'].forEach(evtName => {
-        instaInput.addEventListener(evtName, (e) => {
-          setTimeout(() => {
-            const sanitized = sanitizeInstagramHandle(e.target.value);
-            if (e.target.value !== sanitized) {
-              e.target.value = sanitized;
-            }
-            updateInstagramFromHandle(sanitized);
-          }, 0);
-        });
-      });
-
-      // 2. Configura Ação de Copiar Instagram com leitura direta e feedback imediato
-      document.getElementById('btn-copy-insta').addEventListener('click', async () => {
-        let rawValue = (instaInput.value || '').trim();
-        let cleanHandle = sanitizeInstagramHandle(rawValue);
-
-        if (!cleanHandle && currentBarber.instagram) {
-          cleanHandle = sanitizeInstagramHandle(currentBarber.instagram);
-        }
-
-        if (!cleanHandle) {
-          instaInput.focus();
-          instaInput.parentElement.classList.add('ring-2', 'ring-amber-500');
-          setTimeout(() => instaInput.parentElement.classList.remove('ring-2', 'ring-amber-500'), 2000);
-          showToast('Digite o @ do seu Instagram acima!');
-          return;
-        }
-
-        // Garante valor minúsculo no input e sincroniza URL
-        instaInput.value = cleanHandle;
-        updateInstagramFromHandle(cleanHandle);
-
-        const urlToCopy = `https://www.instagram.com/${cleanHandle}/`;
-        const success = await copyTextToClipboard(urlToCopy);
-        if (success) {
-          setButtonCopiedState();
-          // Transição suave para a segunda etapa após breve intervalo para percepção do 'Copiado!'
-          setTimeout(() => {
-            const etapa2 = document.getElementById('etapa-2');
-            if (etapa2) {
-              etapa2.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-          }, 600);
-        } else {
-          showToast('Link pronto! Selecione e copie acima.');
-        }
-      });
-
-      // 3. Carrega base de leads
-      try {
-        const res = await fetch('leads.json');
-        if (res.ok) {
-          allLeads = await res.json();
-          populateBarberSelect();
-        }
-      } catch (e) {
-        console.warn('Erro ao carregar leads.json:', e);
-      }
-
-      // 4. Resolve o lead pelo slug ou parâmetro
-      const targetSlug = detectSlugFromUrl();
+    // Identifica o Slug da URL
+    function detectSlugFromUrl() {
       const params = new URLSearchParams(window.location.search);
-      const queryName = params.get('nome') || params.get('name');
-      const queryInsta = params.get('insta') || params.get('instagram');
-      const queryNeighborhood = params.get('bairro') || params.get('neighborhood');
-      const queryReview = params.get('review');
+      if (params.get('b')) return params.get('b').toLowerCase().trim();
+      if (params.get('barbearia')) return params.get('barbearia').toLowerCase().trim();
+      if (params.get('id')) return params.get('id');
 
-      let found = null;
-      if (targetSlug && allLeads.length > 0) {
-        found = allLeads.find(l => 
-          l.slug === targetSlug || 
-          (Array.isArray(l.aliases) && l.aliases.includes(targetSlug)) ||
-          l.id === targetSlug || 
-          l.placeId === targetSlug ||
-          (l.name && l.name.toLowerCase().includes(targetSlug))
-        );
-      }
+      const rawSearch = window.location.search.replace(/^\?/, '').trim();
+      if (rawSearch && !rawSearch.includes('=')) return rawSearch.toLowerCase();
 
-      if (found) {
-        // LEAD ESPECÍFICO: Oculta o seletor 100% para o cliente não mexer!
-        document.getElementById('selector-container').classList.add('hidden');
-        loadBarberData(found, queryInsta);
-      } else if (queryName) {
-        // Link customizado via parâmetros: Oculta seletor
-        document.getElementById('selector-container').classList.add('hidden');
-        loadBarberData({
-          id: 'custom_lead',
-          slug: 'custom',
-          name: queryName,
-          neighborhood: queryNeighborhood || 'Governador Valadares',
-          instagram: queryInsta || '',
-          reviewUrl: queryReview || 'https://search.google.com/local/writereview?placeid=ChIJJZ24PaKnsQARnf-ij6zHfIU'
-        }, queryInsta);
-      } else {
-        // Acesso universal na raiz sem parâmetros: Exibe o seletor para teste
-        document.getElementById('selector-container').classList.remove('hidden');
-        loadBarberData({
-          id: 'generic',
-          slug: '',
-          name: 'Sua Barbearia',
-          neighborhood: 'Governador Valadares - MG',
-          instagram: '',
-          reviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJJZ24PaKnsQARnf-ij6zHfIU'
-        }, null);
-      }
+      const rawHash = window.location.hash.replace(/^#/, '').trim();
+      if (rawHash) return rawHash.toLowerCase();
 
-      // Seletor dropdown (apenas para tela universal)
-      const select = document.getElementById('barber-select');
-      select.addEventListener('change', (e) => {
-        const selectedId = e.target.value;
-        const lead = allLeads.find(l => l.id === selectedId);
-        if (lead) {
-          loadBarberData(lead, null);
-          const newUrl = `${window.location.origin}${window.location.pathname}?b=${encodeURIComponent(lead.slug)}`;
-          window.history.pushState({ slug: lead.slug }, '', newUrl);
-          showToast(`Carregado: ${lead.name}`);
+      const pathSegments = window.location.pathname.split('/').filter(Boolean);
+      if (pathSegments.length > 0) {
+        const last = pathSegments[pathSegments.length - 1];
+        if (last !== 'acelera-barber' && last !== 'index.html' && last !== '404.html') {
+          return last.toLowerCase();
         }
-      });
-    }
-
-    // Carrega dados da barbearia no DOM
-    function loadBarberData(lead, overrideInsta) {
-      currentBarber = {
-        id: lead.id || 'lead',
-        slug: lead.slug || '',
-        name: lead.name || 'Sua Barbearia',
-        neighborhood: lead.neighborhood || 'Governador Valadares',
-        instagram: overrideInsta || lead.instagram || '',
-        reviewUrl: lead.reviewUrl || `https://search.google.com/local/writereview?placeid=${lead.placeId || lead.id || 'ChIJJZ24PaKnsQARnf-ij6zHfIU'}`,
-        placeId: lead.placeId || lead.id || ''
-      };
-
-      // Preenche o input do Instagram
-      const instaInput = document.getElementById('input-instagram-handle');
-      if (currentBarber.instagram) {
-        const match = currentBarber.instagram.match(/instagram\.com\/([^/?#]+)/i);
-        const handle = match ? match[1] : currentBarber.instagram.replace(/^@/, '');
-        const cleanHandle = sanitizeInstagramHandle(handle);
-        instaInput.value = cleanHandle;
-        updateInstagramFromHandle(cleanHandle);
-      } else {
-        instaInput.value = '';
-        updateInstagramFromHandle('');
       }
-
-      // Atualiza textos
-      document.getElementById('shop-name').innerText = currentBarber.name;
-      document.getElementById('mockup-shop-name').innerText = currentBarber.name;
-      document.getElementById('preview-shop-name').innerText = currentBarber.name;
-      document.getElementById('google-search-query').innerText = currentBarber.name.toLowerCase();
-      document.getElementById('shop-location').innerHTML = `
-        <i data-lucide="map-pin" class="w-4 h-4 text-amber-400"></i>
-        <span>${currentBarber.neighborhood}</span>
-      `;
-
-      // Atualiza link de suporte do WhatsApp com mensagem contextual
-      const supportMsg = encodeURIComponent(`Olá Roberto! Estou na página da ${currentBarber.name} e tenho uma dúvida rápida sobre a ativação do Google.`);
-      document.getElementById('btn-support').href = `https://wa.me/5533991210973?text=${supportMsg}`;
-
-      // Atualiza botão de abrir o Google com busca pré-preenchida
-      const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(currentBarber.name + ' ' + currentBarber.neighborhood)}`;
-      document.getElementById('btn-open-google').href = googleSearchUrl;
-
-      // Renderiza QR Codes
-      renderQrCodes();
-
-      // Recarrega Checklist
-      initChecklist();
-
-      lucide.createIcons();
+      return null;
     }
 
-    function populateBarberSelect() {
-      const select = document.getElementById('barber-select');
-      select.innerHTML = '<option value="">-- Escolha uma barbearia da lista (123 de GV) --</option>';
-
-      const sorted = [...allLeads].sort((a, b) => a.name.localeCompare(b.name));
-      for (const lead of sorted) {
-        const opt = document.createElement('option');
-        opt.value = lead.id;
-        opt.innerText = `${lead.name} (${lead.neighborhood || 'GV'})`;
-        select.appendChild(opt);
-      }
-    }
-
-    // Renderiza QR de Preview e Prepara Download A6 300 DPI
-    function renderQrCodes() {
+    // Renderiza o Preview do QR Code da Plaquinha Google
+    function renderGooglePlaquePreview() {
       const previewCanvas = document.getElementById('qr-preview-canvas');
+      if (!previewCanvas) return;
       QRCode.toCanvas(previewCanvas, currentBarber.reviewUrl, {
-        width: 140,
+        width: 130,
         margin: 1,
-        color: { dark: '#0A0E17', light: '#FFFFFF' },
+        color: { dark: '#111827', light: '#FFFFFF' },
         errorCorrectionLevel: 'H'
       });
-
-      const dlBtn = document.getElementById('btn-download-plaque');
-      dlBtn.onclick = () => generateHighResPlaqueDownload();
     }
 
-    // Gera imagem da Plaquinha em 1240 x 1748 px @ 300 DPI (Padrão Gráfico A6)
+    // Renderiza o Preview do QR Code de Wi-Fi
+    function renderWifiPreview() {
+      const canvas = document.getElementById('qr-wifi-canvas');
+      if (!canvas) return;
+
+      const ssid = wifiState.ssid || `${currentBarber.name} Wi-Fi`;
+      const pass = wifiState.password || '';
+
+      // Padrão Universal Apple iOS & Android ZXing
+      const wifiString = `WIFI:S:${ssid};T:WPA;P:${pass};;`;
+
+      QRCode.toCanvas(canvas, wifiString, {
+        width: 140,
+        margin: 1,
+        color: { dark: '#0F172A', light: '#FFFFFF' },
+        errorCorrectionLevel: 'Q'
+      });
+
+      const labelSsid = document.getElementById('label-wifi-ssid');
+      const labelPass = document.getElementById('label-wifi-password');
+      if (labelSsid) labelSsid.innerText = ssid;
+      if (labelPass) labelPass.innerText = pass ? pass : '(sem senha)';
+    }
+
+    // Gera imagem da Plaquinha Google em 1240 x 1748 px @ 300 DPI (Padrão Gráfico A6)
     async function generateHighResPlaqueDownload() {
       const canvas = document.getElementById('plaque-canvas');
       const ctx = canvas.getContext('2d');
@@ -826,8 +940,8 @@
 
       // Fundo Gradiente Escuro Luxo
       const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-      bgGrad.addColorStop(0, '#1F2430');
-      bgGrad.addColorStop(1, '#0B0E14');
+      bgGrad.addColorStop(0, '#1E2430');
+      bgGrad.addColorStop(1, '#0F131B');
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
@@ -837,7 +951,7 @@
       ctx.strokeRect(36, 36, width - 72, height - 72);
 
       // Moldura Interna Fina
-      ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+      ctx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
       ctx.lineWidth = 2;
       ctx.strokeRect(48, 48, width - 96, height - 96);
 
@@ -883,6 +997,7 @@
       const qrTop = 660;
 
       ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
       ctx.roundRect(qrLeft, qrTop, qrBoxSize, qrBoxSize, 28);
       ctx.fill();
 
@@ -916,7 +1031,137 @@
       link.href = canvas.toDataURL('image/png');
       link.click();
 
-      showToast('Baixando placa A6 em alta definição!');
+      showToast('Baixando placa Google A6 (300 DPI)!');
+    }
+
+    // Gera imagem do Display de Wi-Fi em 1240 x 1748 px @ 300 DPI (Padrão Gráfico A6)
+    async function generateHighResWifiDisplayDownload() {
+      const canvas = document.getElementById('wifi-canvas');
+      const ctx = canvas.getContext('2d');
+      const width = 1240;
+      const height = 1748;
+
+      const ssid = wifiState.ssid || `${currentBarber.name} Wi-Fi`;
+      const pass = wifiState.password || 'cortes2026';
+
+      // Fundo Elegante Off-White Nobre
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
+      bgGrad.addColorStop(0, '#FFFFFF');
+      bgGrad.addColorStop(1, '#F4F5F7');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      // Moldura Externa Grafite
+      ctx.strokeStyle = '#1E293B';
+      ctx.lineWidth = 6;
+      ctx.strokeRect(36, 36, width - 72, height - 72);
+
+      // Moldura Interna Fina
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(48, 48, width - 96, height - 96);
+
+      // Topo: Faixa Grafite
+      ctx.fillStyle = '#0F172A';
+      ctx.fillRect(48, 48, width - 96, 200);
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 56px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('📶  WI-FI GRÁTIS', width / 2, 165);
+
+      // Nome da Barbearia
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 48px sans-serif';
+      let shopNameText = currentBarber.name.toUpperCase();
+      if (shopNameText.length > 26) {
+        ctx.font = 'bold 38px sans-serif';
+      }
+      ctx.fillText(shopNameText, width / 2, 330);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '500 28px sans-serif';
+      ctx.fillText('Aponte a câmera do celular para conectar sem digitar a senha', width / 2, 385);
+
+      // QR Code Wi-Fi em Alta Resolução (580x580 px)
+      const wifiString = `WIFI:S:${ssid};T:WPA;P:${pass};;`;
+      const tempQrCanvas = document.createElement('canvas');
+      await QRCode.toCanvas(tempQrCanvas, wifiString, {
+        width: 580,
+        margin: 2,
+        color: { dark: '#0F172A', light: '#FFFFFF' },
+        errorCorrectionLevel: 'Q'
+      });
+
+      const qrBoxSize = 640;
+      const qrLeft = (width - qrBoxSize) / 2;
+      const qrTop = 450;
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.beginPath();
+      ctx.roundRect(qrLeft, qrTop, qrBoxSize, qrBoxSize, 28);
+      ctx.fill();
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      ctx.drawImage(tempQrCanvas, (width - 580) / 2, qrTop + 30);
+
+      // Caixa Informativa de Rede e Senha
+      const boxW = 860;
+      const boxH = 260;
+      const boxLeft = (width - boxW) / 2;
+      const boxTop = 1140;
+
+      ctx.fillStyle = '#F8FAFC';
+      ctx.beginPath();
+      ctx.roundRect(boxLeft, boxTop, boxW, boxH, 20);
+      ctx.fill();
+      ctx.strokeStyle = '#CBD5E1';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Rede
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('NOME DA REDE (SSID):', boxLeft + 50, boxTop + 70);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 36px sans-serif';
+      ctx.fillText(ssid, boxLeft + 50, boxTop + 115);
+
+      // Senha
+      ctx.fillStyle = '#64748B';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.fillText('SENHA DO WI-FI:', boxLeft + 50, boxTop + 175);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 36px sans-serif';
+      ctx.fillText(pass, boxLeft + 50, boxTop + 220);
+
+      // Rodapé
+      ctx.fillStyle = '#0F172A';
+      ctx.font = 'bold 34px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('CONEXÃO AUTOMÁTICA EM 1 TOQUE', width / 2, 1490);
+
+      ctx.fillStyle = '#64748B';
+      ctx.font = '26px sans-serif';
+      ctx.fillText('Compatível nativamente com iPhone e Android', width / 2, 1545);
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '600 22px sans-serif';
+      ctx.fillText('DISPLAY OFICIAL DE BALCÃO • ACELERA BARBER', width / 2, 1630);
+
+      // Dispara Download
+      const link = document.createElement('a');
+      const safeSlug = (currentBarber.slug || currentBarber.name).toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 25);
+      link.download = `display_wifi_${safeSlug}_a6_300dpi.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+
+      showToast('Baixando display de Wi-Fi A6 (300 DPI)!');
     }
 
     function drawGoogleLogo(ctx, startX, startY, scale = 1.0) {
@@ -941,23 +1186,263 @@
       ctx.restore();
     }
 
-    function initChecklist() {
-      const key = `checklist_barber_${currentBarber.slug || currentBarber.id || 'default'}`;
-      const saved = JSON.parse(localStorage.getItem(key) || '{}');
+    // INICIALIZAÇÃO DA PÁGINA
+    async function initPage() {
+      // 1. Configura listener de digitação do Instagram
+      const instaInput = document.getElementById('input-instagram-handle');
+      if (instaInput) {
+        ['input', 'keyup', 'change', 'paste'].forEach(evtName => {
+          instaInput.addEventListener(evtName, (e) => {
+            setTimeout(() => {
+              const sanitized = sanitizeInstagramHandle(e.target.value);
+              if (e.target.value !== sanitized) {
+                e.target.value = sanitized;
+              }
+              updateInstagramFromHandle(sanitized);
+            }, 0);
+          });
+        });
+      }
 
-      const inputs = document.querySelectorAll('#checklist-container input[type="checkbox"]');
-      inputs.forEach(input => {
-        const id = input.getAttribute('data-check-id');
-        input.checked = !!saved[id];
+      // 2. Botão Copiar Instagram
+      const copyBtn = document.getElementById('btn-copy-insta');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          let rawValue = (instaInput.value || '').trim();
+          let cleanHandle = sanitizeInstagramHandle(rawValue);
 
-        input.onchange = () => {
-          saved[id] = input.checked;
-          localStorage.setItem(key, JSON.stringify(saved));
-          if (input.checked) {
-            showToast('Passo concluído!');
+          if (!cleanHandle && currentBarber.instagram) {
+            cleanHandle = sanitizeInstagramHandle(currentBarber.instagram);
           }
-        };
-      });
+
+          if (!cleanHandle) {
+            instaInput.focus();
+            instaInput.parentElement.classList.add('ring-2', 'ring-black');
+            setTimeout(() => instaInput.parentElement.classList.remove('ring-2', 'ring-black'), 2000);
+            showToast('Digite o @ do seu Instagram acima!');
+            return;
+          }
+
+          instaInput.value = cleanHandle;
+          updateInstagramFromHandle(cleanHandle);
+
+          const urlToCopy = `https://www.instagram.com/${cleanHandle}/`;
+          const success = await copyTextToClipboard(urlToCopy);
+
+          if (success) {
+            const btnText = document.getElementById('btn-copy-text');
+            const btnIcon = document.getElementById('btn-copy-icon');
+
+            copyBtn.classList.remove('bg-black', 'hover:bg-gray-800');
+            copyBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+            btnText.innerText = '✅ Link Copiado!';
+            if (btnIcon) btnIcon.setAttribute('data-lucide', 'check');
+            lucide.createIcons();
+
+            showToast('Link copiado com sucesso!');
+            completedSteps.add(1);
+
+            setTimeout(() => {
+              copyBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+              copyBtn.classList.add('bg-black', 'hover:bg-gray-800');
+              btnText.innerText = 'Copiar Link do Instagram';
+              if (btnIcon) btnIcon.setAttribute('data-lucide', 'copy');
+              lucide.createIcons();
+              goToStep(2);
+            }, 600);
+          } else {
+            showToast('Link pronto! Selecione e copie acima.');
+          }
+        });
+      }
+
+      // 3. Inputs de Wi-Fi em tempo real
+      const ssidInput = document.getElementById('input-wifi-ssid');
+      const passInput = document.getElementById('input-wifi-password');
+
+      const handleWifiChange = () => {
+        wifiState.ssid = (ssidInput.value || '').trim();
+        wifiState.password = (passInput.value || '').trim();
+        renderWifiPreview();
+      };
+
+      if (ssidInput) ['input', 'keyup', 'change'].forEach(ev => ssidInput.addEventListener(ev, handleWifiChange));
+      if (passInput) ['input', 'keyup', 'change'].forEach(ev => passInput.addEventListener(ev, handleWifiChange));
+
+      // 4. Botões de Download
+      const dlBtnPlaque = document.getElementById('btn-download-plaque');
+      if (dlBtnPlaque) dlBtnPlaque.onclick = () => generateHighResPlaqueDownload();
+
+      const dlBtnWifi = document.getElementById('btn-download-wifi');
+      if (dlBtnWifi) dlBtnWifi.onclick = () => generateHighResWifiDisplayDownload();
+
+      // 5. Carrega base de leads
+      try {
+        const res = await fetch('leads.json');
+        if (res.ok) {
+          allLeads = await res.json();
+          populateBarberSelect();
+        }
+      } catch (e) {
+        console.warn('Erro ao carregar leads.json:', e);
+      }
+
+      // 6. Resolve o lead pelo slug ou parâmetro
+      const targetSlug = detectSlugFromUrl();
+      const params = new URLSearchParams(window.location.search);
+      const queryName = params.get('nome') || params.get('name');
+      const queryInsta = params.get('insta') || params.get('instagram');
+      const queryNeighborhood = params.get('bairro') || params.get('neighborhood');
+      const queryReview = params.get('review');
+
+      let found = null;
+      if (targetSlug && allLeads.length > 0) {
+        found = allLeads.find(l => 
+          l.slug === targetSlug || 
+          (Array.isArray(l.aliases) && l.aliases.includes(targetSlug)) ||
+          l.id === targetSlug || 
+          l.placeId === targetSlug ||
+          (l.name && l.name.toLowerCase().includes(targetSlug))
+        );
+      }
+
+      if (found) {
+        document.getElementById('selector-container').classList.add('hidden');
+        loadBarberData(found, queryInsta);
+      } else if (queryName) {
+        document.getElementById('selector-container').classList.add('hidden');
+        loadBarberData({
+          id: 'custom_lead',
+          slug: 'custom',
+          name: queryName,
+          neighborhood: queryNeighborhood || 'Governador Valadares',
+          instagram: queryInsta || '',
+          reviewUrl: queryReview || 'https://search.google.com/local/writereview?placeid=ChIJJZ24PaKnsQARnf-ij6zHfIU'
+        }, queryInsta);
+      } else {
+        document.getElementById('selector-container').classList.remove('hidden');
+        loadBarberData({
+          id: 'generic',
+          slug: '',
+          name: 'Sua Barbearia',
+          neighborhood: 'Governador Valadares - MG',
+          instagram: '',
+          reviewUrl: 'https://search.google.com/local/writereview?placeid=ChIJJZ24PaKnsQARnf-ij6zHfIU'
+        }, null);
+      }
+
+      // Dropdown de teste
+      const select = document.getElementById('barber-select');
+      if (select) {
+        select.addEventListener('change', (e) => {
+          const selectedId = e.target.value;
+          const lead = allLeads.find(l => l.id === selectedId);
+          if (lead) {
+            loadBarberData(lead, null);
+            const newUrl = `${window.location.origin}${window.location.pathname}?b=${encodeURIComponent(lead.slug)}`;
+            window.history.pushState({ slug: lead.slug }, '', newUrl);
+            showToast(`Carregado: ${lead.name}`);
+          }
+        });
+      }
+
+      // Renderiza estado inicial do Stepper
+      renderStepper();
+      lucide.createIcons();
+    }
+
+    function populateBarberSelect() {
+      const select = document.getElementById('barber-select');
+      if (!select) return;
+      select.innerHTML = '<option value="">-- Escolha uma barbearia da lista (123 de GV) --</option>';
+
+      const sorted = [...allLeads].sort((a, b) => a.name.localeCompare(b.name));
+      for (const lead of sorted) {
+        const opt = document.createElement('option');
+        opt.value = lead.id;
+        opt.innerText = `${lead.name} (${lead.neighborhood || 'GV'})`;
+        select.appendChild(opt);
+      }
+    }
+
+    function loadBarberData(lead, overrideInsta) {
+      currentBarber = {
+        id: lead.id || 'lead',
+        slug: lead.slug || '',
+        name: lead.name || 'Sua Barbearia',
+        neighborhood: lead.neighborhood || 'Governador Valadares',
+        instagram: overrideInsta || lead.instagram || '',
+        reviewUrl: lead.reviewUrl || `https://search.google.com/local/writereview?placeid=${lead.placeId || lead.id || 'ChIJJZ24PaKnsQARnf-ij6zHfIU'}`,
+        placeId: lead.placeId || lead.id || ''
+      };
+
+      // Instagram Input
+      const instaInput = document.getElementById('input-instagram-handle');
+      if (instaInput) {
+        if (currentBarber.instagram) {
+          const match = currentBarber.instagram.match(/instagram\.com\/([^/?#]+)/i);
+          const handle = match ? match[1] : currentBarber.instagram.replace(/^@/, '');
+          const cleanHandle = sanitizeInstagramHandle(handle);
+          instaInput.value = cleanHandle;
+          updateInstagramFromHandle(cleanHandle);
+        } else {
+          instaInput.value = '';
+          updateInstagramFromHandle('');
+        }
+      }
+
+      // Textos principais
+      const shopNameEl = document.getElementById('shop-name');
+      const mockupShopNameEl = document.getElementById('mockup-shop-name');
+      const previewShopNameEl = document.getElementById('preview-shop-name');
+      const searchQueryEl = document.getElementById('google-search-query');
+      const shopLocEl = document.getElementById('shop-location');
+
+      if (shopNameEl) shopNameEl.innerText = currentBarber.name;
+      if (mockupShopNameEl) mockupShopNameEl.innerText = currentBarber.name;
+      if (previewShopNameEl) previewShopNameEl.innerText = currentBarber.name;
+      if (searchQueryEl) searchQueryEl.innerText = currentBarber.name.toLowerCase();
+      if (shopLocEl) {
+        shopLocEl.innerHTML = `
+          <i data-lucide="map-pin" class="w-3.5 h-3.5 text-gray-400"></i>
+          <span>${currentBarber.neighborhood}</span>
+        `;
+      }
+
+      // Links Google em Nova Aba
+      const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(currentBarber.name + ' ' + currentBarber.neighborhood)}`;
+      const btnOpenGoogle = document.getElementById('btn-open-google');
+      const btnOpenServices = document.getElementById('btn-open-google-services');
+      const btnOpenAttrs = document.getElementById('btn-open-google-attributes');
+
+      if (btnOpenGoogle) btnOpenGoogle.href = googleSearchUrl;
+      if (btnOpenServices) btnOpenServices.href = googleSearchUrl;
+      if (btnOpenAttrs) btnOpenAttrs.href = googleSearchUrl;
+
+      // Link de Suporte WhatsApp
+      const supportMsg = encodeURIComponent(`Olá Roberto! Estou na página da ${currentBarber.name} e tenho uma dúvida rápida sobre o kit do Google.`);
+      const btnSupport = document.getElementById('btn-support');
+      if (btnSupport) {
+        btnSupport.href = `https://wa.me/5533999482287?text=${supportMsg}`;
+      }
+
+      // Preenche sugestão de Wi-Fi
+      const ssidInput = document.getElementById('input-wifi-ssid');
+      if (ssidInput && !ssidInput.value) {
+        ssidInput.value = `${currentBarber.name} Wi-Fi`;
+        wifiState.ssid = ssidInput.value;
+      }
+      const passInput = document.getElementById('input-wifi-password');
+      if (passInput && !passInput.value) {
+        passInput.value = 'cortes2026';
+        wifiState.password = passInput.value;
+      }
+
+      // Renderiza previews iniciais
+      renderGooglePlaquePreview();
+      renderWifiPreview();
+      renderStepper();
+      lucide.createIcons();
     }
 
     window.addEventListener('DOMContentLoaded', initPage);
