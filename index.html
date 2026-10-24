@@ -91,15 +91,7 @@
   <!-- CONTAINER PRINCIPAL -->
   <main class="max-w-xl mx-auto px-4 pt-6 sm:pt-8 space-y-4">
 
-    <!-- SELETOR UNIVERSAL (Exibido apenas em modo demonstração sem ?b=slug) -->
-    <div id="selector-container" class="hidden text-left max-w-sm mx-auto mb-2">
-      <label for="barber-select" class="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1 text-center">
-        Modo Demonstração (Escolha a Barbearia)
-      </label>
-      <select id="barber-select" class="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-black">
-        <option value="">Carregando barbearias...</option>
-      </select>
-    </div>
+
 
     <!-- CARD CENTRAL PRINCIPAL (WIZARD SAAS NO PADRÃO DO PRINT) -->
     <div class="bg-white rounded-[28px] border border-gray-200/90 shadow-sm p-5 sm:p-8 relative space-y-6">
@@ -1739,7 +1731,6 @@
         ]);
         if (resLeads.status === 'fulfilled' && resLeads.value.ok) {
           allLeads = await resLeads.value.json();
-          populateBarberSelect();
         }
         if (resInsta.status === 'fulfilled' && resInsta.value.ok) {
           instagramCache = await resInsta.value.json();
@@ -1768,10 +1759,8 @@
       }
 
       if (found) {
-        document.getElementById('selector-container').classList.add('hidden');
         loadBarberData(found, queryInsta);
       } else if (queryName) {
-        document.getElementById('selector-container').classList.add('hidden');
         loadBarberData({
           id: 'custom_lead',
           slug: 'custom',
@@ -1781,7 +1770,6 @@
           reviewUrl: queryReview || 'https://search.google.com/local/writereview?placeid=ChIJJZ24PaKnsQARnf-ij6zHfIU'
         }, queryInsta);
       } else {
-        document.getElementById('selector-container').classList.remove('hidden');
         loadBarberData({
           id: 'generic',
           slug: '',
@@ -1792,38 +1780,9 @@
         }, null);
       }
 
-      // Dropdown de teste
-      const select = document.getElementById('barber-select');
-      if (select) {
-        select.addEventListener('change', (e) => {
-          const selectedId = e.target.value;
-          const lead = allLeads.find(l => l.id === selectedId);
-          if (lead) {
-            loadBarberData(lead, null);
-            const newUrl = `${window.location.origin}${window.location.pathname}?b=${encodeURIComponent(lead.slug)}`;
-            window.history.pushState({ slug: lead.slug }, '', newUrl);
-            showToast(`Carregado: ${lead.name}`);
-          }
-        });
-      }
-
       // Renderiza estado inicial do Stepper
       renderStepper();
       lucide.createIcons();
-    }
-
-    function populateBarberSelect() {
-      const select = document.getElementById('barber-select');
-      if (!select) return;
-      select.innerHTML = '<option value="">-- Escolha uma barbearia da lista (123 de GV) --</option>';
-
-      const sorted = [...allLeads].sort((a, b) => a.name.localeCompare(b.name));
-      for (const lead of sorted) {
-        const opt = document.createElement('option');
-        opt.value = lead.id;
-        opt.innerText = `${lead.name} (${lead.neighborhood || 'GV'})`;
-        select.appendChild(opt);
-      }
     }
 
     function loadBarberData(lead, overrideInsta) {
