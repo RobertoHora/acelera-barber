@@ -76,13 +76,8 @@
     #toast {
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
     }
-    @keyframes pulse-yellow {
-      0% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.8); }
-      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
-      100% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
-    }
-    .ring-pulse-yellow {
-      animation: pulse-yellow 1.8s infinite;
+    .input-lowercase {
+      text-transform: lowercase;
     }
   </style>
 </head>
@@ -161,7 +156,17 @@
 
           <div class="flex items-center gap-2 bg-slate-900 px-3 py-2 rounded-lg border border-slate-700 focus-within:border-pink-500 transition-all">
             <span class="text-pink-400 font-bold text-xs select-none">@</span>
-            <input id="input-instagram-handle" type="text" placeholder="digite_o_arroba_do_seu_insta" class="bg-transparent text-xs text-white focus:outline-none w-full font-mono placeholder:text-slate-600" />
+            <input 
+              id="input-instagram-handle" 
+              type="text" 
+              inputmode="text"
+              autocapitalize="none"
+              autocorrect="off"
+              spellcheck="false"
+              autocomplete="off"
+              placeholder="digite_o_arroba_do_seu_insta" 
+              class="bg-transparent text-xs text-white focus:outline-none w-full font-mono placeholder:text-slate-600 input-lowercase" 
+            />
           </div>
 
           <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1">
@@ -173,7 +178,7 @@
 
       <!-- BOTÃO DE AÇÃO DIRETO DA ETAPA 1 -->
       <button id="btn-copy-insta" class="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 active:scale-[0.98] text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-pink-600/20">
-        <i data-lucide="copy" class="w-4 h-4"></i>
+        <i id="btn-copy-icon" data-lucide="copy" class="w-4 h-4"></i>
         <span id="btn-copy-text">Copiar Link do meu Instagram</span>
       </button>
     </section>
@@ -191,6 +196,12 @@
       <p class="text-xs text-slate-300 leading-relaxed">
         Você não precisa de aplicativo nenhum. Ao tocar no botão abaixo, o Google vai abrir direto a página de pesquisa onde você gerencia a sua barbearia.
       </p>
+
+      <!-- Legenda Explicativa do Mockup -->
+      <div class="flex items-center gap-1.5 text-[11px] text-slate-400 font-medium">
+        <i data-lucide="smartphone" class="w-3.5 h-3.5 text-blue-400"></i>
+        <span>Exemplo do que vai aparecer na tela do seu celular quando abrir o Google:</span>
+      </div>
 
       <!-- MOCKUP OFICIAL 1:1 DO GOOGLE SEARCH MOBILE -->
       <div class="rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-white text-slate-900 google-font">
@@ -226,15 +237,15 @@
           <!-- Grade Oficial de Botões Circulares do Google -->
           <div class="grid grid-cols-3 gap-2 pt-2 text-center">
             
-            <!-- BOTÃO OFICIAL DESTACADO COM SETA E BORDA PULSANTE -->
-            <div class="relative bg-amber-50 border-2 border-amber-500 rounded-2xl p-2.5 ring-pulse-yellow shadow-md flex flex-col items-center">
-              <span class="absolute -top-3.5 bg-amber-500 text-slate-950 font-black text-[9px] px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider">
-                TOQUE AQUI 👉
+            <!-- BOTÃO OFICIAL DESTACADO DE FORMA DISCRETA E ESTÁTICA -->
+            <div class="relative bg-blue-50/70 border-2 border-blue-600 rounded-2xl p-2.5 shadow-sm flex flex-col items-center">
+              <span class="absolute -top-2.5 bg-blue-600 text-white font-bold text-[8px] px-2 py-0.5 rounded-full shadow uppercase tracking-wide whitespace-nowrap">
+                No Google: toque aqui
               </span>
-              <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center mb-1 shadow-sm border border-blue-100">
+              <div class="w-9 h-9 rounded-full bg-white text-blue-600 flex items-center justify-center mb-1 shadow-sm border border-blue-200">
                 <i data-lucide="pencil" class="w-4 h-4"></i>
               </div>
-              <span class="text-[11px] font-bold text-blue-700 leading-tight">Editar perfil</span>
+              <span class="text-[11px] font-bold text-blue-800 leading-tight">Editar perfil</span>
             </div>
 
             <!-- Botão Oficial: Promover -->
@@ -274,8 +285,14 @@
       </div>
 
       <p class="text-xs text-slate-300 leading-relaxed">
-        Depois de tocar em <b class="text-white">"Editar perfil"</b>, a tela do Google vai abrir assim no seu celular. Siga o caminho das setas amarelas:
+        Depois de tocar em <b class="text-white">"Editar perfil"</b>, a tela do Google vai abrir assim no seu celular. Siga o passo a passo em 3 toques:
       </p>
+
+      <!-- Legenda Explicativa do Mockup -->
+      <div class="flex items-center gap-1.5 text-[11px] text-slate-400 font-medium">
+        <i data-lucide="smartphone" class="w-3.5 h-3.5 text-blue-400"></i>
+        <span>Exemplo da tela de edição do Google no seu celular:</span>
+      </div>
 
       <!-- MOCKUP OFICIAL 1:1 DA TELA DE EDIÇÃO DO GOOGLE MEU NEGÓCIO -->
       <div class="rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-white text-slate-900 google-font">
@@ -287,15 +304,17 @@
         </div>
 
         <!-- Abas Oficiais do Google com "Contato" Destacada -->
-        <div class="flex border-b border-slate-200 px-2 text-xs font-medium text-slate-600 overflow-x-auto bg-slate-50">
+        <div class="flex border-b border-slate-200 px-2 text-xs font-medium text-slate-600 overflow-x-auto bg-slate-50 pt-2.5">
           <div class="py-2.5 px-3">Sobre</div>
-          <!-- ABA CONTATO COM DESTAQUE AZUL OFICIAL DO GOOGLE E SETA -->
+          
+          <!-- 1º SELECIONE AQUI: ABA CONTATO -->
           <div class="py-2.5 px-3 text-blue-600 font-bold border-b-2 border-blue-600 flex items-center gap-1 relative bg-white">
-            <span class="absolute -top-3 left-1 bg-amber-500 text-slate-950 font-black text-[8px] px-1.5 py-0.2 rounded shadow uppercase">
-              1º Toque 👉
+            <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white font-bold text-[8px] px-2 py-0.5 rounded-full shadow whitespace-nowrap">
+              1º Selecione aqui
             </span>
             <span>Contato</span>
           </div>
+
           <div class="py-2.5 px-3">Local</div>
           <div class="py-2.5 px-3">Horário</div>
         </div>
@@ -305,40 +324,39 @@
           
           <!-- Seção Oficial: Perfis de redes sociais -->
           <div class="space-y-1.5">
-            <div class="font-bold text-slate-800 text-[11px] flex items-center justify-between">
+            <div class="flex items-center justify-between font-bold text-slate-800 text-[11px]">
               <span>Perfis de redes sociais</span>
-              <span class="text-[9px] text-amber-600 font-bold bg-amber-100 px-1.5 py-0.5 rounded uppercase">2º Toque</span>
+              <span class="bg-blue-600 text-white font-bold text-[8px] px-2 py-0.5 rounded-full shadow whitespace-nowrap">
+                2º Depois aqui
+              </span>
             </div>
 
-            <div class="p-3 rounded-xl border-2 border-amber-400 bg-amber-50/50 space-y-2">
-              <!-- Dropdown da Rede Social -->
-              <div class="flex items-center justify-between bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-800 font-medium">
-                <span class="flex items-center gap-1.5">
-                  <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-500"></i>
-                  Instagram
-                </span>
-                <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500"></i>
-              </div>
+            <!-- Dropdown da Rede Social (Padrão limpo do Google) -->
+            <div class="flex items-center justify-between bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-800 font-medium">
+              <span class="flex items-center gap-2">
+                <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-500"></i>
+                <span>Instagram</span>
+              </span>
+              <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-500"></i>
+            </div>
 
-              <!-- Campo onde cola o link com Seta Indicativa -->
-              <div class="relative">
-                <div class="bg-white border-2 border-blue-500 rounded-lg px-3 py-2 text-[11px] text-slate-800 font-mono flex items-center justify-between shadow-sm">
-                  <span class="text-slate-400 italic">https://www.instagram.com/...</span>
-                  <span class="bg-blue-600 text-white font-bold text-[9px] px-2 py-0.5 rounded shadow">
-                    👈 Cole o link aqui
-                  </span>
-                </div>
-              </div>
+            <!-- Campo onde cola o link (Padrão limpo do Google com indicação discreta) -->
+            <div class="bg-slate-50 border border-blue-400 rounded-lg px-3 py-2 text-[11px] text-slate-700 font-mono flex items-center justify-between">
+              <span class="text-slate-400 italic">https://www.instagram.com/...</span>
+              <span class="text-[9px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">
+                Cole o link aqui
+              </span>
             </div>
           </div>
 
           <!-- Botão Oficial de Salvar no Rodapé -->
-          <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
             <span class="text-[10px] text-slate-400">Clique para confirmar:</span>
-            <!-- BOTÃO AZUL OFICIAL DO GOOGLE -->
+            
+            <!-- 3º CLIQUE EM SALVAR -->
             <div class="relative">
-              <span class="absolute -top-3.5 right-0 bg-amber-500 text-slate-950 font-black text-[8px] px-1.5 py-0.2 rounded shadow uppercase">
-                3º Toque 👉
+              <span class="absolute -top-3.5 right-0 bg-blue-600 text-white font-bold text-[8px] px-2 py-0.5 rounded-full shadow whitespace-nowrap">
+                3º Clique em 'Salvar'
               </span>
               <span class="inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-blue-600 text-white font-bold text-xs shadow-md shadow-blue-500/20">
                 <span>Salvar</span>
@@ -554,9 +572,75 @@
       return null;
     }
 
+    // Sanitiza usuário do Instagram garantindo minúsculo e apenas caracteres válidos
+    function sanitizeInstagramHandle(val) {
+      return (val || '')
+        .toLowerCase()
+        .trim()
+        .replace(/^https?:\/\/(www\.)?instagram\.com\//i, '')
+        .replace(/^@+/, '')
+        .replace(/[^a-z0-9._]/g, '');
+    }
+
+    // Copia texto de forma segura e síncrona com fallback robusto para iOS Safari
+    async function copyTextToClipboard(text) {
+      let copied = false;
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(text);
+          copied = true;
+        } catch (e) {
+          console.warn('Clipboard API falhou, usando fallback síncrono', e);
+        }
+      }
+      if (!copied) {
+        try {
+          const el = document.createElement('textarea');
+          el.value = text;
+          el.setAttribute('readonly', '');
+          el.style.position = 'fixed';
+          el.style.left = '-9999px';
+          el.style.fontSize = '16px';
+          document.body.appendChild(el);
+          el.focus();
+          el.select();
+          el.setSelectionRange(0, el.value.length);
+          copied = document.execCommand('copy');
+          document.body.removeChild(el);
+        } catch (e) {
+          console.error('execCommand copy falhou', e);
+          copied = false;
+        }
+      }
+      return copied;
+    }
+
+    // Feedback visual do botão de cópia
+    function setButtonCopiedState() {
+      const btn = document.getElementById('btn-copy-insta');
+      const btnText = document.getElementById('btn-copy-text');
+      const btnIcon = document.getElementById('btn-copy-icon');
+
+      btn.classList.remove('from-pink-600', 'to-rose-600', 'hover:from-pink-500', 'hover:to-rose-500', 'shadow-pink-600/20');
+      btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500', 'shadow-emerald-600/30');
+      btnText.innerText = '✅ Copiado!';
+      if (btnIcon) btnIcon.setAttribute('data-lucide', 'check');
+      lucide.createIcons();
+
+      showToast('Link copiado com sucesso! Agora abra o Google e cole.');
+
+      setTimeout(() => {
+        btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500', 'shadow-emerald-600/30');
+        btn.classList.add('from-pink-600', 'to-rose-600', 'hover:from-pink-500', 'hover:to-rose-500', 'shadow-pink-600/20');
+        btnText.innerText = 'Copiar Link do meu Instagram';
+        if (btnIcon) btnIcon.setAttribute('data-lucide', 'copy');
+        lucide.createIcons();
+      }, 3500);
+    }
+
     // Atualiza o estado do Instagram a partir do input
     function updateInstagramFromHandle(handle) {
-      let clean = (handle || '').trim().replace(/^@+/, '').replace(/^https?:\/\/(www\.)?instagram\.com\//, '').replace(/\/+$/, '');
+      const clean = sanitizeInstagramHandle(handle);
       if (clean) {
         currentBarber.instagram = `https://www.instagram.com/${clean}/`;
         document.getElementById('display-insta-url').innerText = currentBarber.instagram;
@@ -576,7 +660,51 @@
     }
 
     async function initPage() {
-      // 1. Carrega base de leads
+      // 1. Configura listener imediato de digitação do Instagram
+      const instaInput = document.getElementById('input-instagram-handle');
+      ['input', 'keyup', 'change', 'paste'].forEach(evtName => {
+        instaInput.addEventListener(evtName, (e) => {
+          setTimeout(() => {
+            const sanitized = sanitizeInstagramHandle(e.target.value);
+            if (e.target.value !== sanitized) {
+              e.target.value = sanitized;
+            }
+            updateInstagramFromHandle(sanitized);
+          }, 0);
+        });
+      });
+
+      // 2. Configura Ação de Copiar Instagram com leitura direta e feedback imediato
+      document.getElementById('btn-copy-insta').addEventListener('click', async () => {
+        let rawValue = (instaInput.value || '').trim();
+        let cleanHandle = sanitizeInstagramHandle(rawValue);
+
+        if (!cleanHandle && currentBarber.instagram) {
+          cleanHandle = sanitizeInstagramHandle(currentBarber.instagram);
+        }
+
+        if (!cleanHandle) {
+          instaInput.focus();
+          instaInput.parentElement.classList.add('ring-2', 'ring-amber-500');
+          setTimeout(() => instaInput.parentElement.classList.remove('ring-2', 'ring-amber-500'), 2000);
+          showToast('Digite o @ do seu Instagram acima!');
+          return;
+        }
+
+        // Garante valor minúsculo no input e sincroniza URL
+        instaInput.value = cleanHandle;
+        updateInstagramFromHandle(cleanHandle);
+
+        const urlToCopy = `https://www.instagram.com/${cleanHandle}/`;
+        const success = await copyTextToClipboard(urlToCopy);
+        if (success) {
+          setButtonCopiedState();
+        } else {
+          showToast('Link pronto! Selecione e copie acima.');
+        }
+      });
+
+      // 3. Carrega base de leads
       try {
         const res = await fetch('leads.json');
         if (res.ok) {
@@ -587,7 +715,7 @@
         console.warn('Erro ao carregar leads.json:', e);
       }
 
-      // 2. Resolve o lead pelo slug ou parâmetro
+      // 4. Resolve o lead pelo slug ou parâmetro
       const targetSlug = detectSlugFromUrl();
       const params = new URLSearchParams(window.location.search);
       const queryName = params.get('nome') || params.get('name');
@@ -634,33 +762,6 @@
         }, null);
       }
 
-      // Input listener de Instagram em tempo real
-      const instaInput = document.getElementById('input-instagram-handle');
-      instaInput.addEventListener('input', (e) => {
-        updateInstagramFromHandle(e.target.value);
-      });
-
-      // Configura Ação de Copiar Instagram
-      document.getElementById('btn-copy-insta').addEventListener('click', async () => {
-        if (!currentBarber.instagram) {
-          instaInput.focus();
-          showToast('Digite o @ do seu Instagram acima!');
-          return;
-        }
-        try {
-          await navigator.clipboard.writeText(currentBarber.instagram);
-          handleCopiedFeedback();
-        } catch {
-          const temp = document.createElement('input');
-          temp.value = currentBarber.instagram;
-          document.body.appendChild(temp);
-          temp.select();
-          document.execCommand('copy');
-          document.body.removeChild(temp);
-          handleCopiedFeedback();
-        }
-      });
-
       // Seletor dropdown (apenas para tela universal)
       const select = document.getElementById('barber-select');
       select.addEventListener('change', (e) => {
@@ -673,15 +774,6 @@
           showToast(`Carregado: ${lead.name}`);
         }
       });
-    }
-
-    function handleCopiedFeedback() {
-      const btnText = document.getElementById('btn-copy-text');
-      btnText.innerText = '✅ Link Copiado! Cole no Google';
-      showToast('Link do Instagram copiado com sucesso!');
-      setTimeout(() => {
-        btnText.innerText = 'Copiar Link do meu Instagram';
-      }, 3500);
     }
 
     // Carrega dados da barbearia no DOM
@@ -707,8 +799,9 @@
       if (currentBarber.instagram) {
         const match = currentBarber.instagram.match(/instagram\.com\/([^/?#]+)/i);
         const handle = match ? match[1] : currentBarber.instagram.replace(/^@/, '');
-        instaInput.value = handle;
-        updateInstagramFromHandle(handle);
+        const cleanHandle = sanitizeInstagramHandle(handle);
+        instaInput.value = cleanHandle;
+        updateInstagramFromHandle(cleanHandle);
       } else {
         instaInput.value = '';
         updateInstagramFromHandle('');
