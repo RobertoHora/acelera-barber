@@ -175,21 +175,21 @@
       </button>
     </section>
 
-    <!-- ETAPA 2: ABRIR O PAINEL DO GOOGLE (LAYOUT OFICIAL DO GOOGLE 1:1) -->
+    <!-- ETAPA 2: ATIVAÇÃO NO GOOGLE (FLUXO COMPLETO E CONTÍNUO) -->
     <section id="etapa-2" class="glass-card rounded-2xl p-5 space-y-4 border-slate-800 shadow-lg scroll-mt-6">
       <div class="flex items-center gap-3">
         <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20">2</span>
         <div>
           <span class="text-[10px] uppercase font-bold tracking-wider text-blue-400">Segunda Ação</span>
-          <h2 class="text-lg font-bold text-white leading-tight">Abra o seu Perfil no Google</h2>
+          <h2 class="text-lg font-bold text-white leading-tight">Conecte o Instagram no seu Google</h2>
         </div>
       </div>
 
       <p class="text-xs text-slate-300 leading-relaxed">
-        Você não precisa de aplicativo nenhum. Ao tocar no botão abaixo, o Google vai abrir direto a página de pesquisa onde você gerencia a sua barbearia.
+        Siga o roteiro visual abaixo e toque no botão azul ao final para abrir o seu perfil no Google e colar o link:
       </p>
 
-      <!-- MOCKUP OFICIAL 1:1 DO GOOGLE SEARCH MOBILE -->
+      <!-- MOCKUP 1: PESQUISA GOOGLE (EDITAR PERFIL) -->
       <div class="rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-white text-slate-900 google-font">
         
         <!-- Barra de Busca do Google Mobile -->
@@ -253,28 +253,7 @@
         </div>
       </div>
 
-      <!-- BOTÃO DE AÇÃO DIRETO DA ETAPA 2 -->
-      <a id="btn-open-google" href="https://www.google.com/search?q=meu+negocio" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 active:scale-[0.98] text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-blue-600/30">
-        <i data-lucide="external-link" class="w-4 h-4"></i>
-        <span>Abrir meu Perfil no Google Agora</span>
-      </a>
-    </section>
-
-    <!-- ETAPA 3: ONDE COLAR O INSTAGRAM (LAYOUT OFICIAL DO GOOGLE 1:1) -->
-    <section class="glass-card rounded-2xl p-5 space-y-4 border-slate-800 shadow-lg">
-      <div class="flex items-center gap-3">
-        <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20">3</span>
-        <div>
-          <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-400">Terceira Ação</span>
-          <h2 class="text-lg font-bold text-white leading-tight">Onde colar o link no Google</h2>
-        </div>
-      </div>
-
-      <p class="text-xs text-slate-300 leading-relaxed">
-        Depois de tocar em <b class="text-white">"Editar perfil"</b>, a tela do Google vai abrir assim no seu celular. Siga o passo a passo:
-      </p>
-
-      <!-- MOCKUP OFICIAL 1:1 DA TELA DE EDIÇÃO DO GOOGLE MEU NEGÓCIO -->
+      <!-- MOCKUP 2: ONDE COLAR O INSTAGRAM (INFORMAÇÕES COMERCIAIS) -->
       <div class="rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl bg-white text-slate-900 google-font">
         
         <!-- Cabeçalho Oficial do Google -->
@@ -347,6 +326,13 @@
         </div>
       </div>
 
+      <!-- BOTÃO DE AÇÃO DIRETO NO FINAL DO ROTEIRO -->
+      <a id="btn-open-google" href="https://www.google.com/search?q=meu+negocio" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 py-4 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 active:scale-[0.98] text-white font-bold text-xs sm:text-sm transition-all shadow-lg shadow-blue-600/30">
+        <i data-lucide="external-link" class="w-4 h-4"></i>
+        <span>Abrir meu Perfil no Google Agora</span>
+      </a>
+
+      <!-- Feedback / Confirmação -->
       <div class="bg-emerald-950/40 border border-emerald-500/30 rounded-xl p-3 flex items-start gap-2.5">
         <i data-lucide="sparkles" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
         <p class="text-xs text-emerald-300 leading-relaxed">
@@ -355,12 +341,12 @@
       </div>
     </section>
 
-    <!-- ETAPA 4: SUA PLAQUINHA OFICIAL GOOGLE COM QR CODE -->
+    <!-- ETAPA 3: SUA PLAQUINHA OFICIAL GOOGLE COM QR CODE -->
     <section class="glass-card rounded-2xl p-5 space-y-4 border-slate-800 shadow-lg">
       <div class="flex items-center gap-3">
-        <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20">4</span>
+        <span class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-black text-sm flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20">3</span>
         <div>
-          <span class="text-[10px] uppercase font-bold tracking-wider text-amber-400">Quarta Ação</span>
+          <span class="text-[10px] uppercase font-bold tracking-wider text-amber-400">Terceira Ação</span>
           <h2 class="text-lg font-bold text-white leading-tight">Sua Plaquinha Oficial de Balcão</h2>
         </div>
       </div>
@@ -623,10 +609,6 @@
       const clean = sanitizeInstagramHandle(handle);
       if (clean) {
         currentBarber.instagram = `https://www.instagram.com/${clean}/`;
-        // Salva preferência localmente por barbearia
-        if (currentBarber.slug) {
-          localStorage.setItem(`insta_${currentBarber.slug}`, clean);
-        }
       } else {
         currentBarber.instagram = '';
       }
@@ -767,12 +749,6 @@
         reviewUrl: lead.reviewUrl || `https://search.google.com/local/writereview?placeid=${lead.placeId || lead.id || 'ChIJJZ24PaKnsQARnf-ij6zHfIU'}`,
         placeId: lead.placeId || lead.id || ''
       };
-
-      // Recupera Instagram salvo no localStorage se existir
-      if (!currentBarber.instagram && currentBarber.slug) {
-        const saved = localStorage.getItem(`insta_${currentBarber.slug}`);
-        if (saved) currentBarber.instagram = `https://www.instagram.com/${saved}/`;
-      }
 
       // Preenche o input do Instagram
       const instaInput = document.getElementById('input-instagram-handle');
