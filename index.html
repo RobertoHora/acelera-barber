@@ -1033,6 +1033,24 @@
               class="w-full bg-[#242422] border border-[#4A4A48] rounded-xl px-3 py-2 text-white focus:outline-none focus:border-white lowercase"
             />
           </div>
+
+          <!-- Edição de Cortes e Preços -->
+          <div class="space-y-2 pt-2 border-t border-[#383735]">
+            <div class="flex items-center justify-between">
+              <label class="block font-semibold text-[#D4D4D8]">Serviços & Preços (Catálogo Google):</label>
+              <button 
+                type="button" 
+                onclick="addNewCutInModal()"
+                class="text-[11px] text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 cursor-pointer"
+              >
+                <i data-lucide="plus" class="w-3 h-3"></i>
+                Adicionar
+              </button>
+            </div>
+            <div id="modal-cuts-list" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+              <!-- Renderizado dinamicamente via renderModalCutsList() -->
+            </div>
+          </div>
         </div>
 
         <div class="pt-2 flex items-center justify-end gap-2 border-t border-[#383735]">
@@ -1620,8 +1638,18 @@
     async function copyWaBookingLink() {
       const waLink = generateWhatsAppBookingLink();
       const ok = await copyTextToClipboard(waLink);
+      const btn = document.getElementById('btn-copy-wa-link');
       if (ok) {
         showToast('Link do WhatsApp copiado!');
+        if (btn) {
+          const originalHtml = btn.innerHTML;
+          btn.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i><span>Copiado!</span>';
+          lucide.createIcons();
+          setTimeout(() => {
+            btn.innerHTML = originalHtml;
+            lucide.createIcons();
+          }, 1500);
+        }
       } else {
         showToast('Não foi possível copiar o link.');
       }
@@ -2299,6 +2327,82 @@
     // =========================================================================
     // MODAIS DE EDIÇÃO E INTENÇÃO INFINITEPAY (INFINITEPAY_MANUAL)
     // =========================================================================
+    let modalCutsBuffer = [];
+
+    function renderModalCutsList() {
+      const container = document.getElementById('modal-cuts-list');
+      if (!container) return;
+
+      if (!modalCutsBuffer || modalCutsBuffer.length === 0) {
+        modalCutsBuffer = JSON.parse(JSON.stringify(CURATED_BARBER_CUTS));
+      }
+
+      let html = '';
+      modalCutsBuffer.forEach((cut, idx) => {
+        const safeTitle = (cut.title || '').replace(/"/g, '&quot;');
+        const safePrice = (cut.price || 'R$ 35,00').replace(/"/g, '&quot;');
+
+        html += `
+          <div class="flex items-center gap-1.5 bg-[#1E1E1C] p-2 rounded-xl border border-[#383735]">
+            <input 
+              id="cut-title-${idx}" 
+              type="text" 
+              value="${safeTitle}" 
+              placeholder="Nome do serviço" 
+              class="w-full bg-[#242422] border border-[#4A4A48] rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-white"
+            />
+            <input 
+              id="cut-price-${idx}" 
+              type="text" 
+              value="${safePrice}" 
+              placeholder="R$ 0,00" 
+              class="w-24 shrink-0 bg-[#242422] border border-[#4A4A48] rounded-lg px-2 py-1 text-xs text-amber-300 font-semibold focus:outline-none focus:border-white text-right"
+            />
+            <button 
+              type="button" 
+              onclick="removeCutInModal(${idx})" 
+              title="Remover serviço" 
+              class="p-1 text-[#71717A] hover:text-rose-400 shrink-0 cursor-pointer"
+            >
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    function addNewCutInModal() {
+      // Coleta valores atuais dos inputs antes de adicionar novo
+      modalCutsBuffer.forEach((cut, idx) => {
+        const titleEl = document.getElementById(`cut-title-${idx}`);
+        const priceEl = document.getElementById(`cut-price-${idx}`);
+        if (titleEl) cut.title = titleEl.value;
+        if (priceEl) cut.price = priceEl.value;
+      });
+
+      modalCutsBuffer.push({
+        id: 'cut_' + Date.now(),
+        imageUrl: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=600&q=80',
+        title: 'Novo Serviço',
+        price: 'R$ 35,00',
+        caption: 'Serviço profissional de barbearia com acabamento impecável.'
+      });
+
+      renderModalCutsList();
+    }
+
+    function removeCutInModal(idx) {
+      if (modalCutsBuffer.length <= 1) {
+        showToast('Mantenha pelo menos um serviço no catálogo.');
+        return;
+      }
+      modalCutsBuffer.splice(idx, 1);
+      renderModalCutsList();
+    }
+
     function openEditBarberModal() {
       const modal = document.getElementById('edit-barber-modal');
       const inputName = document.getElementById('modal-input-name');
@@ -2315,6 +2419,9 @@
         const clean = sanitizeInstagramHandle(currentBarber.instagram);
         inputInsta.value = clean;
       }
+
+      modalCutsBuffer = JSON.parse(JSON.stringify(currentBarber.cuts || CURATED_BARBER_CUTS));
+      renderModalCutsList();
 
       if (modal) modal.classList.remove('hidden');
     }
@@ -2342,6 +2449,18 @@
         }
         const instaInput = document.getElementById('input-instagram-handle');
         if (instaInput) instaInput.value = clean;
+      }
+
+      // Salva cortes editados do modal
+      if (modalCutsBuffer && modalCutsBuffer.length > 0) {
+        modalCutsBuffer.forEach((cut, idx) => {
+          const titleEl = document.getElementById(`cut-title-${idx}`);
+          const priceEl = document.getElementById(`cut-price-${idx}`);
+          if (titleEl && titleEl.value.trim()) cut.title = titleEl.value.trim();
+          if (priceEl && priceEl.value.trim()) cut.price = priceEl.value.trim();
+        });
+        currentBarber.cuts = JSON.parse(JSON.stringify(modalCutsBuffer));
+        renderProductPhotos(currentBarber.cuts);
       }
 
       updateDisplayTexts();
@@ -2418,6 +2537,7 @@
           whatsapp: currentBarber.whatsapp,
           hours: currentBarber.hours,
           instagram: currentBarber.instagram,
+          cuts: currentBarber.cuts,
           leadStage: currentBarber.leadStage,
           completedSteps: Array.from(completedSteps),
           actions: currentBarber.actions,
@@ -2440,6 +2560,9 @@
           if (draft.whatsapp) currentBarber.whatsapp = draft.whatsapp;
           if (draft.hours) currentBarber.hours = draft.hours;
           if (draft.instagram && !currentBarber.instagram) currentBarber.instagram = draft.instagram;
+          if (draft.cuts && Array.isArray(draft.cuts) && draft.cuts.length > 0) {
+            currentBarber.cuts = draft.cuts;
+          }
           if (draft.leadStage) currentBarber.leadStage = draft.leadStage;
           if (Array.isArray(draft.completedSteps)) {
             draft.completedSteps.forEach(s => completedSteps.add(s));
