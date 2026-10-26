@@ -176,7 +176,7 @@ function AceleraBarberApp() {
 
 export default function HomePage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#19181D] flex items-center justify-center text-[#A1A1AA] text-xs">Carregando Acelera Barber...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#19181D] flex items-center justify-center text-[#A1A1AA] text-xs">Carregando Eleva ORC...</div>}>
       <AceleraBarberApp />
     </Suspense>
   );

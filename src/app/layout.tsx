@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Acelera Barber • Guia de Presença Digital e Google Maps',
+  title: 'Eleva ORC • Guia de Presença Digital e Google Maps',
   description:
     'Diagnóstico de presença digital, catálogo de serviços e display para avaliações no Google Maps para barbearias.',
   icons: {

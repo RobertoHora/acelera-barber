@@ -17,7 +17,7 @@ export default function Footer({ onOpenLegal }: FooterProps) {
             AB
           </div>
           <div>
-            <p className="font-bold text-white text-xs sm:text-sm">Acelera Barber</p>
+            <p className="font-bold text-white text-xs sm:text-sm">Eleva ORC</p>
             <p className="text-[10px] text-[#71717A]">
               Guia de Presença Digital para Barbearias de Governador Valadares • MG
             </p>
@@ -53,7 +53,7 @@ export default function Footer({ onOpenLegal }: FooterProps) {
 
         {/* Copyright */}
         <p className="text-[11px] text-[#71717A]">
-          © {new Date().getFullYear()} Acelera Barber. Todos os direitos reservados.
+          © {new Date().getFullYear()} Eleva ORC. Todos os direitos reservados.
         </p>
       </div>
     </footer>

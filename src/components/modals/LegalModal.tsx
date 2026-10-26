@@ -32,14 +32,14 @@ export default function LegalModal({ isOpen, onClose }: LegalModalProps) {
           <section className="space-y-1">
             <h4 className="font-semibold text-white text-xs">1. Natureza do Serviço</h4>
             <p className="text-[#A1A1AA]">
-              O Acelera Barber é um guia operacional independente de presença digital e fornecimento de materiais gráficos digitais para barbearias. A ferramenta funciona no modelo assistido (<code className="text-amber-300">MANUAL_ASSISTED</code>), fornecendo orientações e arquivos prontos para aplicação manual pelo próprio estabelecimento ou com auxílio do nosso suporte.
+              O Eleva ORC é um guia operacional independente de presença digital e fornecimento de materiais gráficos digitais para barbearias. A ferramenta funciona no modelo assistido (<code className="text-amber-300">MANUAL_ASSISTED</code>), fornecendo orientações e arquivos prontos para aplicação manual pelo próprio estabelecimento ou com auxílio do nosso suporte.
             </p>
           </section>
 
           <section className="space-y-1">
             <h4 className="font-semibold text-white text-xs">2. Isenção de Vínculo com Terceiros</h4>
             <p className="text-[#A1A1AA]">
-              O Acelera Barber é um serviço autônomo e <strong>não possui nenhum vínculo, afiliação, representação oficial, parceria ou endosso</strong> com o Google LLC (Google Meu Negócio/Maps) ou com a Meta Platforms, Inc. (Instagram/WhatsApp). Todos os nomes de marcas e logotipos mencionados pertencem a seus respectivos titulares.
+              O Eleva ORC é um serviço autônomo e <strong>não possui nenhum vínculo, afiliação, representação oficial, parceria ou endosso</strong> com o Google LLC (Google Meu Negócio/Maps) ou com a Meta Platforms, Inc. (Instagram/WhatsApp). Todos os nomes de marcas e logotipos mencionados pertencem a seus respectivos titulares.
             </p>
           </section>
 

@@ -20,7 +20,7 @@ export default function Header({ onAnalyzeClick, shopName }: HeaderProps) {
           <div>
             <div className="flex items-center gap-1.5">
               <span className="font-extrabold text-sm sm:text-base text-white tracking-tight">
-                Acelera Barber
+                Eleva ORC
               </span>
               <span className="text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/20">
                 PRO

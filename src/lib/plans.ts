@@ -55,5 +55,5 @@ export const INFINITEPAY_CONFIG = {
     complete: '',   // Configurável: URL da loja InfinitePay para R$ 57 (ex: https://loja.infinitepay.io/...)
   },
   supportPhone: '5533999482287',
-  supportName: 'Suporte Acelera Barber',
+  supportName: 'Suporte Eleva ORC',
 };

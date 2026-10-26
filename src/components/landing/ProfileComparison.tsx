@@ -21,7 +21,7 @@ export default function ProfileComparison({
       {/* Container 16:10 aspect */}
       <div className="relative aspect-[16/11] sm:aspect-[16/10] w-full overflow-hidden">
         
-        {/* LADO DEPOIS (Direita / Fundo total) - Perfil Otimizado Acelera Barber */}
+        {/* LADO DEPOIS (Direita / Fundo total) - Perfil Otimizado Eleva ORC */}
         <div className="absolute inset-0 bg-[#FFFFFF] text-[#202124] p-4 sm:p-6 flex flex-col justify-between">
           <div className="space-y-3">
             {/* Header Google Maps Otimizado */}
@@ -149,7 +149,7 @@ export default function ProfileComparison({
             Antes • Perfil Vazio
           </span>
           <span className="rounded-full bg-emerald-600/90 border border-emerald-400/40 px-2.5 py-1 text-white backdrop-blur-md shadow-md">
-            Depois • Acelera Barber
+            Depois • Eleva ORC
           </span>
         </div>
 

@@ -22,7 +22,7 @@ export default function PricingSection({ onSelectPlan }: PricingSectionProps) {
           </p>
           <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-tight">
             Consultoria tradicional: R$ 800+.{' '}
-            <span className="text-amber-400">Acelera Barber: a partir de R$ 37 taxa única.</span>
+            <span className="text-amber-400">Eleva ORC: a partir de R$ 37 taxa única.</span>
           </h2>
         </div>
 

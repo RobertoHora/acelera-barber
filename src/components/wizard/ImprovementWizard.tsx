@@ -176,7 +176,7 @@ export default function ImprovementWizard({
 
     ctx.fillStyle = '#64748B';
     ctx.font = '600 7px sans-serif';
-    ctx.fillText('DISPLAY DE BALCÃO • ACELERA BARBER', width / 2, 360);
+    ctx.fillText('DISPLAY DE BALCÃO • ELEVA ORC', width / 2, 360);
   }, [currentStep, lead, wifiSsid, wifiPassword]);
 
   // Função para baixar a plaquinha em alta resolução (1240 x 1748 @ 300 DPI)
@@ -273,7 +273,7 @@ export default function ImprovementWizard({
 
     ctx.fillStyle = '#64748B';
     ctx.font = '500 24px sans-serif';
-    ctx.fillText('DISPLAY DE BALCÃO A6 • ACELERA BARBER • GOV. VALADARES', width / 2, 1610);
+    ctx.fillText('DISPLAY DE BALCÃO A6 • ELEVA ORC • GOV. VALADARES', width / 2, 1610);
 
     // Download
     const safeSlug = (lead.slug || lead.name).toLowerCase().replace(/[^a-z0-9]/g, '_').slice(0, 20);
