@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary: #19181D;
+  --card-bg: #2B2B29;
+  --card-inner: #242422;
+  --border-color: #3D3C3A;
+  --accent-light: #EFECE5;
+  --text-muted: #A1A1AA;
+}
+
+body {
+  background-color: #19181D;
+  color: #FFFFFF;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Glassmorphism matte */
+.orc-glass {
+  background: rgba(43, 43, 41, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(61, 60, 58, 0.8);
+}
+
+.orc-glass-subtle {
+  background: rgba(36, 36, 34, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(61, 60, 58, 0.5);
+}
+
+/* Scrollbar dark */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3D3C3A;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-track {
+  background: #19181D;
+}
