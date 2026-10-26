@@ -696,6 +696,28 @@
             </p>
           </div>
 
+          <!-- DICAS PRÁTICAS DE IMPRESSÃO (100% DIGITAL) -->
+          <div class="bg-[#1E1E1C] border border-[#383735] rounded-2xl p-3.5 max-w-md mx-auto text-left space-y-2">
+            <div class="flex items-center gap-1.5 text-xs font-semibold text-white">
+              <i data-lucide="printer" class="w-4 h-4 text-amber-400"></i>
+              <span>Dicas para impressão com acabamento profissional</span>
+            </div>
+            <ul class="text-[11px] text-[#A1A1AA] space-y-1.5 leading-relaxed">
+              <li class="flex items-start gap-1.5">
+                <span class="text-amber-400 font-bold">•</span>
+                <span><strong class="text-[#D4D4D8]">Papel recomendado:</strong> Papel Fotográfico Glossy ou Fosco tamanho A6 (10x15cm), com gramatura de 180g a 230g.</span>
+              </li>
+              <li class="flex items-start gap-1.5">
+                <span class="text-amber-400 font-bold">•</span>
+                <span><strong class="text-[#D4D4D8]">Onde imprimir:</strong> Em qualquer papelaria ou gráfica rápida da sua região (custo médio entre R$ 2 e R$ 4).</span>
+              </li>
+              <li class="flex items-start gap-1.5">
+                <span class="text-amber-400 font-bold">•</span>
+                <span><strong class="text-[#D4D4D8]">Exposição no balcão:</strong> Coloque em um display acrílico de mesa (tipo T invertido ou L) perto do caixa ou do espelho principal.</span>
+              </li>
+            </ul>
+          </div>
+
           <!-- Botões de Download -->
           <div class="space-y-2 pt-1 max-w-md mx-auto">
             <button 
@@ -854,7 +876,7 @@
                 <h3 class="text-sm font-bold text-white">Completo</h3>
                 <p class="text-[11px] text-[#A1A1AA]">Google Pro + Kit Instagram</p>
               </div>
-              <p class="text-lg font-black text-white">R$ 67 <span class="text-[10px] font-normal text-[#A1A1AA]">(único)</span></p>
+              <p class="text-lg font-black text-white">R$ 57 <span class="text-[10px] font-normal text-[#A1A1AA]">(único)</span></p>
               <ul class="text-[11px] text-[#D4D4D8] space-y-1.5 pt-1">
                 <li class="flex items-start gap-1.5">
                   <i data-lucide="check" class="w-3.5 h-3.5 text-purple-400 shrink-0 mt-0.5"></i>
@@ -1072,13 +1094,13 @@
       </div>
     </div>
 
-    <!-- MODAL DE INTENÇÃO DE COBRANÇA INFINITEPAY (INFINITEPAY_MANUAL) -->
+    <!-- MODAL DE INTENÇÃO DE COBRANÇA INFINITEPAY (INFINITEPAY_MANUAL - ESTILO ESTÚDIO ORC) -->
     <div id="payment-intent-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs hidden flex items-center justify-center p-4">
-      <div class="bg-[#2B2B29] border border-[#3D3C3A] rounded-2xl p-5 max-w-md w-full space-y-4 text-white">
+      <div class="bg-[#2B2B29] border border-[#3D3C3A] rounded-2xl p-5 max-w-md w-full space-y-4 text-white shadow-2xl">
         <div class="flex items-center justify-between border-b border-[#383735] pb-2.5">
           <h3 class="text-sm font-bold text-white flex items-center gap-1.5">
-            <i data-lucide="shield" class="w-4 h-4 text-amber-400"></i>
-            Solicitar Acesso • InfinitePay
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+            Ativação Segura • InfinitePay
           </h3>
           <button type="button" onclick="closePaymentIntentModal()" class="text-[#A1A1AA] hover:text-white">
             <i data-lucide="x" class="w-4 h-4"></i>
@@ -1092,22 +1114,25 @@
               <span id="intent-plan-name" class="text-sm font-bold text-white">Google Pro</span>
               <span id="intent-plan-price" class="text-sm font-black text-amber-400">R$ 37</span>
             </div>
+            <p id="intent-plan-desc" class="text-[11px] text-[#A1A1AA]">
+              Liberação assistida da plaquinha de balcão e catálogo Google.
+            </p>
           </div>
 
           <div class="space-y-2 text-[11px] bg-[#1E1E1C] border border-[#383735] rounded-xl p-3">
-            <p class="font-semibold text-white">Como funciona o pagamento seguro:</p>
-            <ol class="list-decimal list-inside space-y-1 text-[#A1A1AA]">
-              <li>Nossa equipe prepara um link oficial exclusivo da InfinitePay para sua barbearia.</li>
-              <li>Você paga com segurança via Pix ou Cartão no checkout hospedado.</li>
-              <li>Um operador confere o comprovante manualmente e libera seus recursos adicionais.</li>
+            <p class="font-semibold text-white">Como funciona o pagamento seguro (Estilo Estúdio ORC):</p>
+            <ol class="list-decimal list-inside space-y-1.5 text-[#A1A1AA]">
+              <li><strong class="text-[#D4D4D8]">Pagamento oficial:</strong> Pague via Pix ou Cartão no checkout seguro InfinitePay.</li>
+              <li><strong class="text-[#D4D4D8]">Envio do comprovante:</strong> Envie o comprovante diretamente no WhatsApp do nosso suporte.</li>
+              <li><strong class="text-[#D4D4D8]">Liberação imediata:</strong> O operador confere os dados manualmente e envia seu material pronto.</li>
             </ol>
             <p class="text-[10px] text-[#71717A] pt-1">
-              *Nenhum redirecionamento automático libera o acesso sem conferência humana.
+              *Garantia incondicional de 7 dias com estorno imediato se não ficar satisfeito.
             </p>
           </div>
 
           <div class="space-y-1">
-            <label class="block font-semibold text-[#D4D4D8]">Seu WhatsApp para envio do link oficial:</label>
+            <label class="block font-semibold text-[#D4D4D8]">WhatsApp da sua barbearia:</label>
             <input 
               id="intent-input-whatsapp" 
               type="text" 
@@ -1118,20 +1143,102 @@
         </div>
 
         <div class="pt-2 flex flex-col gap-2">
+          <!-- Botão 1: Pagar na InfinitePay (ou solicitar link no WhatsApp se vazio) -->
+          <button 
+            id="btn-intent-pay-infinitepay"
+            type="button" 
+            onclick="handleInfinitePayClick()"
+            class="w-full py-3 px-4 bg-[#EFECE5] hover:bg-[#E2DED6] text-[#111111] font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-[0.99]"
+          >
+            <i data-lucide="external-link" class="w-4 h-4 text-emerald-600"></i>
+            <span id="btn-intent-pay-text">Pagar com Pix ou Cartão na InfinitePay</span>
+          </button>
+
+          <!-- Botão 2: Já paguei / Enviar Comprovante no WhatsApp -->
           <button 
             type="button" 
-            onclick="confirmPaymentIntent()"
-            class="w-full py-3 px-4 bg-[#EFECE5] hover:bg-[#E2DED6] text-[#111111] font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs"
+            onclick="sendReceiptProofWhatsApp()"
+            class="w-full py-2.5 px-4 bg-[#242422] hover:bg-[#2F2F2D] text-[#D4D4D8] border border-[#454441] font-medium rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
           >
-            <i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i>
-            <span>Confirmar Interesse e Solicitar Link via WhatsApp</span>
+            <i data-lucide="message-circle" class="w-4 h-4 text-emerald-400"></i>
+            <span>Já paguei: Enviar Comprovante no WhatsApp</span>
           </button>
+
           <button 
             type="button" 
             onclick="closePaymentIntentModal()"
-            class="text-xs text-[#A1A1AA] hover:text-white py-1"
+            class="text-xs text-[#A1A1AA] hover:text-white py-1 text-center"
           >
-            Cancelar
+            Voltar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE TERMOS DE USO & POLÍTICA DE PRIVACIDADE -->
+    <div id="legal-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs hidden flex items-center justify-center p-4">
+      <div class="bg-[#2B2B29] border border-[#3D3C3A] rounded-2xl p-5 sm:p-6 max-w-lg w-full max-h-[85vh] flex flex-col space-y-4 text-white shadow-2xl">
+        <div class="flex items-center justify-between border-b border-[#383735] pb-2.5 shrink-0">
+          <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-1.5">
+            <i data-lucide="file-text" class="w-4 h-4 text-amber-400"></i>
+            Termos de Uso & Política de Privacidade
+          </h3>
+          <button type="button" onclick="closeLegalModal()" class="text-[#A1A1AA] hover:text-white">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="overflow-y-auto space-y-3.5 text-xs text-[#D4D4D8] pr-1 leading-relaxed">
+          <section class="space-y-1">
+            <h4 class="font-semibold text-white text-xs">1. Natureza do Serviço</h4>
+            <p class="text-[#A1A1AA]">
+              O Acelera Barber é um guia operacional independente de presença digital e fornecimento de materiais gráficos digitais para barbearias. A ferramenta funciona no modelo assistido (<code class="text-amber-300">MANUAL_ASSISTED</code>), fornecendo orientações e arquivos prontos para aplicação manual pelo próprio estabelecimento ou com auxílio do nosso suporte.
+            </p>
+          </section>
+
+          <section class="space-y-1">
+            <h4 class="font-semibold text-white text-xs">2. Isenção de Vínculo com Terceiros</h4>
+            <p class="text-[#A1A1AA]">
+              O Acelera Barber é um serviço autônomo e <strong>não possui nenhum vínculo, afiliação, representação oficial, parceria ou endosso</strong> com o Google LLC (Google Meu Negócio/Maps) ou com a Meta Platforms, Inc. (Instagram/WhatsApp). Todos os nomes de marcas e logotipos mencionados pertencem a seus respectivos titulares.
+            </p>
+          </section>
+
+          <section class="space-y-1">
+            <h4 class="font-semibold text-white text-xs">3. Diretrizes de Avaliações Éticas (Sem Review Gating)</h4>
+            <p class="text-[#A1A1AA]">
+              Em total conformidade com as políticas do Google contra indução de notas, a plaquinha gerada contém mensagem rigorosamente neutra: <em>"Conte como foi sua experiência no Google"</em>. Não praticamos nem incentivamos filtragem de avaliações ("review gating"), nem promessas de notas artificiais ou induzidas.
+            </p>
+          </section>
+
+          <section class="space-y-1">
+            <h4 class="font-semibold text-white text-xs">4. Privacidade e Segurança de Dados (LGPD)</h4>
+            <p class="text-[#A1A1AA]">
+              Respeitamos a Lei Geral de Proteção de Dados (LGPD). Todos os dados preenchidos no diagnóstico e no formulário são mantidos localmente no navegador (LocalStorage) e não são comercializados ou compartilhados com terceiros. Nenhuma senha de rede Wi-Fi é registrada ou persistida externamente.
+            </p>
+          </section>
+
+          <section class="space-y-1">
+            <h4 class="font-semibold text-white text-xs">5. Garantia e Política de Reembolso</h4>
+            <p class="text-[#A1A1AA]">
+              Conforme o Artigo 49 do Código de Defesa do Consumidor, garantimos o direito de arrependimento em até 7 dias corridos após a contratação de qualquer plano assistido. Para solicitar reembolso integral, basta enviar uma mensagem ao nosso suporte no WhatsApp. O estorno será emitido via InfinitePay ou Pix.
+            </p>
+          </section>
+
+          <section class="space-y-1">
+            <h4 class="font-semibold text-white text-xs">6. Suporte e Contato</h4>
+            <p class="text-[#A1A1AA]">
+              Para dúvidas operacionais, solicitações de suporte ou reembolso, entre em contato pelo WhatsApp: <strong class="text-white">(33) 99948-2287</strong>.
+            </p>
+          </section>
+        </div>
+
+        <div class="pt-2 border-t border-[#383735] shrink-0">
+          <button 
+            type="button" 
+            onclick="closeLegalModal()" 
+            class="w-full py-2.5 px-4 bg-[#242422] hover:bg-[#2F2F2D] text-white border border-[#454441] rounded-xl text-xs font-semibold transition-all cursor-pointer"
+          >
+            Entendido e Fechar
           </button>
         </div>
       </div>
@@ -1153,6 +1260,15 @@
       </p>
       <p class="text-[11px] text-[#71717A]/80">
         Acelera Barber • Guia de Presença Digital para Barbearias de Governador Valadares • MG
+      </p>
+      <p class="text-[10px] text-[#71717A]">
+        <button 
+          type="button" 
+          onclick="openLegalModal()" 
+          class="underline hover:text-[#D4D4D8] transition-colors cursor-pointer"
+        >
+          Termos de Uso & Política de Privacidade
+        </button>
       </p>
     </footer>
 
@@ -1216,8 +1332,8 @@
       complete: {
         id: 'complete',
         name: 'Completo',
-        price: 67,
-        priceFormatted: 'R$ 67',
+        price: 57,
+        priceFormatted: 'R$ 57',
         features: [
           'Tudo do Plano Google Pro',
           '4 Capas de Destaques para Instagram',
@@ -2472,17 +2588,44 @@
       showToast('Dados da barbearia atualizados!');
     }
 
+    // =========================================================================
+    // CONFIGURAÇÃO INFINITEPAY MANUAL (Estilo Estúdio ORC - Doc 06)
+    // Links oficiais configuráveis por plano (se vazio, abre suporte no WhatsApp)
+    // =========================================================================
+    const INFINITEPAY_CONFIG = {
+      links: {
+        google_pro: '', // Configurável: URL da loja InfinitePay para R$ 37 (ex: https://loja.infinitepay.io/...)
+        complete: ''    // Configurável: URL da loja InfinitePay para R$ 57 (ex: https://loja.infinitepay.io/...)
+      },
+      supportPhone: '5533999482287',
+      supportName: 'Suporte Acelera Barber'
+    };
+
     function openPaymentIntentModal(planId) {
       selectedPlanForCheckout = planId || 'google_pro';
       const config = PLANS_CONFIG[selectedPlanForCheckout] || PLANS_CONFIG.google_pro;
       const modal = document.getElementById('payment-intent-modal');
       const nameEl = document.getElementById('intent-plan-name');
       const priceEl = document.getElementById('intent-plan-price');
+      const descEl = document.getElementById('intent-plan-desc');
       const waInput = document.getElementById('intent-input-whatsapp');
+      const payBtnText = document.getElementById('btn-intent-pay-text');
 
       if (nameEl) nameEl.innerText = config.name;
       if (priceEl) priceEl.innerText = config.priceFormatted;
+      if (descEl) {
+        descEl.innerText = config.id === 'complete' 
+          ? 'Tudo do Google Pro + 4 Capas de Destaques e Kit Instagram'
+          : 'Liberação assistida da plaquinha de balcão e catálogo Google.';
+      }
       if (waInput) waInput.value = currentBarber.whatsapp || '';
+
+      const targetLink = INFINITEPAY_CONFIG.links[config.id];
+      if (payBtnText) {
+        payBtnText.innerText = targetLink 
+          ? `Pagar ${config.priceFormatted} na InfinitePay`
+          : `Solicitar Link de ${config.priceFormatted} no WhatsApp`;
+      }
 
       if (modal) modal.classList.remove('hidden');
     }
@@ -2492,19 +2635,20 @@
       if (modal) modal.classList.add('hidden');
     }
 
-    function confirmPaymentIntent() {
+    function handleInfinitePayClick() {
       const config = PLANS_CONFIG[selectedPlanForCheckout] || PLANS_CONFIG.google_pro;
       const waInput = document.getElementById('intent-input-whatsapp');
       const clientPhone = (waInput ? waInput.value : currentBarber.whatsapp || '').trim();
+      const targetLink = INFINITEPAY_CONFIG.links[config.id];
 
-      // Registra intenção local não sensível (Doc 06 - INFINITEPAY_MANUAL)
+      // Salva intenção de compra não sensível (Doc 06 - INFINITEPAY_MANUAL)
       const intentRecord = {
         planId: config.id,
         planName: config.name,
         price: config.price,
         businessName: currentBarber.name,
         clientPhone,
-        status: 'AWAITING_PAYMENT_LINK',
+        status: targetLink ? 'PAYMENT_LINK_OPENED' : 'AWAITING_PAYMENT_LINK',
         createdAt: new Date().toISOString()
       };
 
@@ -2517,15 +2661,61 @@
       currentBarber.leadStage = LEAD_STAGES.INTEREST_REGISTERED;
       saveNonSensitiveProfile();
 
-      closePaymentIntentModal();
-      showToast('Intenção registrada! Abrindo suporte via WhatsApp...');
+      if (targetLink && targetLink.startsWith('https://')) {
+        window.open(targetLink, '_blank', 'noopener,noreferrer');
+        showToast('Abrindo checkout oficial seguro InfinitePay...');
+      } else {
+        const msg = encodeURIComponent(`Olá! Quero ativar o plano ${config.name} (${config.priceFormatted}) para a barbearia ${currentBarber.name}. Podem me enviar o link oficial da InfinitePay?`);
+        const supportUrl = `https://wa.me/${INFINITEPAY_CONFIG.supportPhone}?text=${msg}`;
+        window.open(supportUrl, '_blank', 'noopener,noreferrer');
+        showToast('Abrindo suporte via WhatsApp para envio do link...');
+      }
+    }
 
-      // Monta mensagem para solicitação do link oficial da InfinitePay
-      const msg = encodeURIComponent(`Olá! Tenho interesse em ativar o plano ${config.name} (${config.priceFormatted}) para a barbearia ${currentBarber.name}. Podem me enviar o link oficial da InfinitePay?`);
-      const supportUrl = `https://wa.me/5533999482287?text=${msg}`;
+    // Alias para compatibilidade retroativa
+    function confirmPaymentIntent() {
+      handleInfinitePayClick();
+    }
+
+    function sendReceiptProofWhatsApp() {
+      const config = PLANS_CONFIG[selectedPlanForCheckout] || PLANS_CONFIG.google_pro;
+      const waInput = document.getElementById('intent-input-whatsapp');
+      const clientPhone = (waInput ? waInput.value : currentBarber.whatsapp || '').trim();
+
+      const intentRecord = {
+        planId: config.id,
+        planName: config.name,
+        price: config.price,
+        businessName: currentBarber.name,
+        clientPhone,
+        status: 'PROOF_SUBMISSION_REQUESTED',
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        localStorage.setItem('acelera_barber_purchase_intent', JSON.stringify(intentRecord));
+      } catch (e) {
+        console.warn('LocalStorage inacessível:', e);
+      }
+
+      closePaymentIntentModal();
+
+      const msg = encodeURIComponent(`Olá! Realizei o pagamento de ${config.priceFormatted} referente ao plano ${config.name} da barbearia ${currentBarber.name}. Segue o comprovante para conferência humana e liberação.`);
+      const supportUrl = `https://wa.me/${INFINITEPAY_CONFIG.supportPhone}?text=${msg}`;
+      showToast('Abrindo WhatsApp para envio do comprovante...');
       setTimeout(() => {
         window.open(supportUrl, '_blank', 'noopener,noreferrer');
-      }, 400);
+      }, 300);
+    }
+
+    function openLegalModal() {
+      const modal = document.getElementById('legal-modal');
+      if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeLegalModal() {
+      const modal = document.getElementById('legal-modal');
+      if (modal) modal.classList.add('hidden');
     }
 
     function saveNonSensitiveProfile() {

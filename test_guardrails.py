@@ -97,6 +97,28 @@ if required_neutral_qr not in content:
 if "actions[actionKey] = 'SYNCED'" in content or 'actions.instagram_link = "SYNCED"' in content:
     errors.append("Ações client-side nunca podem ser marcadas diretamente como SYNCED!")
 
+# 10. Trava de Preços: R$ 57 para Plano Completo e nenhum resquício de R$ 67
+if 'R$ 67' in content or 'price: 67' in content:
+    errors.append("Preço antigo de R$ 67 detectado! O Plano Completo deve ser R$ 57.")
+if 'R$ 57' not in content:
+    errors.append("Preço R$ 57 obrigatório para o Plano Completo não encontrado.")
+
+# 11. Presença de Termos Legais, Isenções e Garantia de 7 Dias
+if 'legal-modal' not in content:
+    errors.append("Modal de Termos de Uso e Política de Privacidade ausente.")
+if 'não possui nenhum vínculo, afiliação' not in content:
+    errors.append("Isenção explícita de vínculo institucional não encontrada nos termos.")
+if '7 dias' not in content:
+    errors.append("Garantia de 7 dias conforme CDC não encontrada nos termos.")
+
+# 12. Dicas de Impressão (100% Digital)
+if 'Papel Fotográfico' not in content or '10x15cm' not in content:
+    errors.append("Orientação de impressão para Papel Fotográfico A6 10x15cm ausente.")
+
+# 13. Configuração de Pagamento InfinitePay Manual
+if 'INFINITEPAY_CONFIG' not in content:
+    errors.append("Estrutura INFINITEPAY_CONFIG ausente no código.")
+
 if errors:
     print("❌ FALHAS DETECTADAS NAS TRAVAS:")
     for err in errors:
