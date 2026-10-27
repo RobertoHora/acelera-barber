@@ -21,20 +21,8 @@ export default function Header({ onAnalyzeClick, shopName }: HeaderProps) {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-7 text-xs font-semibold text-[#A1A1AA]">
-          <a href="#resultados" className="transition hover:text-white">
-            Resultados
-          </a>
           <a href="#depoimentos" className="transition hover:text-white">
             Depoimentos
-          </a>
-          <a href="#como-funciona" className="transition hover:text-white">
-            Como Funciona
-          </a>
-          <a href="#precos" className="transition hover:text-white">
-            Preços
-          </a>
-          <a href="#faq" className="transition hover:text-white">
-            Dúvidas
           </a>
         </nav>
 

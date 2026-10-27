@@ -10,12 +10,7 @@ import { findLeadBySlugOrId } from '@/lib/leads';
 import LandingExperience from '@/components/landing/LandingExperience';
 import Header from '@/components/landing/Header';
 import HeroSection from '@/components/landing/HeroSection';
-import MetricsBar from '@/components/landing/MetricsBar';
-import ResultsSection from '@/components/landing/ResultsSection';
 import Testimonials3D from '@/components/orc/Testimonials3D';
-import WorkflowSection from '@/components/landing/WorkflowSection';
-import PricingSection from '@/components/landing/PricingSection';
-import FaqSection from '@/components/landing/FaqSection';
 import FinalCtaBanner from '@/components/landing/FinalCtaBanner';
 import Footer from '@/components/landing/Footer';
 
@@ -136,20 +131,7 @@ function AceleraBarberApp() {
               onAnalyze={(lead) => handleStartAnalysis(lead)}
             />
 
-            <MetricsBar />
-
-            <ResultsSection
-              barberName={activeLead?.cleanName || activeLead?.name}
-              neighborhood={activeLead?.neighborhood}
-            />
-
             <Testimonials3D />
-
-            <WorkflowSection />
-
-            <PricingSection onSelectPlan={handleOpenCheckout} />
-
-            <FaqSection />
 
             <FinalCtaBanner
               onAnalyzeClick={() => handleStartAnalysis()}
