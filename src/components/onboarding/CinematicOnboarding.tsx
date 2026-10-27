@@ -1,8 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Loader2, CheckCircle2, MapPin, Sparkles, AlertTriangle } from 'lucide-react';
+import { Loader2, CheckCircle2, MapPin, Sparkles } from 'lucide-react';
 import { BarbershopLead } from '@/lib/types';
+import { ORCBrand } from '@/components/orc/Brand';
+import ShowcaseMarquee from '@/components/orc/ShowcaseMarquee';
 
 interface CinematicOnboardingProps {
   lead: BarbershopLead;
@@ -17,15 +19,15 @@ const EDUCATIONAL_HEADLINES = [
   },
   {
     tag: 'Perda de Clientes',
-    text: 'Perfis sem catálogo de cortes e preços perdem clientes diariamente para barbearias do mesmo bairro.',
+    text: 'Perfis sem catálogo de cortes e preços perdem clientes diariamente para barbearias da mesma região.',
   },
   {
     tag: 'Solução no Balcão',
-    text: 'Uma plaquinha de balcão 2 em 1 transforma clientes que cortam com você todo dia em avaliações reais sem esforço.',
+    text: 'Um display inteligente com QR Code transforma clientes que cortam com você todo dia em avaliações reais sem esforço.',
   },
   {
     tag: 'Análise Concorrencial',
-    text: 'Mapeando os principais concorrentes próximos para identificar exatamente por que eles estão na sua frente no Google...',
+    text: 'Mapeando os principais concorrentes próximos para identificar exatamente o que falta no seu perfil...',
   },
 ];
 
@@ -40,7 +42,7 @@ export default function CinematicOnboarding({
 
   const steps = [
     `Localizando perfil da ${lead.cleanName || lead.name} no Google Maps...`,
-    `Mapeando barbearias concorrentes em ${lead.neighborhood || 'Governador Valadares'}...`,
+    `Mapeando barbearias concorrentes em ${lead.neighborhood || 'sua região'}...`,
     'Analisando fotos cadastradas, catálogo de serviços e horários...',
     'Calculando score de presença digital e oportunidades de balcão...',
   ];
@@ -77,52 +79,63 @@ export default function CinematicOnboarding({
   const activeHeadline = EDUCATIONAL_HEADLINES[headlineIndex];
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#141317] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
-      {/* Glows de Fundo */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/10 blur-[150px] rounded-full" />
+    <div className="fixed inset-0 z-50 bg-[#141318] flex flex-col justify-between p-4 sm:p-6 overflow-y-auto overflow-x-hidden">
+      {/* Glows de Fundo Atmosféricos */}
+      <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+        <div className="studio-ambient-grid absolute inset-0" />
+        <div className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[450px] bg-amber-500/10 blur-[140px] rounded-full" />
+        <div className="absolute left-1/4 top-0 w-[400px] h-[300px] bg-sky-500/10 blur-[130px] rounded-full" />
       </div>
 
-      <div className="max-w-xl w-full space-y-8 text-center">
-        {/* Radar / Ícone de Análise Central */}
-        <div className="relative mx-auto size-24 sm:size-28 flex items-center justify-center">
+      {/* Top Header com Marca */}
+      <header className="flex w-full shrink-0 items-center justify-between px-2 pt-2 sm:px-8 sm:pt-4">
+        <ORCBrand compact />
+        <span className="text-[10px] font-bold uppercase tracking-wider text-[#A1A1AA] bg-white/[0.05] border border-white/10 px-3 py-1 rounded-full">
+          Auditoria Automatizada
+        </span>
+      </header>
+
+      {/* Centro: Experiência Cinematográfica */}
+      <main className="mx-auto w-full max-w-xl py-6 space-y-6 text-center my-auto">
+        {/* Radar Central */}
+        <div className="relative mx-auto size-20 sm:size-24 flex items-center justify-center">
           <div className="absolute inset-0 rounded-full border-2 border-amber-400/30 animate-ping opacity-60" />
-          <div className="absolute -inset-3 rounded-full border border-amber-400/20 animate-pulse" />
-          <div className="size-20 sm:size-24 rounded-2xl bg-[#242422] border border-[#454441] shadow-2xl flex items-center justify-center text-amber-400">
-            <Loader2 className="size-9 sm:size-10 animate-spin" />
+          <div className="absolute -inset-2.5 rounded-full border border-amber-400/20 animate-pulse" />
+          <div className="size-16 sm:size-20 rounded-2xl bg-[#242422] border border-[#454441] shadow-2xl flex items-center justify-center text-amber-400">
+            <Loader2 className="size-8 sm:size-9 animate-spin" />
           </div>
         </div>
 
         {/* Informações da Barbearia Analisada */}
-        <div className="space-y-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-[11px] font-bold text-amber-300 uppercase tracking-wider">
+        <div className="space-y-1.5">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-[10px] sm:text-[11px] font-bold text-amber-300 uppercase tracking-wider">
             <Sparkles className="size-3" /> Analisando Presença Digital
           </span>
-          <h2 className="text-xl sm:text-2xl font-black text-white truncate px-2">
+          <h2 className="studio-display-type text-2xl sm:text-3xl font-black text-white truncate px-2">
             {lead.cleanName || lead.name}
           </h2>
           <p className="text-xs text-[#A1A1AA] flex items-center justify-center gap-1">
             <MapPin className="size-3.5 text-amber-400" />
-            <span>{lead.neighborhood || 'Governador Valadares'} • MG</span>
+            <span>{lead.neighborhood ? `${lead.neighborhood} · Barbearia` : 'Perfil Comercial no Google Maps'}</span>
           </p>
         </div>
 
-        {/* Barra de Progresso com Porcentagem */}
+        {/* Barra de Progresso Estilo Splash ORC */}
         <div className="space-y-2 max-w-md mx-auto">
           <div className="flex items-center justify-between text-xs font-mono font-bold text-[#A1A1AA]">
             <span>Auditoria em andamento...</span>
             <span className="text-amber-400">{progress}%</span>
           </div>
-          <div className="h-2.5 w-full bg-[#242422] border border-[#3D3C3A] rounded-full overflow-hidden p-0.5">
+          <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-white/[0.11]">
             <div
-              className="h-full bg-gradient-to-r from-amber-500 to-amber-300 rounded-full transition-all duration-100 ease-out shadow-[0_0_12px_rgba(245,158,11,0.6)]"
+              className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[var(--orc-sky-400)] to-[var(--orc-amber-500)] shadow-[0_0_16px_rgba(245,154,47,0.7)] transition-all duration-100 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
 
         {/* Card Dinâmico com Textos Educativos */}
-        <div className="min-h-[110px] bg-[#242422] border border-[#3D3C3A] rounded-2xl p-5 text-left space-y-2 shadow-xl transition-all">
+        <div className="min-h-[100px] bg-[#242422]/90 border border-[#3D3C3A] rounded-2xl p-4 sm:p-5 text-left space-y-2 shadow-xl backdrop-blur-md">
           <div className="flex items-center gap-2">
             <span className="size-2 rounded-full bg-amber-400 animate-pulse" />
             <span className="text-[10px] font-bold uppercase tracking-wider text-amber-300">
@@ -163,7 +176,12 @@ export default function CinematicOnboarding({
             );
           })}
         </div>
-      </div>
+      </main>
+
+      {/* Base: Vitrine com ShowcaseMarquee */}
+      <footer className="w-full pb-2 pt-2 shrink-0">
+        <ShowcaseMarquee className="opacity-75" />
+      </footer>
     </div>
   );
 }

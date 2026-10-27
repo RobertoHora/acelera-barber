@@ -1,26 +1,53 @@
 'use client';
 
-import React, { useState } from 'react';
-import { ArrowLeftRight, Check, Star, AlertCircle, Clock, MapPin, Phone } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { ArrowLeftRight, Check, Star, AlertCircle, MapPin } from 'lucide-react';
 
 interface ProfileComparisonProps {
   initialPosition?: number;
   barberName?: string;
   neighborhood?: string;
+  priority?: boolean;
 }
 
 export default function ProfileComparison({
-  initialPosition = 50,
+  initialPosition = 42,
   barberName = 'Sua Barbearia',
-  neighborhood = 'Governador Valadares',
+  neighborhood = 'Sua Região',
+  priority = false,
 }: ProfileComparisonProps) {
   const [position, setPosition] = useState(initialPosition);
+  const interacted = useRef(false);
+  const autoTimer = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    autoTimer.current = window.setTimeout(() => {
+      if (!interacted.current) setPosition(56);
+      autoTimer.current = null;
+    }, 700);
+    return () => {
+      if (autoTimer.current !== null) window.clearTimeout(autoTimer.current);
+    };
+  }, [priority]);
+
+  function trackInteraction() {
+    if (autoTimer.current !== null) {
+      window.clearTimeout(autoTimer.current);
+      autoTimer.current = null;
+    }
+    interacted.current = true;
+  }
+
+  function updatePosition(value: number) {
+    trackInteraction();
+    setPosition(value);
+  }
 
   return (
     <div className="relative select-none overflow-hidden rounded-2xl border border-[#3D3C3A] bg-[#242422] shadow-2xl">
       {/* Container 16:10 aspect */}
       <div className="relative aspect-[16/11] sm:aspect-[16/10] w-full overflow-hidden">
-        
         {/* LADO DEPOIS (Direita / Fundo total) - Perfil Otimizado Eleva ORC */}
         <div className="absolute inset-0 bg-[#FFFFFF] text-[#202124] p-4 sm:p-6 flex flex-col justify-between">
           <div className="space-y-3">
@@ -63,17 +90,35 @@ export default function ProfileComparison({
               </p>
               <div className="grid grid-cols-3 gap-2">
                 <div className="rounded-lg bg-[#F8F9FA] border border-[#DADCE0] p-1.5 text-center">
-                  <div className="h-10 sm:h-12 rounded bg-cover bg-center mb-1" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=300&q=80)' }}></div>
+                  <div
+                    className="h-10 sm:h-12 rounded bg-cover bg-center mb-1"
+                    style={{
+                      backgroundImage:
+                        'url(https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=300&q=80)',
+                    }}
+                  />
                   <span className="block text-[10px] font-bold text-[#202124] truncate">Degradê Fade</span>
                   <span className="block text-[9px] font-semibold text-[#1A73E8]">R$ 35</span>
                 </div>
                 <div className="rounded-lg bg-[#F8F9FA] border border-[#DADCE0] p-1.5 text-center">
-                  <div className="h-10 sm:h-12 rounded bg-cover bg-center mb-1" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=300&q=80)' }}></div>
+                  <div
+                    className="h-10 sm:h-12 rounded bg-cover bg-center mb-1"
+                    style={{
+                      backgroundImage:
+                        'url(https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=300&q=80)',
+                    }}
+                  />
                   <span className="block text-[10px] font-bold text-[#202124] truncate">Barba Terapia</span>
                   <span className="block text-[9px] font-semibold text-[#1A73E8]">R$ 25</span>
                 </div>
                 <div className="rounded-lg bg-[#F8F9FA] border border-[#DADCE0] p-1.5 text-center">
-                  <div className="h-10 sm:h-12 rounded bg-cover bg-center mb-1" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=300&q=80)' }}></div>
+                  <div
+                    className="h-10 sm:h-12 rounded bg-cover bg-center mb-1"
+                    style={{
+                      backgroundImage:
+                        'url(https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=300&q=80)',
+                    }}
+                  />
                   <span className="block text-[10px] font-bold text-[#202124] truncate">Corte + Barba</span>
                   <span className="block text-[9px] font-semibold text-[#1A73E8]">R$ 55</span>
                 </div>
@@ -92,7 +137,7 @@ export default function ProfileComparison({
 
         {/* LADO ANTES (Esquerda / Máscara ClipPath) - Perfil Abandonado no Maps */}
         <div
-          className="absolute inset-0 bg-[#1E1E1C] text-[#D4D4D8] p-4 sm:p-6 flex flex-col justify-between border-r border-amber-500/80 transition-[clip-path] duration-75"
+          className="absolute inset-0 bg-[#1E1E1C] text-[#D4D4D8] p-4 sm:p-6 flex flex-col justify-between border-r border-amber-500/80 transition-[clip-path] duration-200 ease-out"
           style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
         >
           <div className="space-y-3">
@@ -144,7 +189,7 @@ export default function ProfileComparison({
         </div>
 
         {/* Tags de Identificação nos Cantos */}
-        <div className="pointer-events-none absolute inset-x-0 top-3 flex justify-between px-3 text-[10px] font-bold uppercase tracking-wider">
+        <div className="pointer-events-none absolute inset-x-0 top-3 flex justify-between px-3 text-[10px] font-bold uppercase tracking-wider z-10">
           <span className="rounded-full bg-black/80 border border-white/20 px-2.5 py-1 text-amber-400 backdrop-blur-md shadow-md">
             Antes • Perfil Vazio
           </span>
@@ -155,10 +200,10 @@ export default function ProfileComparison({
 
         {/* Linha Divisória e Alça de Arrasto */}
         <div
-          className="absolute inset-y-0 w-0.5 bg-white shadow-[0_0_10px_rgba(255,255,255,0.7)] cursor-ew-resize flex items-center justify-center pointer-events-none"
+          className="absolute inset-y-0 w-0.5 bg-white shadow-[0_0_14px_rgba(255,255,255,0.8)] cursor-ew-resize flex items-center justify-center pointer-events-none z-10 transition-[left] duration-200 ease-out"
           style={{ left: `${position}%` }}
         >
-          <div className="size-7 rounded-full bg-white text-[#111111] shadow-xl flex items-center justify-center border border-gray-300">
+          <div className="size-8 rounded-full bg-white text-[#111111] shadow-xl flex items-center justify-center border border-gray-300">
             <ArrowLeftRight className="size-3.5 stroke-[2.5]" />
           </div>
         </div>
@@ -169,7 +214,8 @@ export default function ProfileComparison({
           min="0"
           max="100"
           value={position}
-          onChange={(e) => setPosition(Number(e.target.value))}
+          onChange={(e) => updatePosition(Number(e.target.value))}
+          onPointerDown={trackInteraction}
           className="absolute inset-0 opacity-0 cursor-ew-resize w-full h-full z-20"
           aria-label="Comparativo de perfil Antes e Depois"
         />

@@ -9,6 +9,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+        orc: {
+          ink: 'rgb(var(--orc-ink-rgb) / <alpha-value>)',
+          navy: 'rgb(var(--orc-navy-rgb) / <alpha-value>)',
+          sky: 'rgb(var(--orc-sky-rgb) / <alpha-value>)',
+          amber: 'rgb(var(--orc-amber-rgb) / <alpha-value>)',
+          text: 'rgb(var(--orc-text-primary-rgb) / calc(var(--orc-text-primary-opacity) * <alpha-value>))',
+          muted: 'rgb(var(--orc-text-secondary-rgb) / calc(var(--orc-text-secondary-opacity) * <alpha-value>))',
+          border: 'rgb(var(--orc-border-rgb) / calc(var(--orc-border-opacity) * <alpha-value>))',
+          elevated: 'rgb(var(--orc-surface-elevated-rgb) / <alpha-value>)',
+        },
         brand: {
           bg: '#19181D',
           card: '#2B2B29',
@@ -19,7 +31,7 @@ const config: Config = {
           accentHover: '#E2DED6',
           textMuted: '#A1A1AA',
           textSub: '#D4D4D8',
-          amber: '#F59E0B',
+          amber: '#F59A2F',
         },
         google: {
           blue: '#1A73E8',
@@ -33,13 +45,35 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: [
+          'var(--font-studio-sans)',
+          'Inter',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'sans-serif',
+        ],
+        display: [
+          'var(--font-studio-display)',
+          'serif',
+        ],
         google: ['Roboto', 'Inter', 'sans-serif'],
       },
       keyframes: {
         shimmer: {
-          '0%': { backgroundPosition: '200% 0' },
-          '100%': { backgroundPosition: '-200% 0' },
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100%)' },
+        },
+        'text-shimmer': {
+          '0%, 100%': { backgroundPosition: '100% 50%' },
+          '50%': { backgroundPosition: '0% 50%' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'shine-sweep': {
+          '0%': { transform: 'translateX(-150%) skewX(-20deg)' },
+          '41.1765%, 100%': { transform: 'translateX(250%) skewX(-20deg)' },
         },
         pulseSlow: {
           '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
@@ -47,12 +81,15 @@ const config: Config = {
         },
       },
       animation: {
-        shimmer: 'shimmer 4s ease-in-out infinite',
+        shimmer: 'shimmer 2s infinite linear',
+        'text-shimmer': 'text-shimmer 4s ease-in-out infinite',
+        marquee: 'marquee 28s linear infinite',
+        'shine-sweep': 'shine-sweep 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite',
         pulseSlow: 'pulseSlow 3s ease-in-out infinite',
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-animate')],
 };
 
 export default config;

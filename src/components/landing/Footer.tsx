@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
+import { ORCBrand } from '@/components/orc/Brand';
 
 interface FooterProps {
   onOpenLegal: () => void;
@@ -9,19 +10,14 @@ interface FooterProps {
 
 export default function Footer({ onOpenLegal }: FooterProps) {
   return (
-    <footer className="border-t border-[#3D3C3A] bg-[#141317] py-10 text-xs text-[#A1A1AA]">
+    <footer className="border-t border-white/[0.08] bg-[#141318] py-10 text-xs text-[#A1A1AA]">
       <div className="mx-auto max-w-7xl px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <div className="size-8 rounded-lg bg-[#242422] border border-[#3D3C3A] flex items-center justify-center text-amber-400 font-black text-xs">
-            AB
-          </div>
-          <div>
-            <p className="font-bold text-white text-xs sm:text-sm">Eleva ORC</p>
-            <p className="text-[10px] text-[#71717A]">
-              Guia de Presença Digital para Barbearias de Governador Valadares • MG
-            </p>
-          </div>
+          <ORCBrand compact />
+          <p className="text-[10px] text-[#71717A] hidden md:block">
+            Ecossistema de Presença Digital e Google Maps para Barbearias
+          </p>
         </div>
 
         {/* Links */}
@@ -41,13 +37,13 @@ export default function Footer({ onOpenLegal }: FooterProps) {
             Política de Privacidade
           </button>
           <a
-            href="https://wa.me/5533999482287"
+            href="https://wa.me/5511920970370"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-white transition-colors flex items-center gap-1.5"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-white transition hover:bg-emerald-500"
           >
-            <MessageCircle className="size-3.5 text-emerald-400" />
-            <span>Falar com Suporte no WhatsApp</span>
+            <MessageCircle className="size-3.5" />
+            <span>Suporte WhatsApp</span>
           </a>
         </div>
 

@@ -14,8 +14,8 @@ export default function WorkflowSection() {
     {
       number: '02',
       icon: TrendingUp,
-      title: 'Benchmark do Bairro',
-      text: 'Comparamos seu perfil com os 2 concorrentes que mais recebem visitas no seu bairro.',
+      title: 'Benchmark da Região',
+      text: 'Comparamos seu perfil com os concorrentes que mais recebem visitas na sua área local.',
     },
     {
       number: '03',
@@ -32,39 +32,43 @@ export default function WorkflowSection() {
   ];
 
   return (
-    <section id="como-funciona" className="scroll-mt-20 border-y border-[#3D3C3A] bg-[#242422]/40 py-20 sm:py-28">
+    <section id="como-funciona" className="scroll-mt-20 border-y border-white/[0.08] bg-[#242422]/40 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-8 space-y-12">
-        <div className="max-w-2xl space-y-3">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-400">
+        <div data-reveal="up" className="max-w-2xl space-y-3">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--orc-sky-400)]">
             Processo 100% online e assistido
           </p>
-          <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+          <h2 className="studio-display-type text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
             4 passos simples para transformar a presença da sua barbearia
           </h2>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="grid gap-px overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.08] sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s, idx) => {
             const Icon = s.icon;
             return (
-              <div
+              <li
                 key={idx}
-                className="bg-[#2B2B29] border border-[#3D3C3A] rounded-2xl p-6 sm:p-7 space-y-5 hover:border-amber-400/40 transition-colors"
+                data-reveal="up"
+                data-reveal-delay={String(idx)}
+                className="studio-workflow-step min-h-64 bg-[var(--orc-surface-solid)] p-6 sm:p-7 flex flex-col justify-between"
               >
-                <div className="flex items-center justify-between">
-                  <div className="size-11 rounded-xl bg-[#1E1E1C] border border-[#454441] flex items-center justify-center text-amber-400">
-                    <Icon className="size-5" />
-                  </div>
-                  <span className="text-xs font-mono font-bold text-[#71717A]">{s.number}</span>
-                </div>
                 <div>
-                  <h3 className="font-bold text-base sm:text-lg text-white mb-2">{s.title}</h3>
-                  <p className="text-xs sm:text-sm text-[#A1A1AA] leading-relaxed">{s.text}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="grid size-11 place-items-center rounded-2xl bg-sky-300/10 text-[var(--orc-sky-400)]">
+                      <Icon className="size-5" aria-hidden="true" />
+                    </span>
+                    <span className="text-xs font-mono font-medium tabular-nums text-[var(--orc-text-disabled)]">
+                      {s.number}
+                    </span>
+                  </div>
+                  <h3 className="mt-8 text-xl font-bold text-white">{s.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-[var(--orc-text-secondary)]">{s.text}</p>
                 </div>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ol>
       </div>
     </section>
   );
