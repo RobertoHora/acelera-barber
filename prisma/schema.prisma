@@ -1,0 +1,493 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ─── AUTENTICAÇÃO E USUÁRIOS ───────────────────────────────────────────────
+
+enum UserRole {
+  OWNER
+  BARBER
+  ADMIN
+}
+
+model User {
+  id         String         @id @default(cuid())
+  phone      String         @unique // Formato E.164 (ex: +5533999998888)
+  name       String?
+  email      String?
+  role       UserRole       @default(OWNER)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  businesses Business[]
+  sessions   OwnerSession[]
+  otps       OtpVerification[]
+}
+
+model OwnerSession {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+model OtpVerification {
+  id         String    @id @default(cuid())
+  phone      String
+  userId     String?
+  user       User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  codeHash   String
+  attempts   Int       @default(0)
+  expiresAt  DateTime
+  verifiedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([phone, createdAt(sort: Desc)])
+}
+
+// ─── NEGÓCIO / BARBEARIA ───────────────────────────────────────────────────
+
+model Business {
+  id                         String                    @id @default(cuid())
+  slug                       String                    @unique
+  name                       String
+  cleanName                  String?
+  phone                      String?
+  whatsapp                   String?
+  phoneHmac                  String?
+  address                    String?
+  neighborhood               String?
+  city                       String                    @default("Governador Valadares")
+  state                      String                    @default("MG")
+  rating                     Float?                    @default(0)
+  reviewsCount               Int?                      @default(0)
+  placeId                    String?
+  reviewUrl                  String?
+  googleMapsUrl              String?
+  photosCount                Int?                      @default(0)
+  featuredImageUrl           String?
+  openingHoursRaw            Json?
+  timezone                   String                    @default("America/Sao_Paulo")
+  cancellationNoticeHours    Int                       @default(1) // Janela canônica: 1h de antecedência
+  infiniteTag                String?                   // Tag da barbearia (ex: $barbeariajoao)
+  infinitepayReferralClickedAt DateTime?
+  userId                     String?
+  user                       User?                     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt                  DateTime                  @default(now())
+  updatedAt                  DateTime                  @updatedAt
+
+  diagnosticReports          DiagnosticReport[]
+  checklistItems             ChecklistItemProgress[]
+  channelSyncStates          ChannelSyncState[]
+  needObservations           NeedObservation[]
+  offerPresentations         OfferPresentation[]
+  orders                     Order[]
+  entitlements               Entitlement[]
+  trialBenefit               TrialBenefit?
+  subscription               Subscription?
+  professionals              Professional[]
+  services                   Service[]
+  timeOffs                   TimeOff[]
+  customers                  Customer[]
+  vouchers                   CustomerVoucher[]
+  bookings                   Booking[]
+  outboxMessages             OutboxMessage[]
+  growthEvents               GrowthEvent[]
+
+  @@index([city, neighborhood])
+  @@index([slug])
+  @@index([phoneHmac])
+}
+
+// ─── DIAGNÓSTICO E WIZARD ELEVA ───────────────────────────────────────────
+
+model DiagnosticReport {
+  id         String   @id @default(cuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  score      Int
+  label      String
+  criteria   Json
+  gaps       Json
+  createdAt  DateTime @default(now())
+
+  @@index([businessId, createdAt(sort: Desc)])
+}
+
+enum ChecklistStatus {
+  TODO
+  DONE
+  DISMISSED
+}
+
+model ChecklistItemProgress {
+  id         String          @id @default(cuid())
+  businessId String
+  business   Business        @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  itemKey    String
+  status     ChecklistStatus @default(TODO)
+  updatedAt  DateTime        @updatedAt
+
+  @@unique([businessId, itemKey])
+}
+
+enum ChannelType {
+  GOOGLE_BUSINESS_PROFILE
+  INSTAGRAM
+}
+
+enum SyncStatus {
+  NOT_STARTED
+  MANUAL_ASSISTED
+  CLIENT_CONFIRMED
+}
+
+model ChannelSyncState {
+  id             String      @id @default(cuid())
+  businessId     String
+  business       Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  channel        ChannelType
+  syncStatus     SyncStatus  @default(NOT_STARTED)
+  lastVerifiedAt DateTime?
+  notes          String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@unique([businessId, channel])
+}
+
+enum ObservationSeverity {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model NeedObservation {
+  id         String              @id @default(cuid())
+  businessId String
+  business   Business            @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  category   String
+  evidence   String
+  severity   ObservationSeverity @default(MEDIUM)
+  observedAt DateTime            @default(now())
+
+  @@index([businessId, observedAt(sort: Desc)])
+}
+
+model OfferPresentation {
+  id          String   @id @default(cuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  sku         String
+  channel     String   @default("WEB_LP") // WEB_LP | WHATSAPP
+  presentedAt DateTime @default(now())
+
+  @@index([businessId, presentedAt(sort: Desc)])
+}
+
+// ─── FINANCEIRO, INFINITEPAY E ASSINATURAS ─────────────────────────────────
+
+enum OrderStatus {
+  PENDING
+  PAID
+  EXPIRED
+  REFUNDED
+}
+
+model Order {
+  id                     String               @id @default(cuid())
+  orderNsu               String               @unique // Ex: eleva_cm123...
+  businessId             String
+  business               Business             @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  sku                    String               // PlanCode (ex: eleva_google_pro)
+  amountCents            Int
+  currency               String               @default("BRL")
+  status                 OrderStatus          @default(PENDING)
+  infinitepayCheckoutUrl String?
+  idempotencyKey         String               @unique
+  paidAt                 DateTime?
+  createdAt              DateTime             @default(now())
+  updatedAt              DateTime             @updatedAt
+  transactions           PaymentTransaction[]
+  growthEvents           GrowthEvent[]
+
+  @@index([businessId, status])
+}
+
+model PaymentTransaction {
+  id            String   @id @default(cuid())
+  orderId       String
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  transactionId String   @unique // ID externo retornado pela InfinitePay
+  amountCents   Int
+  status        String
+  paidAt        DateTime @default(now())
+  rawPayload    Json?
+
+  @@index([orderId])
+}
+
+model PaymentWebhookReceipt {
+  id              String   @id @default(cuid())
+  providerEventId String   @unique
+  payload         Json
+  processedAt     DateTime @default(now())
+}
+
+enum EntitlementStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+model Entitlement {
+  id         String            @id @default(cuid())
+  businessId String
+  business   Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  sku        String            // eleva_google_pro | eleva_complete | eleva_complete_upgrade
+  status     EntitlementStatus @default(ACTIVE)
+  grantedAt  DateTime          @default(now())
+  revokedAt  DateTime?
+
+  @@unique([businessId, sku])
+}
+
+enum TrialStatus {
+  GRANTED
+  ACTIVE
+  EXPIRED
+}
+
+model TrialBenefit {
+  id               String      @id @default(cuid())
+  businessId       String      @unique
+  business         Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  sourcePlan       String      // eleva_google_pro (14d) ou eleva_complete / upgrade (30d)
+  grantedDays      Int         @default(14)
+  status           TrialStatus @default(GRANTED)
+  selectedModality String      @default("agenda_basic_monthly") // agenda_basic_monthly | agenda_ai_monthly
+  activatedAt      DateTime?   // Inicia apenas na 1ª ativação operacional
+  endsAt           DateTime?   // activatedAt + grantedDays
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  PAST_DUE_SUSPENDED
+  CANCELED
+}
+
+model Subscription {
+  id                 String             @id @default(cuid())
+  businessId         String             @unique
+  business           Business           @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  planCode           String             // agenda_basic_monthly (R$ 37) | agenda_ai_monthly (R$ 67)
+  status             SubscriptionStatus @default(TRIALING)
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  gracePeriodEndsAt  DateTime?          // 3 dias corridos de tolerância
+  lastPaymentOrderId String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+}
+
+// ─── AGENDA ORC: PROFISSIONAIS, SERVIÇOS E RESERVAS ────────────────────────
+
+model Professional {
+  id           String     @id @default(cuid())
+  businessId   String
+  business     Business   @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name         String
+  nickname     String?
+  phone        String?
+  avatarUrl    String?
+  isActive     Boolean    @default(true)
+  workingHours Json?      // Grade semanal por dia (ex: [{ day: 1, open: "08:00", close: "18:00" }])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  bookings     Booking[]
+  timeOffs     TimeOff[]
+
+  @@index([businessId, isActive])
+}
+
+model Service {
+  id              String    @id @default(cuid())
+  businessId      String
+  business        Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name            String
+  description     String?
+  priceCents      Int
+  durationMinutes Int       @default(30)
+  bufferMinutes   Int       @default(0)
+  isActive        Boolean   @default(true)
+  sortOrder       Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  bookings        Booking[]
+
+  @@index([businessId, isActive, sortOrder])
+}
+
+model TimeOff {
+  id             String        @id @default(cuid())
+  businessId     String
+  business       Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  professionalId String?
+  professional   Professional? @relation(fields: [professionalId], references: [id], onDelete: Cascade)
+  startsAt       DateTime      @db.Timestamptz
+  endsAt         DateTime      @db.Timestamptz
+  reason         String?
+
+  @@index([businessId, startsAt, endsAt])
+}
+
+model Customer {
+  id         String            @id @default(cuid())
+  businessId String
+  business   Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name       String
+  phoneE164  String            // Formato normalizado E.164
+  createdAt  DateTime          @default(now())
+  bookings   Booking[]
+  vouchers   CustomerVoucher[]
+
+  @@unique([businessId, phoneE164])
+}
+
+model CustomerVoucher {
+  id              String    @id @default(cuid())
+  customerId      String
+  customer        Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  businessId      String
+  business        Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  code            String    @unique
+  discountPercent Int       @default(50) // 50% de desconto por cancelamento tardio
+  isUsed          Boolean   @default(false)
+  usedAt          DateTime?
+  expiresAt       DateTime
+  createdAt       DateTime  @default(now())
+
+  @@index([businessId, customerId, isUsed])
+}
+
+enum BookingStatus {
+  PENDING_CONFIRMATION
+  CONFIRMED
+  COMPLETED
+  CANCELLED_BY_CUSTOMER
+  CANCELLED_BY_BUSINESS
+  NO_SHOW
+}
+
+model Booking {
+  id                 String        @id @default(cuid())
+  businessId         String
+  business           Business      @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  professionalId     String
+  professional       Professional  @relation(fields: [professionalId], references: [id], onDelete: Restrict)
+  serviceId          String
+  service            Service       @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  customerId         String
+  customer           Customer      @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  customerName       String
+  customerPhoneE164  String
+  startsAt           DateTime      @db.Timestamptz
+  endsAt             DateTime      @db.Timestamptz
+  status             BookingStatus @default(CONFIRMED)
+  cancelTokenHash    String        @unique // SHA-256 do token do link privado /b/{token}
+  cancelledAt        DateTime?
+  cancelReason       String?
+  isLateCancellation Boolean       @default(false)
+  notes              String?
+  idempotencyKey     String        @unique
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  growthEvents       GrowthEvent[]
+
+  @@index([businessId, startsAt(sort: Asc)])
+  @@index([professionalId, startsAt(sort: Asc)])
+  @@index([customerPhoneE164, status])
+}
+
+// ─── OUTBOX TRANSAACIONAL E LAURA ENGINE ────────────────────────────────────
+
+enum OutboxDirection {
+  OUTBOUND
+  INBOUND
+}
+
+enum OutboxPurpose {
+  AUTH_OTP
+  BOOKING_CUSTOMER_NOTICE
+  BOOKING_BUSINESS_NOTICE
+  PAYMENT_NOTICE
+  INITIAL_OUTREACH
+  CADENCE_FOLLOWUP
+  INBOUND_REPLY
+}
+
+enum OutboxStatus {
+  QUEUED
+  CLAIMED
+  DISPATCHING
+  PROVIDER_ACCEPTED
+  UNKNOWN
+  UNCERTAIN
+  FAILED
+  CANCELLED
+}
+
+model OutboxMessage {
+  id               String          @id @default(cuid())
+  businessId       String?
+  business         Business?       @relation(fields: [businessId], references: [id], onDelete: SetNull)
+  direction        OutboxDirection @default(OUTBOUND)
+  destinationPhone String
+  content          String          @db.Text
+  purpose          OutboxPurpose
+  template         String?
+  dedupeKey        String          @unique
+  status           OutboxStatus    @default(QUEUED)
+  attempts         Int             @default(0)
+  availableAt      DateTime        @default(now())
+  leaseExpiresAt   DateTime?
+  sentAt           DateTime?
+  waMessageId      String?         @unique
+  error            String?         @db.Text
+  createdAt        DateTime        @default(now())
+
+  @@index([status, availableAt])
+  @@index([businessId, purpose, createdAt(sort: Desc)])
+}
+
+model GrowthEvent {
+  id                String    @id @default(cuid())
+  canonicalEventId  String?   @unique
+  event             String
+  schemaVersion     Int       @default(1)
+  occurredAt        DateTime  @default(now())
+  producerSystem    String    @default("eleva-orc")
+  businessId        String?
+  business          Business? @relation(fields: [businessId], references: [id], onDelete: SetNull)
+  orderId           String?
+  order             Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  bookingId         String?
+  booking           Booking?  @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  metadata          Json?
+  dedupeKey         String    @unique
+  createdAt         DateTime  @default(now())
+
+  @@index([event, occurredAt(sort: Desc)])
+  @@index([businessId, occurredAt(sort: Desc)])
+}
