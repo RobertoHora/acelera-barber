@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { X, ShieldCheck, MessageCircle, ExternalLink, ArrowRight } from 'lucide-react';
 import { BarbershopLead } from '@/lib/types';
-import { PLANS_CONFIG, INFINITEPAY_CONFIG } from '@/lib/plans';
+import { PLANS_CONFIG, INFINITEPAY_CONFIG, resolvePlanConfig } from '@/lib/plans';
 
 interface PaymentIntentModalProps {
   isOpen: boolean;
@@ -24,8 +24,8 @@ export default function PaymentIntentModal({
 
   if (!isOpen) return null;
 
-  const config = PLANS_CONFIG[planId] || PLANS_CONFIG.google_pro;
-  const targetLink = INFINITEPAY_CONFIG.links[config.id as keyof typeof INFINITEPAY_CONFIG.links];
+  const config = resolvePlanConfig(planId) || PLANS_CONFIG.eleva_google_pro;
+  const targetLink = INFINITEPAY_CONFIG.links[config.id as keyof typeof INFINITEPAY_CONFIG.links] || '';
 
   const handlePayClick = () => {
     // Registra intenção local não sensível (Doc 06 - INFINITEPAY_MANUAL)

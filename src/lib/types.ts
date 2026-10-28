@@ -34,6 +34,8 @@ export interface BarbershopLead {
   whatsapp?: string;
   address?: string;
   neighborhood: string;
+  city?: string;
+  state?: string;
   lat?: number;
   lng?: number;
   distanceKm?: number;
@@ -90,14 +92,33 @@ export interface PlanFeature {
   highlight?: boolean;
 }
 
+export type PlanCode =
+  | 'eleva_free'
+  | 'eleva_google_pro'
+  | 'eleva_complete'
+  | 'eleva_complete_upgrade'
+  | 'agenda_basic_monthly'
+  | 'agenda_ai_monthly'
+  | 'free'
+  | 'google_pro'
+  | 'complete';
+
+export type PlanCategory = 'ONETIME_MODULE' | 'UPGRADE' | 'RECURRING_SUBSCRIPTION';
+
 export interface PlanConfig {
-  id: string;
+  id: PlanCode;
+  legacyAlias?: string;
+  category: PlanCategory;
   name: string;
   price: number;
+  priceCents: number;
   priceFormatted: string;
   badge?: string;
   description: string;
   features: string[];
+  grantedTrialDays?: number;
+  grantedTrialDaysDelta?: number;
+  billingInterval?: 'ONETIME' | 'MONTHLY';
 }
 
 export interface PaymentIntentRecord {

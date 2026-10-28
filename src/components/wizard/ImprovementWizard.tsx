@@ -61,7 +61,8 @@ export default function ImprovementWizard({
   const directWaBookingUrl = `https://wa.me/${waPhone}?text=${waMessage}`;
 
   // Bio estruturada
-  const suggestedBio = `✂️ ${lead.cleanName || lead.name}\n💈 Cortes profissionais em ${lead.neighborhood || 'Governador Valadares'}\n📍 Agende seu horário no link abaixo 👇`;
+  const locationText = [lead.neighborhood, lead.city].filter(Boolean).join(', ') || 'sua região';
+  const suggestedBio = `✂️ ${lead.cleanName || lead.name}\n💈 Cortes profissionais em ${locationText}\n📍 Agende seu horário no link abaixo 👇`;
 
   const copyToClipboard = (text: string, key: string, successMsg: string) => {
     navigator.clipboard.writeText(text);
@@ -100,7 +101,8 @@ export default function ImprovementWizard({
 
     ctx.fillStyle = '#64748B';
     ctx.font = '600 7px sans-serif';
-    ctx.fillText(`${(lead.neighborhood || 'Governador Valadares').toUpperCase()} • GOV. VALADARES`, width / 2, 45);
+    const locHeader = [(lead.neighborhood || '').toUpperCase(), (lead.city || 'SUA REGIÃO').toUpperCase()].filter(Boolean).join(' • ');
+    ctx.fillText(locHeader, width / 2, 45);
 
     // Linha divisória
     ctx.strokeStyle = '#E2E8F0';
@@ -205,7 +207,8 @@ export default function ImprovementWizard({
 
     ctx.fillStyle = '#64748B';
     ctx.font = '600 24px sans-serif';
-    ctx.fillText(`${(lead.neighborhood || 'Governador Valadares').toUpperCase()} • GOV. VALADARES - MG`, width / 2, 215);
+    const locDualHeader = [(lead.neighborhood || '').toUpperCase(), (lead.city || 'SUA REGIÃO').toUpperCase(), (lead.state || 'BRASIL').toUpperCase()].filter(Boolean).join(' • ');
+    ctx.fillText(locDualHeader, width / 2, 215);
 
     const qrReviewUrl = lead.reviewUrl || `https://search.google.com/local/writereview?placeid=${lead.placeId || 'acelera'}`;
 
@@ -497,7 +500,7 @@ export default function ImprovementWizard({
             </div>
 
             <p className="text-xs sm:text-sm text-[#A1A1AA] leading-relaxed">
-              Atributos que qualificam sua barbearia quando o morador de Governador Valadares filtra no Google Maps:
+              Atributos que qualificam sua barbearia quando o cliente busca e filtra no Google Maps:
             </p>
 
             <div className="grid grid-cols-2 gap-2.5 text-xs text-[#D4D4D8]">

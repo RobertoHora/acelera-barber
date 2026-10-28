@@ -60,9 +60,10 @@ export function searchLocalLeads(query: string, limit = 5): BarbershopLead[] {
  */
 export function findTopCompetitors(
   leadName: string,
-  neighborhood = 'Governador Valadares',
+  neighborhood = '',
   leadReviews = 0,
-  leadPhotos = 0
+  leadPhotos = 0,
+  city = 'Governador Valadares'
 ): CompetitorInfo[] {
   const cleanLead = leadName.toLowerCase().trim();
   const cleanNb = (neighborhood || '').toLowerCase().trim();
@@ -72,7 +73,7 @@ export function findTopCompetitors(
     const name = (l.cleanName || l.name || '').toLowerCase().trim();
     const lNb = (l.neighborhood || '').toLowerCase().trim();
     const isSame = name.includes(cleanLead) || cleanLead.includes(name);
-    return !isSame && (lNb === cleanNb || cleanNb === 'governador valadares');
+    return !isSame && cleanNb && lNb === cleanNb;
   });
 
   // Se não encontrar pelo menos 2 no mesmo bairro, busca na cidade inteira
