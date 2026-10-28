@@ -31,7 +31,7 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { infiniteTag, cancellationNoticeHours } = body;
+    const { infiniteTag, cancellationNoticeHours, lateCancellationVoucherEnabled } = body;
 
     const business = await prisma.business.findFirst({
       where: { OR: [{ id }, { slug: id }] },
@@ -46,6 +46,7 @@ export async function PATCH(
       data: {
         ...(infiniteTag !== undefined ? { infiniteTag: infiniteTag?.trim() || null } : {}),
         ...(cancellationNoticeHours !== undefined ? { cancellationNoticeHours: Number(cancellationNoticeHours) } : {}),
+        ...(lateCancellationVoucherEnabled !== undefined ? { lateCancellationVoucherEnabled: Boolean(lateCancellationVoucherEnabled) } : {}),
       },
     });
 

@@ -29,6 +29,8 @@ export default function OwnerDashboardPage() {
   // Tag própria da barbearia
   const [customTag, setCustomTag] = useState('');
   const [savingTag, setSavingTag] = useState(false);
+  const [lateVoucherEnabled, setLateVoucherEnabled] = useState(true);
+  const [savingVoucherSetting, setSavingVoucherSetting] = useState(false);
 
   // Carrega autenticação e barbearia ativa
   useEffect(() => {
@@ -48,6 +50,7 @@ export default function OwnerDashboardPage() {
         if (bizData?.business) {
           setBusiness(bizData.business);
           setCustomTag(bizData.business.infiniteTag || '');
+          setLateVoucherEnabled(bizData.business.lateCancellationVoucherEnabled !== false);
         }
         setLoading(false);
       })
@@ -93,6 +96,27 @@ export default function OwnerDashboardPage() {
       alert(err.message);
     } finally {
       setSavingTag(false);
+    }
+  };
+
+  const handleToggleLateVoucher = async (enabled: boolean) => {
+    if (!business?.id) return;
+    setLateVoucherEnabled(enabled);
+    setSavingVoucherSetting(true);
+    try {
+      const res = await fetch(`/api/v1/businesses/${business.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lateCancellationVoucherEnabled: enabled }),
+      });
+      if (!res.ok) throw new Error('Falha ao salvar configuração');
+      const json = await res.json();
+      setBusiness(json.business);
+    } catch (err: any) {
+      alert(err.message);
+      setLateVoucherEnabled(!enabled);
+    } finally {
+      setSavingVoucherSetting(false);
     }
   };
 
@@ -283,6 +307,36 @@ export default function OwnerDashboardPage() {
                 <span>Criar Conta InfinitePay com Benefício de Boas-Vindas</span>
                 <ExternalLink className="size-3.5" />
               </a>
+            </div>
+
+            {/* CARD 3: POLÍTICA DE CANCELAMENTO TARDIO & VOUCHER 50% */}
+            <div className="bg-[#1C1C1A] border border-[#2B2B28] rounded-3xl p-6 space-y-4">
+              <div className="space-y-1">
+                <span className="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Política de Cancelamento</span>
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <span>🎟️</span>
+                  <span>Voucher de 50% em Cancelamentos com Menos de 1h</span>
+                </h3>
+                <p className="text-xs text-[#A1A1AA] leading-relaxed">
+                  Quando um cliente cancela com menos de 1h de antecedência um agendamento que foi <strong>pago antecipadamente</strong>, sua barbearia retém o valor recebido e emite automaticamente um cupom de 50% de desconto para o próximo agendamento dele. Caso o corte não tenha sido pago antecipadamente, nenhum cupom é gerado.
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between pt-3 border-t border-[#2B2B28]">
+                <span className="text-xs font-semibold text-white">
+                  Emitir cupom de desconto em cancelamento tardio pago
+                </span>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={lateVoucherEnabled}
+                    disabled={savingVoucherSetting}
+                    onChange={(e) => handleToggleLateVoucher(e.target.checked)}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-[#2B2B28] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-400"></div>
+                </label>
+              </div>
             </div>
           </div>
         )}

@@ -100,33 +100,77 @@ describe('Fase 3 - Agenda ORC: Disponibilidade, Concorrência e Cancelamento com
     expect(cancelRes.voucherCode).toBeNull();
   });
 
-  it('Trava Anti-Regressão #3: cancelamento com menos de 1h de antecedência marca cancelamento tardio e gera voucher de 50%', async () => {
-    // Horário em 30 minutos (menos de 1h)
-    const soonDate = new Date(Date.now() + 30 * 60 * 1000);
-
-    const result = await createBooking({
+  it('Trava Anti-Regressão #3: voucher de 50% só é gerado em cancelamento tardio COM pagamento antecipado (e respeita toggle da barbearia)', async () => {
+    // 1. Caso sem pagamento antecipado (pagamento no local): NÃO gera voucher
+    const soonDate1 = new Date(Date.now() + 30 * 60 * 1000);
+    const unpaidBooking = await createBooking({
       businessId,
       serviceId,
       professionalId,
-      startsAt: soonDate.toISOString(),
-      customerName: 'Cliente Cancelamento Tardio',
-      customerPhone: '(33) 98888-2222',
-      idempotencyKey: `late_booking_${Date.now()}`,
+      startsAt: soonDate1.toISOString(),
+      customerName: 'Cliente Sem Pagamento Antecipado',
+      customerPhone: '(33) 98888-2221',
+      isPrepaid: false,
+      idempotencyKey: `unpaid_late_${Date.now()}`,
     });
 
-    // Cancela com menos de 1 hora
-    const cancelRes = await cancelBooking(result.booking.id, 'Trânsito');
-    expect(cancelRes.booking.status).toBe('CANCELLED_BY_CUSTOMER');
-    expect(cancelRes.isLate).toBe(true);
-    expect(cancelRes.voucherCode).not.toBeNull();
-    expect(cancelRes.voucherCode).toContain('DESC50-');
+    const cancelUnpaid = await cancelBooking(unpaidBooking.booking.id, 'Imprevisto');
+    expect(cancelUnpaid.isLate).toBe(true);
+    expect(cancelUnpaid.voucherCode).toBeNull(); // Sem pagamento antecipado = Sem voucher!
 
-    // Confirma que o voucher foi persistido para o cliente
+    // 2. Caso com pagamento antecipado e barbearia com voucher ativo: GERA voucher de 50%
+    const soonDate2 = new Date(Date.now() + 35 * 60 * 1000);
+    const prepaidBooking = await createBooking({
+      businessId,
+      serviceId,
+      professionalId,
+      startsAt: soonDate2.toISOString(),
+      customerName: 'Cliente Com Pagamento Antecipado',
+      customerPhone: '(33) 98888-2222',
+      isPrepaid: true,
+      prepaidAmountCents: 3500,
+      idempotencyKey: `prepaid_late_${Date.now()}`,
+    });
+
+    const cancelPrepaid = await cancelBooking(prepaidBooking.booking.id, 'Trânsito');
+    expect(cancelPrepaid.isLate).toBe(true);
+    expect(cancelPrepaid.voucherCode).not.toBeNull();
+    expect(cancelPrepaid.voucherCode).toContain('DESC50-');
+
     const voucher = await prisma.customerVoucher.findUnique({
-      where: { code: cancelRes.voucherCode! },
+      where: { code: cancelPrepaid.voucherCode! },
     });
     expect(voucher).not.toBeNull();
     expect(voucher?.discountPercent).toBe(50);
+
+    // 3. Caso em que a barbearia DESATIVA a emissão de vouchers
+    await prisma.business.update({
+      where: { id: businessId },
+      data: { lateCancellationVoucherEnabled: false },
+    });
+
+    const soonDate3 = new Date(Date.now() + 40 * 60 * 1000);
+    const disabledPolicyBooking = await createBooking({
+      businessId,
+      serviceId,
+      professionalId,
+      startsAt: soonDate3.toISOString(),
+      customerName: 'Cliente Política Desativada',
+      customerPhone: '(33) 98888-2223',
+      isPrepaid: true,
+      prepaidAmountCents: 3500,
+      idempotencyKey: `disabled_policy_${Date.now()}`,
+    });
+
+    const cancelDisabled = await cancelBooking(disabledPolicyBooking.booking.id, 'Desistiu');
+    expect(cancelDisabled.isLate).toBe(true);
+    expect(cancelDisabled.voucherCode).toBeNull(); // Política desativada pela barbearia = Sem voucher!
+
+    // Restaura toggle para os demais testes
+    await prisma.business.update({
+      where: { id: businessId },
+      data: { lateCancellationVoucherEnabled: true },
+    });
   });
 
   it('Trava Anti-Regressão #6: teste de corrida com 10 requisições simultâneas para o mesmo horário resulta em exatamente 1 sucesso e 9 conflitos', async () => {

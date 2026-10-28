@@ -76,6 +76,7 @@ model Business {
   openingHoursRaw            Json?
   timezone                   String                    @default("America/Sao_Paulo")
   cancellationNoticeHours    Int                       @default(1) // Janela canônica: 1h de antecedência
+  lateCancellationVoucherEnabled Boolean               @default(true) // Habilita voucher de 50% em cancelamentos tardios de agendamentos pagos antecipadamente
   infiniteTag                String?                   // Tag da barbearia (ex: $barbeariajoao)
   infinitepayReferralClickedAt DateTime?
   userId                     String?
@@ -405,6 +406,8 @@ model Booking {
   startsAt           DateTime      @db.Timestamptz
   endsAt             DateTime      @db.Timestamptz
   status             BookingStatus @default(CONFIRMED)
+  isPrepaid          Boolean       @default(false)
+  prepaidAmountCents Int?
   cancelTokenHash    String        @unique // SHA-256 do token do link privado /b/{token}
   cancelledAt        DateTime?
   cancelReason       String?

@@ -278,7 +278,7 @@ describe('Fase 7 - Validação Completa das 3 Barbearias-Piloto e Isolamento Mul
     });
     expect(trialUpgraded?.grantedDays).toBe(30);
 
-    // 3. Cliente final agenda um corte para daqui a 30 minutos (janela menor que 1h)
+    // 3. Cliente final agenda um corte para daqui a 30 minutos com pagamento antecipado (janela menor que 1h)
     const lateSlot = new Date(Date.now() + 30 * 60 * 1000);
     const bookingLate = await createBooking({
       businessId: pilot3BizId,
@@ -287,6 +287,8 @@ describe('Fase 7 - Validação Completa das 3 Barbearias-Piloto e Isolamento Mul
       customerName: 'Cliente Atrasado',
       customerPhoneE164: '+5533988883331',
       startsAt: lateSlot,
+      isPrepaid: true,
+      prepaidAmountCents: 3000,
     });
 
     // 4. Trava #3: Cancelamento com < 1h gera voucher de 50% para o cliente

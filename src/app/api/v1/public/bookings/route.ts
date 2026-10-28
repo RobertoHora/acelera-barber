@@ -4,7 +4,18 @@ import { createBooking } from '@/lib/agenda/booking-service';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { businessId, serviceId, professionalId, startsAt, customerName, customerPhone, notes, idempotencyKey } = body;
+    const {
+      businessId,
+      serviceId,
+      professionalId,
+      startsAt,
+      customerName,
+      customerPhone,
+      notes,
+      idempotencyKey,
+      isPrepaid,
+      prepaidAmountCents,
+    } = body;
 
     const result = await createBooking(
       {
@@ -16,6 +27,8 @@ export async function POST(request: NextRequest) {
         customerPhone,
         notes,
         idempotencyKey,
+        isPrepaid: Boolean(isPrepaid),
+        prepaidAmountCents: prepaidAmountCents ? Number(prepaidAmountCents) : undefined,
       },
       { role: 'PUBLIC_WEB', businessId }
     );

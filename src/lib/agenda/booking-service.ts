@@ -11,6 +11,8 @@ export interface CreateBookingParams {
   customerName: string;
   customerPhone?: string;
   customerPhoneE164?: string;
+  isPrepaid?: boolean;     // Se o corte foi pago antecipadamente
+  prepaidAmountCents?: number;
   notes?: string;
   idempotencyKey?: string;
 }
@@ -151,6 +153,8 @@ export async function createBooking(params: CreateBookingParams, actorContext?: 
           startsAt: startTime,
           endsAt: endTime,
           status: 'CONFIRMED',
+          isPrepaid: Boolean(params.isPrepaid),
+          prepaidAmountCents: params.prepaidAmountCents || null,
           cancelTokenHash,
           notes: notes?.trim() || null,
           idempotencyKey: finalIdempKey,
@@ -310,10 +314,19 @@ export async function cancelBooking(
   // Trava Anti-Regressão #3: Janela canônica de 1 hora
   const isLate = diffHours < (booking.business.cancellationNoticeHours || 1);
 
+  // O voucher de 50% só é gerado se:
+  // 1. O cancelamento for tardio (isLate)
+  // 2. O agendamento tiver sido PAGO ANTECIPADAMENTE (booking.isPrepaid === true)
+  // 3. A barbearia estiver com a emissão de voucher habilitada (booking.business.lateCancellationVoucherEnabled !== false)
+  const shouldIssueVoucher =
+    isLate &&
+    Boolean(booking.isPrepaid) &&
+    booking.business.lateCancellationVoucherEnabled !== false;
+
   return await prisma.$transaction(async (tx) => {
     let voucherCode: string | null = null;
 
-    if (isLate) {
+    if (shouldIssueVoucher) {
       // Gera voucher de 50% de desconto para o próximo agendamento (Trava #3)
       voucherCode = `DESC50-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
       await tx.customerVoucher.create({
