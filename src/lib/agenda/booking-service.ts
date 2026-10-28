@@ -7,9 +7,10 @@ export interface CreateBookingParams {
   businessId: string;
   serviceId: string;
   professionalId?: string; // Se omitido ou 'any', atribui o profissional com menos agendamentos no dia
-  startsAt: string;        // ISO UTC string
+  startsAt: string | Date; // ISO UTC string ou objeto Date
   customerName: string;
-  customerPhone: string;
+  customerPhone?: string;
+  customerPhoneE164?: string;
   notes?: string;
   idempotencyKey?: string;
 }
@@ -31,17 +32,21 @@ export function hashBookingToken(token: string): string {
  * Criação segura e transacional de agendamento com proteção contra concorrência e double-booking
  */
 export async function createBooking(params: CreateBookingParams, actorContext?: ActorContext) {
-  const { businessId, serviceId, startsAt, customerName, customerPhone, notes, idempotencyKey } = params;
+  const { businessId, serviceId, customerName, notes, idempotencyKey } = params;
+  const rawPhone = params.customerPhone || params.customerPhoneE164;
+  const rawStartsAt = params.startsAt;
 
-  if (!businessId || !serviceId || !startsAt || !customerName || !customerPhone) {
+  if (!businessId || !serviceId || !rawStartsAt || !customerName || !rawPhone) {
     throw new Error('Todos os campos obrigatórios devem ser preenchidos.');
   }
 
-  const cleanPhone = customerPhone.replace(/\D/g, '');
+  const startsAt = typeof rawStartsAt === 'string' ? rawStartsAt : rawStartsAt.toISOString();
+
+  const cleanPhone = rawPhone.replace(/\D/g, '');
   if (cleanPhone.length < 10) {
     throw new Error('Número de WhatsApp inválido.');
   }
-  const phoneE164 = normalizePhoneE164(customerPhone);
+  const phoneE164 = normalizePhoneE164(rawPhone);
 
   const business = await prisma.business.findUnique({
     where: { id: businessId },

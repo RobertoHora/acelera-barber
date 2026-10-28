@@ -255,3 +255,26 @@ export async function activateTrial(
 
   return updated;
 }
+
+/**
+ * Calcula a precificação de upgrade entre planos (Trava Anti-Regressão #4: R$ 20 para Completo)
+ */
+export function calculateUpgradePrice(currentPlan: string, targetPlan: string) {
+  if (currentPlan === 'eleva_google_pro' && targetPlan === 'eleva_complete') {
+    return {
+      allowed: true,
+      sku: 'eleva_complete_upgrade',
+      priceCents: 2000,
+      priceFormatted: 'R$ 20',
+      additionalDays: 16,
+    };
+  }
+
+  return {
+    allowed: false,
+    sku: null,
+    priceCents: 0,
+    priceFormatted: 'R$ 0',
+    additionalDays: 0,
+  };
+}
