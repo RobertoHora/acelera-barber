@@ -1,4 +1,5 @@
 import { PlanCode, PlanConfig } from './types';
+export type { PlanCode, PlanConfig };
 
 export const PLANS_CONFIG: Record<PlanCode, PlanConfig> = {
   eleva_free: {
