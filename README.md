@@ -1,59 +1,80 @@
-# Acelera Barber • Guia de Presença Digital
+# Eleva ORC e Agenda ORC
 
-Aplicação web mobile-first de alta conversão para estruturação de presença digital, catálogo de serviços e display para avaliações no Google para barbearias locais.
+Plataforma integrada de presença digital, diagnóstico consultivo, agendamento online e atendimento inteligente via WhatsApp para barbearias.
 
-> **Arquitetura & Stack:** Desenvolvido em **Next.js 15 (App Router)** com React 19, TypeScript e Tailwind CSS, pronto para deploy na Vercel (plano Hobby gratuito).
-> **Fase Atual (MVP Pré-Venda):** A aplicação opera em modo assistido (`MANUAL_ASSISTED`), preparando conteúdos e orientando a aplicação manual pelo barbeiro. A documentação completa de produto e engenharia está em [`docs/`](docs/README.md). Não há alegação de parceria, selo oficial do Google, sincronização automática ou promessas de posicionamento garantido.
+- **Eleva ORC:** `https://eleva.oracio.uk` (Diagnóstico, checklist de otimização Google/Instagram, vendas avulsas e funil consultivo)
+- **Agenda ORC:** `https://agenda.oracio.uk` (Página pública de agendamento mobile-first `/{slug}`, link privado de gestão `/b/{token}`, painel operacional do dono `/painel` e módulo InfinitePay/InfiniteTap)
+- **Painel Administrativo:** `https://eleva.oracio.uk/admin/operacao` (Métricas de coortes, saúde do WhatsApp, Circuit Breaker e telemetria)
 
-## 🚀 Arquitetura e Fluxo do Usuário
+---
 
-1. **Landing Page de Alta Conversão (Padrão Estúdio ORC 1:1):**
-   - Paleta Dark Matte (`#19181D`, `#2B2B29`, `#3D3C3A`, `#EFECE5`, `#E5C378` e cards Google oficiais em fundo branco).
-   - **Reconhecimento de Loja por Slug / ID:** Se acessado via `?barber=slug` ou `?b=slug`, exibe automaticamente a logo e o nome da barbearia do banco de dados de 123 leads de Governador Valadares.
-   - **Busca com Autocomplete Local + Serverless (`/api/search-barber`):** Encontra rapidamente qualquer barbearia cadastrada.
-   - **Comparativo Interativo Antes/Depois (Slider):** Perfil abandonado vs. perfil profissional estruturado.
-   - **Barra de Métricas:** R$ 37 (acessível), 100% Online, Display A6 300 DPI, Garantia legal de 7 dias (CDC).
-   - **Tabela de Preços Congelada:** Google Pro (R$ 37) e Completo (R$ 57).
+## 🏛️ Arquitetura e Decisões Técnicas
 
-2. **Onboarding Cinematográfico Educacional (10 segundos):**
-   - Radar de varredura visual com checklist auditando Google Maps, Catálogo, Contato e Display.
-   - Barra de progresso animada (0 a 100%).
-   - Títulos dinâmicos rotativos ensinando como a plataforma ajuda a atrair clientes locais.
+1. **Stack Tecnológica:** Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS, Prisma 7 com Driver Adapter `@prisma/adapter-pg`.
+2. **Persistência e Concorrência Física:** PostgreSQL 17 (`eleva_agenda_production` e `eleva_agenda_test`) na porta 5433 (`/home/ubuntu/orc-db`), isolado do banco do Estúdio ORC (`pulsor_production`). Unicidade de slots protegida a nível de engine com `EXCLUDE USING gist` (`btree_gist` + `tstzrange`).
+3. **Autenticação Passwordless:** Baseada em OTP de 6 dígitos via WhatsApp e sessões com HMAC SHA-256 e cookie assinado (`orc_owner_session` com escopo `.oracio.uk`).
+4. **Motor de IA Laura (`services/laura-engine`):** Atendente conversacional oficial "Laura" com roteamento multi-contexto (`PROSPECT_OWNER`, `ACTIVE_OWNER`, `END_CUSTOMER`, `AMBIGUOUS_MULTI_BUSINESS`), debounce de 20s, via rápida transacional para notificações e tools da agenda (`listServices`, `getAvailableSlots`, `createBooking`, `cancelBooking`, `handoffToHuman`).
+5. **Gateway de Pagamento:** InfinitePay (`$estudio-orc`) com prefixo determinístico de pedido `eleva_{orderId}`, webhook idempotente em `/api/webhooks/infinitepay` e reconciliação automática de direitos (`Entitlements`) e testes (`TrialBenefit`).
+6. **Módulo de Fidelização:** Cancelamento com $< 1\text{h}$ emite voucher de 50% de desconto (`DESC50-...`) para o próximo corte do cliente.
 
-3. **Tela de Diagnóstico e Benchmark de Concorrentes:**
-   - **Diagnóstico da Sua Barbearia:** Pontuação visual explicável (0 a 100%) com gaps identificados.
-   - **Benchmark Local (2 Concorrentes Reais):** Identifica as barbearias melhores posicionadas no mesmo bairro (ou região de GV) e explica exatamente os motivos pelos quais elas rankeiam à frente (volume de avaliações, fotos recentes, link de agendamento).
-   - **Alerta de Perda de Clientes:** Consciência imediata de mercado e botão para iniciar melhorias gratuitas.
+---
 
-4. **Wizard de Melhorias em 5 Etapas (`ImprovementWizard`):**
-   - **Etapa 1 (Instagram):** Bio estruturada e link de agendamento no WhatsApp.
-   - **Etapa 2 (Google Perfil):** Horários, telefone, endereço e instrução de aplicação manual.
-   - **Etapa 3 (Catálogo e Fotos):** Cortes com título, preço e descrição com download direto.
-   - **Etapa 4 (Comodidades):** Ar-condicionado, Wi-Fi, cerveja/café, pagamento via Pix/cartão.
-   - **Etapa 5 (Plaquinha A6 300 DPI):** Gerador visual de display em alta resolução (1240 x 1748 px) unindo QR Code neutro de avaliação no Google ("Conte como foi sua experiência no Google") e Wi-Fi de clientes sem persistência de senha. Guia de impressão em papel fotográfico 10x15cm.
+## 💳 Catálogo de Planos e Funil Aprovado
 
-5. **Cobrança `INFINITEPAY_MANUAL`:**
-   - Registro local de intenção de compra para Google Pro (R$ 37) ou Completo (R$ 57).
-   - Solicitação de link oficial InfinitePay via WhatsApp do suporte com conferência e ateste humano.
-   - Zero dependência de checkout automatizado ou liberação precoce por webhook.
+| SKU / Plano | Tipo | Valor | Benefício da Agenda ORC |
+| :--- | :--- | :--- | :--- |
+| `eleva_free` | Diagnóstico | Grátis | Acesso ao diagnóstico e checklist básico |
+| `eleva_google_pro` | Pagamento Único | R$ 37 | **14 dias grátis** de teste da Agenda ORC |
+| `eleva_complete` | Pagamento Único | R$ 57 | **30 dias grátis** de teste da Agenda ORC |
+| `eleva_complete_upgrade` | Upgrade | R$ 20 | Amplia teste de 14 para **30 dias totais** (sem reiniciar relógio) |
+| `agenda_basic_monthly` | Assinatura Mensal | R$ 37/mês | Agenda online + Notificações WhatsApp (24h/2h) para cliente e barbearia |
+| `agenda_ai_monthly` | Assinatura Mensal | R$ 67/mês | Tudo da Básica + Atendimento e Agendamento Automático via IA Laura |
 
-## 💻 Como Rodar Localmente
+---
+
+## 🧪 Suíte de Testes Automatizados (Vitest)
+
+O projeto conta com **39 testes automatizados** cobrindo todas as camadas de negócio e infraestrutura:
 
 ```bash
-# Instalar dependências
-bun install # ou npm install
-
-# Rodar servidor de desenvolvimento
-bun dev # ou npm run dev
-
-# Build de produção
-bun run build # ou npm run build
+npm test
 ```
 
-## 🛡️ Guardrails e Travas de Integridade
+- `tests/unit/plans-and-copy.test.ts`: Validação do catálogo e saneamento de termos proibidos de ranking.
+- `tests/integration/fase1-auth-db.test.ts`: Banco PostgreSQL, seed das 123 barbearias de GV, OTP passwordless e isolamento.
+- `tests/integration/fase2-billing-infinitepay.test.ts`: Ordens InfinitePay, webhook idempotente, upgrade de R$ 20 e cancelamento de cadência fria.
+- `tests/integration/fase3-agenda-concurrency.test.ts`: Concorrência estrita (10 requisições simultâneas para o mesmo slot → 1 reserva, 9 conflitos), links privados e voucher de 50%.
+- `tests/integration/fase4-notifications-scheduler.test.ts`: Emissão de notificações transacionais, scheduler de 24h e 2h, e tolerância de 72h em `PAST_DUE`.
+- `tests/integration/fase5-laura-engine.test.ts`: Laura IA, desambiguação multi-negócio, tools da agenda e outbox worker fast-track.
+- `tests/integration/fase6-telemetry-funnel.test.ts`: Telemetria com `GrowthEvent`, resumo consultivo para a Laura e API admin.
+- `tests/integration/fase7-pilot-journey-and-isolation.test.ts`: Validação E2E das 3 barbearias-piloto (solo, multi e crua) e isolamento multi-tenant.
 
-Execute a suíte de testes de integridade para validar conformidade:
+---
 
+## 🛡️ Scripts de Operação e Recuperação de Desastre
+
+- **Backup do Banco de Produção:**
+  ```bash
+  ./scripts/backup-db.sh
+  ```
+  Gera dump binário comprimido com catálogo completo em `backups/eleva_agenda_prod_{TIMESTAMP}.dump`.
+
+- **Exercício de Restauração (Restore Drill):**
+  ```bash
+  ./scripts/restore-drill.sh
+  ```
+  Restaura o dump mais recente em um banco temporário isolado (`eleva_agenda_restore_verify`), valida a contagem de registros e checa a existência física da constraint `Booking_no_overlapping_active_slots`.
+
+---
+
+## 🚀 Build e Deploy
+
+Compilação otimizada para produção:
 ```bash
-python3 test_guardrails.py
+npm run build
+```
+
+Iniciar servidor de produção:
+```bash
+npm start
 ```
