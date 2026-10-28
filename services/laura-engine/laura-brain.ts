@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/db';
 import { LAURA_TOOLS, LauraToolContext } from './agenda-tools';
+import { buildConsultativeSummary, ConsultativeSummary } from '@/lib/telemetry/consultative-summary';
 
 export type UserRoleContext = 'PROSPECT_OWNER' | 'ACTIVE_OWNER' | 'END_CUSTOMER' | 'AMBIGUOUS_MULTI_BUSINESS';
 
@@ -104,7 +105,12 @@ export async function processLauraMessage(
   incomingText: string,
   phoneE164: string,
   explicitSlug?: string
-): Promise<{ replyText: string; toolUsed?: string; toolResult?: any }> {
+): Promise<{
+  replyText: string;
+  toolUsed?: string;
+  toolResult?: any;
+  consultativeSummary?: ConsultativeSummary | null;
+}> {
   const context = await resolveSenderContext(phoneE164, explicitSlug);
 
   // 1. Caso de Desambiguação Multi-Negócio
@@ -187,8 +193,18 @@ export async function processLauraMessage(
 
   // 3. Atendimento Consultivo ao Dono da Barbearia (ACTIVE_OWNER)
   if (context.role === 'ACTIVE_OWNER') {
+    let recommendation = '';
+    let summary: ConsultativeSummary | null = null;
+    if (context.businessId) {
+      summary = await buildConsultativeSummary(context.businessId);
+      if (summary) {
+        recommendation = `\n\n💡 *Próximo passo recomendado:* ${summary.nextRecommendedAction}`;
+      }
+    }
+
     return {
-      replyText: `Olá! Sou a Laura do Eleva e Agenda ORC. Seu painel de controle está disponível em https://agenda.oracio.uk/painel para gerenciar seus horários, equipe e pagamentos. Posso te ajudar com alguma dúvida da sua barbearia?`,
+      replyText: `Olá! Sou a Laura do Eleva e Agenda ORC. Seu painel de controle está disponível em https://agenda.oracio.uk/painel para gerenciar seus horários, equipe e pagamentos.${recommendation}\n\nPosso te ajudar com alguma dúvida da sua barbearia hoje?`,
+      consultativeSummary: summary,
     };
   }
 

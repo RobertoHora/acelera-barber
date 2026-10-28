@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { grantOrderBenefits } from '@/lib/billing/entitlements';
 import { verifyWebhookSecret } from '@/lib/billing/infinitepay';
+import { recordGrowthEvent } from '@/lib/telemetry/events';
 
 export async function POST(request: NextRequest) {
   try {
@@ -104,6 +105,22 @@ export async function POST(request: NextRequest) {
 
         // 3. Concede os direitos (Entitlements) e benefícios de teste (TrialBenefit)
         await grantOrderBenefits(order.id, tx);
+
+        // 3.1 Registra o evento canônico order.paid no log de telemetria
+        await recordGrowthEvent(
+          {
+            event: 'order.paid',
+            businessId: order.businessId,
+            orderId: order.id,
+            dedupeKey: `order_paid_event:${order.id}`,
+            metadata: {
+              orderNsu: order.orderNsu,
+              amountCents: order.amountCents,
+              plan: order.sku,
+            },
+          },
+          tx
+        );
 
         // 4. Cancela cadência fria de abordagem imediatamente (Regra de Ouro do Funil Consultivo)
         await tx.outboxMessage.updateMany({
