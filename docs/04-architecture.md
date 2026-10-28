@@ -1,39 +1,36 @@
-# Arquitetura Técnica
+# Arquitetura — aplicativos e motor único
 
-## Decisão
+Versão: 0.2 | Revisão: 2026-10-28 | Estado: especificação aprovada; implementação parcial.
 
-Migrar a SPA estática para uma aplicação web com backend. O HTML atual é referência visual e de conteúdo, não deve continuar sendo a autoridade de dados, pagamento ou integrações.
+## Existente e destino
 
-## Componentes
+Eleva usa Next.js 15 App Router, React 19, TypeScript e Tailwind na Vercel. Evoluir o código existente; index.html é legado, não ponto inicial para uma reescrita.
 
-```text
-Cliente web
-  -> API autenticada
-     -> banco relacional
-     -> storage privado de assets
-     -> checkout hospedado InfinitePay e confirmação manual atestada
-     -> provedor de coleta/IA somente no servidor
-     -> futuras APIs Google e Meta
-Painel de operações
-  -> mesma API, com RBAC de operador
-```
+Agenda ORC usará o domínio agenda.oracio.uk e compartilhará a autoridade de negócio, compras e benefícios do Eleva. A organização de deploy/domínios e o fornecedor PostgreSQL serão registrados em ADR antes de implementar persistência. São escolhas de engenharia pendentes, não infraestrutura já provisionada.
 
-## Decisões obrigatórias
+## Fluxo lógico
 
-- Backend e banco são a fonte de verdade; navegador armazena apenas estado temporário não sensível.
-- Tokens de URL são aleatórios, com expiração/revogação e escopo de um negócio.
-- Chaves de Apify, Google e Meta nunca entram no bundle ou `localStorage`.
-- Ações externas usam uma tabela de jobs/outbox, chave de idempotência, tentativas limitadas e log de resultado.
-- Todos os endpoints verificam autorização por negócio, inclusive downloads e imagens.
+Aplicativos → API autenticada → PostgreSQL → eventos/outbox persistidos → uma instância Eleva/Agenda baseada na Lana na VPS → um transporte/WhatsApp.
 
-## Cobrança InfinitePay
+Retornos do motor atualizam tentativas, aceitação e entrega. Sessões longas do motor não serão executadas dentro de requisições serverless. Prospecção e confirmações usam a mesma instância com finalidades distintas.
 
-Adotar o mesmo modelo operacional do Estúdio ORC, sem compartilhar código, credenciais, links ou dados: um operador prepara um link oficial da InfinitePay para um pedido com preço congelado; o cliente paga no checkout hospedado; o operador confere comprovante, valor e negócio antes de liberar o entitlement. Não presumir webhook ou confirmação automática da InfinitePay.
+## Autoridade e isolamento
 
-## Preparação para Google/Meta
+- Banco determina direitos, teste, assinatura e disponibilidade; navegador não libera planos.
+- Dono autenticado e membership por negócio; cliente final agenda sem conta.
+- Segredos apenas no servidor; tokens e arquivos privados têm escopo e expiração.
+- Integrar eventos entre banco/aplicação e motor com autenticação de serviço, idempotência e outbox, não por gravação dupla não atômica.
+- Cada reserva confirmada grava evento na mesma transação; falha de consumo pode ser retomada.
+- Uma cópia nova do motor serve todo o funil Eleva/Agenda. Banco, sessões, filas e credenciais do Estúdio ORC não são compartilhados.
 
-Implementar adaptadores com interfaces como `readProfile`, `validateDraft` e `applyDraft`. No MVP, o adaptador retorna `MANUAL_ASSISTED`; após homologação, ele pode realizar OAuth e escrita sem mudar a UX ou os dados.
+## Cobrança e integrações
 
-## Observabilidade
+InfinitePay é o provedor escolhido. Modo manual atual não implica ausência de API. O futuro modo integrado exige confirmação verificável no servidor; fallback manual requer operador e auditoria. Nenhuma compra é validada por redirect.
 
-Registrar eventos de produto, erros sanitizados, origem de lead, pagamento, mudanças de plano e resultado das ações. Não registrar tokens, senhas de Wi-Fi, dados de cartão ou conteúdo desnecessário de conversas.
+Google/Instagram usam adaptadores de capacidade: leitura, preparação e escrita são permissões distintas. Aplicação manual é o padrão até validação por operação.
+
+## Conversação e métricas
+
+Contexto inclui negócio, participante, papel, finalidade e etapa. Comercial, transacional e IA da Agenda usam o mesmo motor, mas regras e direitos diferentes. Um telefone pode ter vários contextos. Eventos de produto alimentam um resumo persistido para a próxima ação consultiva.
+
+Referências: [dados](05-data-api.md), [agenda](12-booking-notifications-contract.md), [motor](14-lana-replication-contract.md).

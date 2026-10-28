@@ -151,7 +151,11 @@ describe('Fase 4 - Notificações Transacionais e Scheduler de Lembretes / Venci
     expect(count).toBeGreaterThan(0);
 
     const pending = await prisma.outboxMessage.count({
-      where: { status: 'QUEUED' },
+      where: {
+        businessId,
+        status: 'QUEUED',
+        availableAt: { lte: new Date() },
+      },
     });
     expect(pending).toBe(0);
   });

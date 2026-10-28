@@ -1,61 +1,48 @@
-# PRD — Acelera Barber MVP
+# PRD — Eleva ORC e Agenda ORC
 
-**Versão:** 0.1  
-**Meta:** primeira venda paga em até duas semanas, sem depender da homologação da API do Google.
+Versão: 0.2 | Revisão: 2026-10-28 | Estado: especificação aprovada; implementação parcial.
 
-## Problema
+## Objetivo e público
 
-Barbearias locais perdem descoberta e agendamento por terem Perfil da Empresa do Google e Instagram incompletos. O dono não quer aprender ferramentas nem preencher dezenas de campos; quer uma sequência simples que gere resultado percebido no mesmo dia.
+Ajudar o dono de uma barbearia a melhorar sua presença digital e transformar interesse em agendamentos. O cliente final escolhe serviço, profissional e horário e informa somente nome e WhatsApp. O dono utiliza administração autenticada; o cliente final não cria conta.
 
-## Público e proposta
+A primeira experiência é gratuita. Um único atendimento consultivo identifica necessidades e acompanha uso para oferecer os próximos produtos, sem exigir passagem por todas as compras intermediárias.
 
-O usuário primário é dono ou gestor de uma barbearia de bairro, majoritariamente no celular. O Acelera Barber transforma os dados do negócio em um plano de ação, textos, QR codes e materiais prontos para aplicar.
+## Produtos e valor
 
-**Promessa do MVP:** “Em poucos minutos, deixe seus dados prontos e aplique as melhorias mais importantes no Google e Instagram.”
+| Produto | Preço | Valor principal |
+| --- | --- | --- |
+| Eleva Gratuito | R$ 0 | Diagnóstico explicável, bio inicial, link WhatsApp e QR neutro |
+| Eleva Google Pro | R$ 37 avulso | Materiais e melhorias Google + 14 dias de Agenda |
+| Eleva Completo | R$ 57 avulso | Google Pro + kit Instagram + 30 dias de Agenda |
+| Agenda ORC | R$ 37/mês | Agenda e confirmações WhatsApp para cliente e barbearia |
+| Agenda ORC com IA | R$ 67/mês | Agenda, confirmações e atendimento conversacional com agendamento no WhatsApp |
 
-Não prometer: primeiro lugar no Google, novos seguidores, publicação automática, integração aprovada ou alteração já feita quando o cliente apenas viu uma instrução.
+[Regras comerciais completas](06-plans-billing.md): upgrade Eleva por R$ 20, teste iniciado na primeira ativação real, modalidade escolhida pelo dono e ausência de reinício de prazo.
 
-## Resultado do usuário
+## Requisitos de produto
 
-Em uma única sessão, o cliente deve:
+- Preservar identidade dark matte, componentes existentes e landing simplificada.
+- Pré-preencher com dados existentes/autorizados e deixar o dono confirmar horários, serviços e preços; desconhecido não equivale a ausente.
+- Preparar textos e materiais para aplicação manual no Google/Instagram; integrações opcionais não bloqueiam a agenda.
+- Publicar página da barbearia e administração em Agenda ORC, com disponibilidade real e proteção contra sobreposição.
+- Confirmar na tela e notificar cliente e barbearia pelo mesmo motor/WhatsApp.
+- IA do plano de R$ 67 usa as mesmas operações de agenda que a interface pública.
+- Medir uso, necessidades, ofertas, compras, ativação, renovação e cancelamento para orientar atendimento.
+- Atendimento consultivo ao dono é distinto do serviço de IA contratado para clientes finais.
 
-1. confirmar os dados da barbearia;
-2. receber diagnóstico e próximos passos claros;
-3. editar bio, serviços, preços, horário, WhatsApp e links;
-4. baixar ou copiar materiais prontos;
-5. aplicar manualmente as mudanças no Google/Instagram;
-6. ter acesso aos recursos pagos após a confirmação manual do pagamento pela operação.
+## Não incluído na primeira entrega
 
-## Métricas iniciais
+ERP, estoque, folha/comissões complexas, fidelidade e geração de cortes com IA. Pagamento antecipado do atendimento é evolução; no início o cliente paga na barbearia. Não prometer ranking, botão azul Google garantido ou sincronização sem integração validada.
 
-| Métrica | Meta de MVP |
-| --- | --- |
-| Lead abre a página personalizada | medir por token único |
-| Conclusão do diagnóstico | >= 45% dos abertos |
-| Início de checkout | medir por plano e origem |
-| Pagamento confirmado | ateste manual do operador, nunca redirect do checkout |
-| Ativação paga | primeiro material baixado/copiado em até 10 min |
-| Pedido de suporte | classificar motivo e tela de origem |
+## Critérios de sucesso
 
-## Requisitos funcionais
+- Lead conclui uma melhoria gratuita e consegue retornar sem perder dados confirmados.
+- Compra concede recursos e benefício de teste corretos uma única vez.
+- Dono publica a agenda, escolhe modalidade e enxerga início/fim do teste.
+- Cliente agenda com nome e WhatsApp e dono encontra a reserva no painel.
+- Quando o motor estiver ativo, os dois destinatários recebem confirmação rastreável.
+- IA nunca inventa disponibilidade ou anuncia reserva que não foi gravada.
+- Métricas de conversão são reconstruíveis por eventos persistidos; compra não encerra o relacionamento.
 
-- Link pessoal, revogável e sem expor dados em parâmetros públicos.
-- Diagnóstico gratuito, onboarding progressivo e salvamento automático.
-- Editor de presença digital e kit de aplicação manual.
-- Paywall por recurso e checkout hospedado.
-- Painel operacional para leads, planos, pagamento e pedidos de ajuda.
-- Registro explícito do estado de cada ação externa.
-
-## Fora do MVP
-
-- Escrita direta no Google Business Profile.
-- Alteração automática de bio/nome do Instagram.
-- Disparo comercial não consentido, bot autônomo ou campanhas automáticas.
-- Agendamento, ERP, CRM completo ou marketplace de barbeiros.
-
-## Hipóteses a validar no piloto
-
-- Diagnóstico personalizado converte melhor que uma página genérica.
-- QR de avaliação + materiais de balcão geram percepção imediata de valor.
-- O bloqueio após valor gratuito é suficiente para vender o plano Google Pro.
-- O dono prefere pagar uma vez pela ativação e depois assinatura por conteúdo/acompanhamento.
+A meta inicial é um piloto com três barbearias. Prazos são estimativas por fase, não promessa de toda a ampliação concluída em dez dias.

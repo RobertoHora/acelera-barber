@@ -1,23 +1,36 @@
-# Documentação do Produto
+# Eleva ORC e Agenda ORC — documentação canônica
 
-Este diretório é a fonte de verdade para construir o Acelera Barber como um produto vendável. O MVP não promete escrita automática em Google ou Instagram enquanto as integrações oficiais não estiverem aprovadas.
+Versão: 0.2 | Revisão: 2026-10-28 | Estado: especificação aprovada; implementação parcial.
+
+## Estado e precedência
+
+O repositório permanece em /home/ubuntu/acelera-barber, mas a marca é Eleva ORC. A aplicação já utiliza Next.js e está publicada em https://eleva.oracio.uk. Agenda ORC será o módulo de agenda em https://agenda.oracio.uk; sua publicação e operação não estão comprovadas nesta revisão.
+
+Esta revisão substitui as decisões anteriores de permanecer no GitHub Pages, excluir agendamento, iniciar teste na compra, vender agenda apenas por R$ 37/mês ou operar bots separados. Não comprova implementação dos recursos descritos.
 
 ## Ordem de leitura
 
-1. [PRD](01-prd.md): problema, público, resultado e escopo.
-2. [Escopo e roadmap](02-mvp-roadmap.md): o que entra em duas semanas e o que fica fora.
-3. [Jornadas UX](03-ux-flows.md): telas, estados e menor atrito.
-4. [Arquitetura](04-architecture.md): componentes e limites técnicos.
-5. [Dados e API](05-data-api.md): entidades, estados e contratos.
-6. [Planos e cobrança](06-plans-billing.md): entitlement e confirmação de pagamento.
-7. [Integrações](07-integrations-sync.md): modo manual atual e caminho Google/Meta.
-8. [Aquisição e operação](08-acquisition-operations.md): ligação segura com a prospecção do Estúdio ORC.
-9. [Segurança e privacidade](09-security-privacy.md): controles obrigatórios.
-10. [Qualidade e lançamento](10-quality-release.md): critérios de aceite e piloto.
+1. [PRD](01-prd.md)
+2. [Roadmap e dependências](02-mvp-roadmap.md)
+3. [Jornadas e UX](03-ux-flows.md)
+4. [Arquitetura](04-architecture.md)
+5. [Dados e contratos](05-data-api.md)
+6. [Planos, benefícios e cobrança](06-plans-billing.md)
+7. [Integrações](07-integrations-sync.md)
+8. [Funil consultivo e operação](08-acquisition-operations.md)
+9. [Segurança e privacidade](09-security-privacy.md)
+10. [Qualidade e lançamento](10-quality-release.md)
+11. [Pesquisa e evidências](11-research-evidence.md)
+12. [Agenda e notificações](12-booking-notifications-contract.md)
+13. [Provedores e piloto](13-provider-evaluation-pilot.md)
+14. [Reprodução do motor Lana](14-lana-replication-contract.md)
+15. [Prompt do plano sequencial](15-implementation-planning-prompt.md)
 
-## Convenções
+## Fontes de verdade
 
-- `MANUAL_ASSISTED` significa que a ferramenta prepara a alteração e orienta o cliente; não escreve na plataforma externa.
-- Apenas uma confirmação manual atestada por operador altera um plano para pago. O checkout hospedado da InfinitePay não é prova de pagamento.
-- Cliente e operador veem o estado real de cada ação: rascunho, pronto para aplicar, confirmado pelo cliente, pendente ou falhou.
-- Integrações, mensagens e pagamento são fronteiras externas: toda mudança nelas requer logs, idempotência e teste isolado.
+- O documento 06 determina preços, períodos de teste e direitos; 12 determina reservas e comunicação; 14 determina reprodução e ativação do motor.
+- Código existente não é evidência de funcionamento em produção. Separar existente, planejado, validado e pendente.
+- MANUAL_ASSISTED prepara alterações externas. CLIENT_CONFIRMED é confirmação do dono; SYNCED exige resposta/leitura da integração correspondente.
+- Há um motor e um WhatsApp para todo o novo funil. O Estúdio ORC continua independente.
+- Pagamento confirmado exige evidência verificada no servidor ou conferência manual auditada; clique, redirect e localStorage não liberam recursos.
+- Primeiro concluir os aplicativos e os contratos com transporte simulado; depois reproduzir, integrar e ativar o motor.

@@ -1,44 +1,59 @@
-# Dados e Contratos de API
+# Dados, estados e contratos
 
-## Entidades mínimas
+Versão: 0.2 | Revisão: 2026-10-28 | Estado: especificação aprovada; implementação parcial.
 
-| Entidade | Responsabilidade |
+## Modelo lógico mínimo
+
+| Entidades | Campos/regras essenciais |
 | --- | --- |
-| `Lead` | origem, evidência pública, consentimento e estágio comercial |
-| `Business` | dados confirmados da barbearia e proprietário |
-| `AccessLink` | token pessoal, expiração, revogação e último uso |
-| `ProfileDraft` | dados editáveis e versão do rascunho |
-| `Action` | tarefa Google/Instagram e estado real de aplicação |
-| `Plan` / `Entitlement` | recursos liberados e período de acesso |
-| `Order` | plano, preço congelado, link InfinitePay, estados de checkout e pagamento |
-| `PaymentConfirmation` | ateste do operador, referência minimizada e fingerprint de comprovante |
-| `SupportRequest` | contexto da tela, mensagem e proprietário operacional |
-| `AuditEvent` | evento de segurança ou alteração relevante |
+| Lead, Identity, ConversationContext | origem, contato normalizado, negócio, papel, finalidade; telefone não é dono global |
+| Business, User, Membership | slug único, timezone IANA, proprietário e permissões |
+| ProfileDraft, Action, Asset | versão, evidência, estado manual/externo e acesso ao material |
+| Professional, Service, ProfessionalService | habilitação, duração, buffer, preço em centavos |
+| WorkingHours, ScheduleException | expediente semanal, intervalos, bloqueios e exceções por data |
+| Customer, Booking | negócio, contato, profissional, intervalo UTC, estado, versão e snapshots do serviço/preço |
+| PurchaseOrder, PaymentEvent, PaymentConfirmation | oferta, preço congelado, transação externa e origem da confirmação |
+| Entitlement, TrialBenefit, Subscription | origem da compra, modalidade, activatedAt, endsAt, paidThrough e estado |
+| NeedObservation, OfferPresentation | necessidade e evidência, oferta, motivo, resultado e próxima ação |
+| NotificationJob, NotificationAttempt | evento, destinatário/papel, versão, finalidade, posse e recibo |
+| ProviderConnection, ReferralEvent | capacidade, autorização, campanha e recompensa confirmada |
+| ConsentRecord, SupportRequest, AuditEvent, GrowthEvent | finalidade, versão, origem, acesso e rastreabilidade |
 
-## Regras de integridade
+TrialBenefit é único por negócio para a campanha inicial. Upgrade altera sua duração, não cria outro teste. Valores e datas são calculados no servidor.
 
-- `Business` pertence a um proprietário; nenhuma consulta aceita apenas um ID sem checar escopo.
-- Um `AccessLink` abre apenas seu `Business` e pode ser revogado.
-- Um comprovante/referência não pode confirmar dois pedidos; o fingerprint é único.
-- Um `Order` mantém valor, moeda e pacote congelados após o link de pagamento ser preparado.
-- Apenas operador autorizado pode registrar `PaymentConfirmation`; retorno do checkout nunca libera plano.
-- Uma `Action` não muda para `SYNCED` sem recibo da plataforma oficial.
-- Telefones são normalizados em E.164; consentimento tem data, origem e texto/versão da política.
+## Estados independentes
 
-## Contratos iniciais
+- Reserva: CONFIRMED, CANCELLED, COMPLETED, NO_SHOW; pagamento presencial não exige pagamento eletrônico para CONFIRMED.
+- Benefício/teste: AVAILABLE, ACTIVE, EXPIRED, REVOKED.
+- Assinatura: INACTIVE, ACTIVE, PAST_DUE, CANCELLED; manter paidThrough separado.
+- Pagamento: PENDING, VERIFIED, UNKNOWN, FAILED, REFUNDED, CHARGEBACK.
+- Mensagem: QUEUED, CLAIMED, DISPATCHING, PROVIDER_ACCEPTED, DELIVERED, READ, FAILED, CANCELLED, UNKNOWN, UNCERTAIN.
+- Stage comercial é derivado de fatos e não substitui o registro de compras ou assinatura.
 
-| Operação | Método | Resultado |
-| --- | --- | --- |
-| abrir link pessoal | `POST /api/access/resolve` | sessão limitada ao negócio |
-| salvar onboarding | `PATCH /api/businesses/:id/profile` | rascunho validado e nova versão |
-| gerar material | `POST /api/businesses/:id/assets` | URL temporária do asset |
-| preparar pagamento | `POST /api/ops/orders/:id/infinitepay/prepare` | link oficial para preço congelado |
-| confirmar pagamento | `POST /api/ops/orders/:id/infinitepay/confirm` | ateste, evidência minimizada e entitlement |
-| concluir tarefa | `POST /api/actions/:id/confirm` | `CLIENT_CONFIRMED`, nunca `SYNCED` |
+## Contratos a implementar
 
-## Validações
+| Operação | Interface proposta |
+| --- | --- |
+| Dados/horários públicos | GET /api/public/businesses/:slug/services, /professionals, /availability |
+| Criar reserva | POST /api/public/businesses/:slug/bookings, com Idempotency-Key |
+| Gerenciar reserva | GET/PATCH /api/public/bookings/:token; token privado e operações permitidas |
+| Gestão do dono | /api/businesses/:id/profile, /services, /professionals, /schedule, /bookings |
+| Ativar teste | POST /api/businesses/:id/agenda/activate, modalidade e versão do aceite |
+| Iniciar cobrança | POST /api/checkout, offerId e contexto; servidor determina preço/recebedor |
+| Reconciliar cobrança | POST /api/webhooks/infinitepay; confirmação manual em rota exclusiva de operador |
+| Entrada/retorno do motor | eventos autenticados de serviço com eventId e versão |
+| Resumo consultivo | leitura autenticada de etapa, direitos, necessidades e fatos de uso |
 
-- Limites de tamanho, allowlist de URLs, saneamento de HTML e rate limiting.
-- `id` de negócio vem da sessão, não de campos confiados ao navegador.
-- Todos os payloads possuem schema e erros legíveis para o cliente.
-- Imagem de comprovante é privada, tem tamanho/tipo limitado, fingerprint e retenção curta definida; nunca é servida publicamente.
+A IA chama as mesmas operações de reserva por uma identidade de serviço com escopo de negócio. Nunca escolhe um businessId recebido sem autorização.
+
+## Eventos
+
+DIAGNOSIS_COMPLETED, IMPROVEMENT_APPLIED, OFFER_PRESENTED, CHECKOUT_STARTED, PAYMENT_CONFIRMED, AGENDA_TRIAL_STARTED, BOOKING_CONFIRMED, BOOKING_CANCELLED, BOOKING_RESCHEDULED, NOTIFICATION_DELIVERED, AI_BOOKING_COMPLETED, TRIAL_ENDED, SUBSCRIPTION_ACTIVATED, PLAN_UPGRADED, SUBSCRIPTION_CANCELLED.
+
+Envelope: eventId, eventType, schemaVersion, businessId, aggregateId, aggregateVersion, occurredAt, source, correlationId e payload mínimo. ActorId quando houver autenticação. Não incluir telefone em analytics geral.
+
+## Integridade
+
+Transação e restrição de não sobreposição por profissional para intervalos ativos, incluindo concorrência entre canais. Índices únicos para eventos, transações externas e idempotência. Eventos antigos não sobrescrevem estados terminais. Alterações usam versão para detectar conflito.
+
+Dados importados têm source, observedAt e verificationStatus. Evidência desconhecida não vira false ou ranking medido. Definir schemas físicos, limites de payload e envelopes de erro no plano de engenharia.
