@@ -141,8 +141,8 @@ describe('Fase 6 - Telemetria, Funil Consultivo e Métricas de Operação', () =
       ownerPhone
     );
 
-    expect(res.replyText).toContain('Laura do Eleva e Agenda ORC');
-    expect(res.replyText).toContain('Próximo passo recomendado:');
+    expect(res.replyText).toContain('análise gratuita');
+    expect(res.replyText).not.toContain('Próximo passo recomendado:');
     expect(res.consultativeSummary).toBeDefined();
     expect(res.consultativeSummary?.businessId).toBe(businessId);
   });

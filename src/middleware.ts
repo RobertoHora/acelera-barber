@@ -4,11 +4,18 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const host = request.headers.get('host') || '';
   const pathname = url.pathname;
+  if(process.env.ELEVA_BACKEND_ORIGIN && pathname.startsWith('/api/v1/')){
+    const target=new URL(pathname+url.search,process.env.ELEVA_BACKEND_ORIGIN);
+    const headers=new Headers(request.headers);
+    headers.set('cookie',(headers.get('cookie')||'')+'; orc_e2e_access='+process.env.ELEVA_BACKEND_ACCESS_TOKEN);
+    return NextResponse.rewrite(target,{request:{headers}});
+  }
   const testAccess=process.env.E2E_ACCESS_TOKEN;
   if(process.env.E2E_RUN_ID && testAccess && !pathname.startsWith('/_next') && !pathname.startsWith('/api/internal/laura') && !pathname.startsWith('/api/webhooks/infinitepay')) {
     if(url.searchParams.get('test_access')===testAccess){
       url.searchParams.delete('test_access');
-      const response=NextResponse.redirect(url);
+      const publicUrl=new URL(url.pathname+url.search,process.env.NEXT_PUBLIC_ELEVA_URL||url.origin);
+      const response=NextResponse.redirect(publicUrl);
       response.cookies.set('orc_e2e_access',testAccess,{httpOnly:true,secure:url.protocol==='https:',sameSite:'lax',path:'/',maxAge:604800});
       return response;
     }

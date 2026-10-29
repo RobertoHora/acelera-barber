@@ -1,3 +1,4 @@
+import {consultativeReply} from './consultative-cognition';
 import {withTestAccess} from '@/lib/test-links';
 import { prisma } from '@/lib/db';
 import { LAURA_TOOLS, LauraToolContext } from './agenda-tools';
@@ -106,7 +107,8 @@ export async function processLauraMessage(
   incomingText: string,
   phoneE164: string,
   explicitSlug?: string,
-  db: any = prisma
+  db: any = prisma,
+  prepared?: Awaited<ReturnType<typeof consultativeReply>>
 ): Promise<{
   businessId?: string;
   replyText: string;
@@ -249,28 +251,18 @@ export async function processLauraMessage(
       }
     }
 
-    const business=await prisma.business.findUnique({where:{id:context.businessId}});
-    if(state.salesStep==='OPENING_SENT'){
-      await save({...state,salesStep:'CONSENT_PENDING'});
-      return {businessId:context.businessId,replyText:'Sou a Laura, assistente virtual do Eleva ORC. Ajudamos barbearias a organizar a presença no Google e os agendamentos. Posso te mostrar uma análise grátis da sua barbearia?'};
+    if(/(?:humano|pessoa da equipe|atendente)/.test(folded)){await save({...state,handoff:true});return {businessId:context.businessId,replyText:'claro, vou deixar a conversa para a equipe.'};}
+    const decision=prepared===undefined?await consultativeReply(incomingText,phoneE164,context.businessId!):prepared;
+    if(decision){
+      if(decision.consent)await save({...state,salesStep:'FREE_INVITED',consentedAt:state.consentedAt||new Date().toISOString()});
+      const deliver=decision.deliverLink && (decision.consent||!!state.consentedAt);
+      const business=await prisma.business.findUniqueOrThrow({where:{id:context.businessId}});
+      const slug=(business.cleanName||business.name).replace(/\s*\(TESTE\)/i,'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const link=deliver&&process.env.LAURA_PUBLIC_LINK_READY==='true'?'\n\nhttps://eleva.oracio.uk/'+slug:'';
+      return {businessId:context.businessId,replyText:decision.replyText+link,consultativeSummary:summary};
     }
-    if(state.salesStep==='CONSENT_PENDING'){
-      if(!/(sim|pode|claro|manda|quero|ok|vamos)/.test(folded))return {businessId:context.businessId,replyText:'Sem problema. A análise é gratuita e você decide se quer continuar. Posso enviar?'};
-      await save({...state,salesStep:'FREE_INVITED',consentedAt:new Date().toISOString()});
-    }
-
-    const link=withTestAccess(`${process.env.NEXT_PUBLIC_ELEVA_URL||'https://eleva.oracio.uk'}/?barber=${business?.slug||''}`);
-    const next=summary?.entitlements.includes('eleva_google_pro') && !summary?.entitlements.includes('eleva_complete')
-      ? 'Você já tem o Pro. O upgrade para Completo custa R$20 e amplia o teste da Agenda para 30 dias desde a primeira ativação.'
-      : summary?.entitlements.includes('eleva_complete')
-      ? 'Seu Completo inclui os ajustes assistidos do Instagram e 30 dias de teste da Agenda. Vamos configurar sua agenda?'
-      : 'Podemos começar pela análise grátis. Depois você escolhe se precisa do Pro por R$37 (14 dias de Agenda) ou Completo por R$57 (30 dias).';
-    await db.growthEvent.upsert({where:{dedupeKey:`laura_consultative:${phoneE164}:${summary?.currentStage||'PROSPECT'}`},update:{},create:{event:'laura.consultative_step',businessId:context.businessId,metadata:{stage:summary?.currentStage||'PROSPECT'},dedupeKey:`laura_consultative:${phoneE164}:${summary?.currentStage||'PROSPECT'}`}});
-    return {
-      businessId:context.businessId,
-      replyText:`Sou a Laura do Eleva e Agenda ORC, assistente virtual. ${next}${recommendation}\n\nAcesse: ${link}\n\nHoje sua prioridade é aparecer melhor no Google, organizar o Instagram ou reduzir trabalho com agendamentos?`,
-      consultativeSummary:summary,
-    };
+    // Tests without a model credential do not represent the live cognition.
+    return {businessId:context.businessId,replyText:'Sou a Laura. Você pode começar pela análise gratuita das informações da barbearia no Google.',consultativeSummary:summary};
   }
 
   return {

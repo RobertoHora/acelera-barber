@@ -37,7 +37,7 @@
 ## Limites que continuam explícitos
 
 - Teste pessoal não ativa campanhas gerais, reengajamento ou a migração completa de todos os módulos comerciais da Lana.
-- O atendimento de reserva implementado é guiado e persistente. Uma IA generativa aberta precisa de provedor e credencial próprios, avaliação e handoff; não foi copiada a credencial do Estúdio ORC.
+- O atendimento de reserva implementado é guiado e persistente. A prospecção da Laura passou a usar cognição contextual com configuração protegida do provedor existente. O atendimento do cliente final da Agenda continua guiado e requer avaliação específica antes de ser anunciado como IA generativa aberta.
 - A tag é declarada pelo proprietário autenticado e exige confirmação explícita para habilitar pagamento online opcional. Checkout do serviço usa a tag da barbearia e não a chave da plataforma. A reserva continua válida para pagamento no local; o servidor só marca pré-pagamento após consultar o provedor e conferir o valor. Na execução pessoal, pagamentos de serviços permanecem simulados, separados do teste real das compras Eleva. A confirmação física do recebedor ainda faz parte do teste humano.
 - A cobrança mensal automática da Agenda não é fornecida apenas por criar um checkout. Renovação/assinatura exige contrato de cobrança e reconciliação próprios antes da oferta em produção.
 - Simulação é interna: a documentação InfinitePay informa que a criação de link de checkout real não é um sandbox. Nenhuma cobrança real é disparada automaticamente.
@@ -60,3 +60,32 @@ de consentimento para análise grátis, após respostas do operador. O runtime d
 roteamento exclusivo está instalado; a Lana mantém seus processos e demais leads.
 Ainda falta percorrer e validar as etapas humanas, compras reais autorizadas e
 encerramento/reconciliação. Não confundir esse checkpoint com liberação de produção.
+
+## Correção após o teste no celular — 29/10/2026
+
+Falhas reproduzidas: resposta fixa ignorava "Não entendi", reapresentava a Laura e
+antecipava preços. Link com token redirecionava para https://localhost:3010.
+O smoke local com cookie pré-carregado não cobria a abertura real do link.
+
+Correção: prospecção usa OpenRouter/Claude Haiku 4.5 com histórico próprio e estado
+de consentimento. Configuração de credencial por referência protegida, sem editar
+ou copiar o .env completo da Lana. Chamada ao modelo ocorre fora da transação;
+batch de entrada é revalidado antes de persistir a resposta. Proibido reapresentar,
+insistir em consentimento já dado, repetir convite diante de dúvida ou antecipar
+catálogo de planos sem solicitação/necessidade. Modelo não gera URLs.
+
+URL pública validada: https://eleva.oracio.uk/barao-barber-shop . A LP reconhece a
+loja no primeiro carregamento e permite análise grátis sem login. Contexto novo de
+navegador móvel, sem cookie inserido, abriu a rota e completou análise. API pública
+retorna projeção sem telefone pessoal do teste. Login mantém ações restritas.
+
+Vercel foi atualizada; backend continua na VPS por proxy HTTPS autenticado, sem
+expor PostgreSQL. A origem interna ainda usa o túnel de homologação existente:
+validar disponibilidade ao retomar e migrar para origem nomeada estável antes da
+liberação geral. Não tratar o teste pessoal como lançamento comercial irrestrito.
+
+Verificações: 51 testes, build, 23 checks HTTP e avaliação dos dois exemplos do print
+com o modelo real, sem envio dessas avaliações. Correção do link foi enfileirada
+uma única vez para o operador. Teste retomado preservando consentimento, filas e
+compras simuladas. Nenhum arquivo ou processo Lana foi editado/reiniciado nesta
+correção; inbox e dispatcher mantiveram os PIDs e health 200.

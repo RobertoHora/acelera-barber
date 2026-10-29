@@ -24,7 +24,7 @@ export async function GET(
 
   const ownerAccess = await ownsBusiness(request, business.id);
   if (ownerAccess) return NextResponse.json({ business });
-  return NextResponse.json({ business: { id: business.id, slug: business.slug, name: business.name, cleanName: business.cleanName, address: business.address, neighborhood:business.neighborhood,city:business.city,phone:business.phone,whatsapp:business.whatsapp,reviewUrl:business.reviewUrl,placeId:business.placeId,googleMapsUrl:business.googleMapsUrl,onlinePaymentsEnabled:business.onlinePaymentsEnabled, services: business.services, professionals: business.professionals.map(p => ({id:p.id,name:p.name,nickname:p.nickname,avatarUrl:p.avatarUrl})) } });
+  return NextResponse.json({ business: { id: business.id, slug: business.slug, name: business.name, cleanName: business.cleanName, address: business.address, neighborhood:business.neighborhood,city:business.city,phone:process.env.E2E_RUN_ID?null:business.phone,whatsapp:process.env.E2E_RUN_ID?null:business.whatsapp,reviewUrl:business.reviewUrl,placeId:business.placeId,googleMapsUrl:business.googleMapsUrl,onlinePaymentsEnabled:business.onlinePaymentsEnabled, services: business.services, professionals: business.professionals.map(p => ({id:p.id,name:p.name,nickname:p.nickname,avatarUrl:p.avatarUrl})) } });
 }
 
 export async function PATCH(

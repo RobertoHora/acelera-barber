@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:unit": "vitest run tests/unit",
     "e2e:status": "node scripts/e2e/control.mjs status",
-    "e2e:preflight": "node scripts/e2e/preflight.mjs"
+    "e2e:preflight": "node scripts/e2e/preflight.mjs",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.1",

@@ -1,0 +1,6 @@
+.runtime
+.env
+.env.*
+backups
+.git
+node_modules

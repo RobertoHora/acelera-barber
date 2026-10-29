@@ -5,7 +5,7 @@ import {BarbershopLead} from '@/lib/types';
 import {PLANS_CONFIG,resolvePlanConfig} from '@/lib/plans';
 interface Props{isOpen:boolean;onClose:()=>void;planId:string;lead:BarbershopLead;onSuccessToast?:(msg:string)=>void}
 export default function PaymentIntentModal({isOpen,onClose,planId,lead,onSuccessToast}:Props){
- const [phone,setPhone]=useState(lead.whatsapp||lead.phone||'');
+ const [phone,setPhone]=useState('');
  const [code,setCode]=useState('');const [otpSent,setOtpSent]=useState(false);
  const [busy,setBusy]=useState(false);const [error,setError]=useState('');
  const [order,setOrder]=useState<{id:string;simulated:boolean}|null>(null);

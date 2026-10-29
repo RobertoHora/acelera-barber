@@ -63,3 +63,32 @@ LauraConversation/LauraInbound/OutboxMessage/Order/TrialBenefit no banco isolado
 O checkpoint textual pode estar atrás das respostas e ações realizadas no WhatsApp.
 Nunca execute init/provision/reset/queue-opening novamente para continuar o teste.
 Histórico anterior ao startedAt é arquivado e não é respondido como parte do teste.
+
+## Correção após o teste no celular — 29/10/2026
+
+Falhas reproduzidas: resposta fixa ignorava "Não entendi", reapresentava a Laura e
+antecipava preços. Link com token redirecionava para https://localhost:3010.
+O smoke local com cookie pré-carregado não cobria a abertura real do link.
+
+Correção: prospecção usa OpenRouter/Claude Haiku 4.5 com histórico próprio e estado
+de consentimento. Configuração de credencial por referência protegida, sem editar
+ou copiar o .env completo da Lana. Chamada ao modelo ocorre fora da transação;
+batch de entrada é revalidado antes de persistir a resposta. Proibido reapresentar,
+insistir em consentimento já dado, repetir convite diante de dúvida ou antecipar
+catálogo de planos sem solicitação/necessidade. Modelo não gera URLs.
+
+URL pública validada: https://eleva.oracio.uk/barao-barber-shop . A LP reconhece a
+loja no primeiro carregamento e permite análise grátis sem login. Contexto novo de
+navegador móvel, sem cookie inserido, abriu a rota e completou análise. API pública
+retorna projeção sem telefone pessoal do teste. Login mantém ações restritas.
+
+Vercel foi atualizada; backend continua na VPS por proxy HTTPS autenticado, sem
+expor PostgreSQL. A origem interna ainda usa o túnel de homologação existente:
+validar disponibilidade ao retomar e migrar para origem nomeada estável antes da
+liberação geral. Não tratar o teste pessoal como lançamento comercial irrestrito.
+
+Verificações: 51 testes, build, 23 checks HTTP e avaliação dos dois exemplos do print
+com o modelo real, sem envio dessas avaliações. Correção do link foi enfileirada
+uma única vez para o operador. Teste retomado preservando consentimento, filas e
+compras simuladas. Nenhum arquivo ou processo Lana foi editado/reiniciado nesta
+correção; inbox e dispatcher mantiveram os PIDs e health 200.

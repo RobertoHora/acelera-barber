@@ -38,7 +38,7 @@ Plataforma integrada de presença digital, diagnóstico consultivo, agendamento 
 
 ## 🧪 Suíte de Testes Automatizados (Vitest)
 
-O projeto conta com **50 testes unitários e de integração**. A suíte usa banco isolado e provedores simulados; não comprova entrega física de WhatsApp ou pagamento real. Casos cobertos:
+O projeto conta com **51 testes unitários e de integração**. A suíte usa banco isolado e provedores simulados; não comprova entrega física de WhatsApp ou pagamento real. Casos cobertos:
 
 ```bash
 TEST_DATABASE_URL='postgresql://ubuntu@localhost:5433/eleva_agenda_test?host=/home/ubuntu/orc-db' npm test
