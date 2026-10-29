@@ -1,190 +1,43 @@
 'use client';
-
-import React, { useState } from 'react';
-import { X, ShieldCheck, MessageCircle, ExternalLink, ArrowRight } from 'lucide-react';
-import { BarbershopLead } from '@/lib/types';
-import { PLANS_CONFIG, INFINITEPAY_CONFIG } from '@/lib/plans';
-
-interface PaymentIntentModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  planId: string;
-  lead: BarbershopLead;
-  onSuccessToast?: (msg: string) => void;
-}
-
-export default function PaymentIntentModal({
-  isOpen,
-  onClose,
-  planId,
-  lead,
-  onSuccessToast,
-}: PaymentIntentModalProps) {
-  const [clientWhatsapp, setClientWhatsapp] = useState(lead.whatsapp || lead.phone || '');
-
-  if (!isOpen) return null;
-
-  const config = PLANS_CONFIG[planId] || PLANS_CONFIG.google_pro;
-  const targetLink = INFINITEPAY_CONFIG.links[config.id as keyof typeof INFINITEPAY_CONFIG.links];
-
-  const handlePayClick = () => {
-    // Registra intenção local não sensível (Doc 06 - INFINITEPAY_MANUAL)
-    const intentRecord = {
-      planId: config.id,
-      planName: config.name,
-      price: config.price,
-      businessName: lead.cleanName || lead.name,
-      clientPhone: clientWhatsapp.trim(),
-      status: targetLink ? 'PAYMENT_LINK_OPENED' : 'AWAITING_PAYMENT_LINK',
-      createdAt: new Date().toISOString(),
-    };
-
-    try {
-      localStorage.setItem('acelera_barber_purchase_intent', JSON.stringify(intentRecord));
-    } catch (e) {
-      console.warn('LocalStorage inacessível:', e);
-    }
-
-    if (targetLink && targetLink.startsWith('https://')) {
-      window.open(targetLink, '_blank', 'noopener,noreferrer');
-      if (onSuccessToast) onSuccessToast('Abrindo checkout seguro InfinitePay...');
-    } else {
-      const msg = encodeURIComponent(
-        `Olá! Quero ativar o plano ${config.name} (${config.priceFormatted}) para a barbearia ${lead.cleanName || lead.name}. Podem me enviar o link oficial da InfinitePay?`
-      );
-      const url = `https://wa.me/${INFINITEPAY_CONFIG.supportPhone}?text=${msg}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
-      if (onSuccessToast) onSuccessToast('Abrindo suporte no WhatsApp para envio do link...');
-    }
-  };
-
-  const handleSendProof = () => {
-    const intentRecord = {
-      planId: config.id,
-      planName: config.name,
-      price: config.price,
-      businessName: lead.cleanName || lead.name,
-      clientPhone: clientWhatsapp.trim(),
-      status: 'PROOF_SUBMISSION_REQUESTED',
-      createdAt: new Date().toISOString(),
-    };
-
-    try {
-      localStorage.setItem('acelera_barber_purchase_intent', JSON.stringify(intentRecord));
-    } catch (e) {
-      console.warn('LocalStorage inacessível:', e);
-    }
-
-    onClose();
-
-    const msg = encodeURIComponent(
-      `Olá! Realizei o pagamento de ${config.priceFormatted} referente ao plano ${config.name} da barbearia ${lead.cleanName || lead.name}. Segue o comprovante para conferência humana e liberação.`
-    );
-    const url = `https://wa.me/${INFINITEPAY_CONFIG.supportPhone}?text=${msg}`;
-    if (onSuccessToast) onSuccessToast('Abrindo WhatsApp para envio do comprovante...');
-    setTimeout(() => {
-      window.open(url, '_blank', 'noopener,noreferrer');
-    }, 300);
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-[#2B2B29] border border-[#3D3C3A] rounded-2xl p-5 max-w-md w-full space-y-4 text-white shadow-2xl">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#383735] pb-2.5">
-          <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
-            <ShieldCheck className="size-4 text-emerald-400" />
-            <span>Ativação Segura • InfinitePay</span>
-          </h3>
-          <button
-            type="button"
-            onClick={onClose}
-            className="text-[#A1A1AA] hover:text-white transition-colors cursor-pointer"
-          >
-            <X className="size-4" />
-          </button>
-        </div>
-
-        {/* Detalhes do Plano */}
-        <div className="space-y-3 text-xs leading-relaxed text-[#D4D4D8]">
-          <div className="p-3 bg-[#242422] border border-[#454441] rounded-xl space-y-1">
-            <span className="text-[10px] text-[#A1A1AA] uppercase tracking-wider font-semibold">
-              Plano Selecionado
-            </span>
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-bold text-white">{config.name}</span>
-              <span className="text-sm font-black text-amber-400">{config.priceFormatted}</span>
-            </div>
-            <p className="text-[11px] text-[#A1A1AA]">{config.description}</p>
-          </div>
-
-          {/* Como funciona o pagamento */}
-          <div className="space-y-2 text-[11px] bg-[#1E1E1C] border border-[#383735] rounded-xl p-3">
-            <p className="font-semibold text-white">Como funciona o pagamento seguro (Estilo Estúdio ORC):</p>
-            <ol className="list-decimal list-inside space-y-1.5 text-[#A1A1AA]">
-              <li>
-                <strong className="text-[#D4D4D8]">Pagamento oficial:</strong> Pague via Pix ou Cartão no checkout seguro InfinitePay.
-              </li>
-              <li>
-                <strong className="text-[#D4D4D8]">Envio do comprovante:</strong> Envie o comprovante diretamente no WhatsApp do suporte.
-              </li>
-              <li>
-                <strong className="text-[#D4D4D8]">Liberação imediata:</strong> O operador confere os dados manualmente e envia seu material pronto.
-              </li>
-            </ol>
-            <p className="text-[10px] text-[#71717A] pt-1">
-              *Garantia incondicional de 7 dias com estorno imediato se não ficar satisfeito.
-            </p>
-          </div>
-
-          {/* Input de WhatsApp */}
-          <div className="space-y-1">
-            <label className="block font-semibold text-[#D4D4D8]">
-              WhatsApp da sua barbearia para contato:
-            </label>
-            <input
-              type="text"
-              value={clientWhatsapp}
-              onChange={(e) => setClientWhatsapp(e.target.value)}
-              placeholder="DDD + Número do WhatsApp"
-              className="w-full bg-[#242422] border border-[#4A4A48] rounded-xl px-3 py-2 text-white focus:outline-none focus:border-white transition-colors"
-            />
-          </div>
-        </div>
-
-        {/* Botões de Ação */}
-        <div className="pt-2 flex flex-col gap-2">
-          <button
-            type="button"
-            onClick={handlePayClick}
-            className="w-full py-3 px-4 bg-[#EFECE5] hover:bg-[#E2DED6] text-[#111111] font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer active:scale-98"
-          >
-            <ExternalLink className="size-4 text-emerald-600" />
-            <span>
-              {targetLink
-                ? `Pagar ${config.priceFormatted} na InfinitePay`
-                : `Solicitar Link de ${config.priceFormatted} no WhatsApp`}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={handleSendProof}
-            className="w-full py-2.5 px-4 bg-[#242422] hover:bg-[#2F2F2D] text-[#D4D4D8] border border-[#454441] font-medium rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-          >
-            <MessageCircle className="size-4 text-emerald-400" />
-            <span>Já paguei: Enviar Comprovante no WhatsApp</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={onClose}
-            className="text-xs text-[#A1A1AA] hover:text-white py-1 text-center cursor-pointer transition-colors"
-          >
-            Voltar
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+import React,{useState,useEffect} from 'react';
+import {X,ShieldCheck} from 'lucide-react';
+import {BarbershopLead} from '@/lib/types';
+import {PLANS_CONFIG,resolvePlanConfig} from '@/lib/plans';
+interface Props{isOpen:boolean;onClose:()=>void;planId:string;lead:BarbershopLead;onSuccessToast?:(msg:string)=>void}
+export default function PaymentIntentModal({isOpen,onClose,planId,lead,onSuccessToast}:Props){
+ const [phone,setPhone]=useState('');
+ const [code,setCode]=useState('');const [otpSent,setOtpSent]=useState(false);
+ const [busy,setBusy]=useState(false);const [error,setError]=useState('');
+ const [order,setOrder]=useState<{id:string;simulated:boolean}|null>(null);
+ useEffect(()=>{setOrder(null);setCode('');setOtpSent(false);setError('');},[isOpen,planId,lead.id]);
+ const config=resolvePlanConfig(planId)||PLANS_CONFIG.eleva_google_pro;
+ async function post(url:string,body:unknown){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const b=await r.json();if(!r.ok)throw Error(b.error||'Não foi possível continuar.');return b;}
+ async function proceed(){setBusy(true);setError('');try{
+   const me=await fetch('/api/v1/auth/me');
+   if(!me.ok){
+     if(!otpSent){await post('/api/v1/auth/request-otp',{phone});setOtpSent(true);return;}
+     await post('/api/v1/auth/verify-otp',{phone,code});
+   }
+   const key=`eleva_checkout:${lead.id}:${config.id}`;
+   let idempotencyKey=sessionStorage.getItem(key);if(!idempotencyKey){idempotencyKey=crypto.randomUUID();sessionStorage.setItem(key,idempotencyKey);}
+   const b=await post('/api/v1/orders',{businessId:lead.id,planCode:config.id,idempotencyKey});
+   setOrder({id:b.order.id,simulated:!!b.simulated});
+   if(b.checkoutUrl)window.location.assign(b.checkoutUrl);
+ }catch(e){setError(e instanceof Error?e.message:'Falha ao continuar.');}finally{setBusy(false);}}
+ async function simulate(){if(!order)return;setBusy(true);try{
+   await post(`/api/v1/orders/${order.id}/simulate`,{});
+   onSuccessToast?.('Pagamento simulado confirmado. Benefícios liberados nesta homologação.');
+   window.dispatchEvent(new Event('orc:benefits-updated'));onClose();
+ }catch(e){setError(e instanceof Error?e.message:'Falha na simulação.');}finally{setBusy(false);}}
+ if(!isOpen)return null;
+ return <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"><div role="dialog" aria-modal="true" aria-label="Ativar plano" className="bg-[#2B2B29] border border-[#3D3C3A] rounded-2xl p-5 max-w-md w-full space-y-4 text-white">
+ <div className="flex justify-between"><h3 className="font-bold flex gap-2"><ShieldCheck className="size-5 text-emerald-400"/>Ativar {config.name}</h3><button onClick={onClose} aria-label="Fechar"><X/></button></div>
+ <p className="text-amber-400 font-bold">{config.priceFormatted}</p><p className="text-sm text-zinc-300">{config.description}</p>
+ <p className="text-xs text-zinc-400">Confirme seu WhatsApp para proteger o acesso. O plano é liberado após a confirmação do pagamento.</p>
+ <label className="block text-sm">Seu WhatsApp<input type="tel" autoComplete="tel" value={phone} onChange={e=>setPhone(e.target.value)} className="block w-full mt-1 p-3 rounded-xl bg-[#19181D]"/></label>
+ {otpSent&&<label className="block text-sm">Código recebido<input inputMode="numeric" autoComplete="one-time-code" maxLength={6} value={code} onChange={e=>setCode(e.target.value)} className="block w-full mt-1 p-3 rounded-xl bg-[#19181D]"/></label>}
+ {error&&<p role="alert" className="text-red-300 text-sm">{error}</p>}
+ {order?.simulated?<button disabled={busy} onClick={simulate} className="w-full p-3 rounded-xl bg-amber-300 text-black font-bold">Simular pagamento de {config.priceFormatted}</button>:<button disabled={busy} onClick={proceed} className="w-full p-3 rounded-xl bg-[#EFECE5] text-black font-bold disabled:opacity-50">{busy?'Aguarde…':otpSent?'Confirmar código e continuar':'Continuar com segurança'}</button>}
+ {order?.simulated&&<p className="text-xs text-amber-300">Homologação: nenhuma cobrança real será feita.</p>}
+ </div></div>;
 }

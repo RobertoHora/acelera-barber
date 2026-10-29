@@ -1,42 +1,42 @@
 # Jornadas e UX
 
+Versão: 0.2 | Revisão: 2026-10-28 | Estado: especificação aprovada; implementação parcial.
+
 ## Princípios
 
-- Celular primeiro; uma decisão por tela.
-- Não pedir cadastro antes de mostrar valor.
-- Salvar enquanto o cliente digita.
-- Mostrar a próxima ação, não um painel cheio de possibilidades.
-- Nunca confundir “preparado” com “sincronizado”.
+Mobile-first, uma decisão por tela, dados reaproveitados e salvamento real. Não pedir cadastro antes do valor gratuito; autenticar o dono antes de administrar/publicar. Preservar dark matte, identidade e seções atuais. Não restaurar seções removidas, tempos artificiais, badges redundantes ou esperas de dez segundos quando não houver trabalho real.
 
-## Jornada do lead
+## Jornada do dono
 
-1. **Link pessoal:** nome da barbearia, bairro e uma oportunidade específica pré-preenchida.
-2. **Diagnóstico grátis:** score explicável com no máximo três melhorias prioritárias.
-3. **Confirmação de dados:** nome, telefone/WhatsApp, bairro, horário e Instagram; cada campo explica por que é usado.
-4. **Vitória rápida:** bio, link de agendamento e QR de avaliação prontos para copiar/baixar.
-5. **Paywall de contexto:** aparece ao abrir recursos que exigem mais valor: editor completo, serviços com fotos, kit Instagram e acompanhamento.
-6. **Checkout:** uma escolha de plano, Pix/cartão hospedado e retorno à mesma tarefa.
-7. **Aplicação:** checklist por plataforma, botão de copiar e instrução visual; cliente confirma a conclusão ou pede ajuda.
+1. Acessa Eleva pelo link atribuído ou busca; reconhece/corrige a barbearia.
+2. Vê diagnóstico com evidências, origem e dados desconhecidos; conclui uma melhoria gratuita.
+3. Recebe oferta contextual de R$ 37 ou R$ 57, ou segue no gratuito.
+4. Compra via InfinitePay; retorna ao trabalho; acesso depende de confirmação real.
+5. Recebe 14 ou 30 dias de benefício, ainda não consumidos.
+6. Ativa Agenda ORC: confirma serviços, profissionais, expediente e escolhe modalidade de R$ 37 ou R$ 67/mês.
+7. Publica a primeira agenda operacional; vê data/hora de início e fim do teste.
+8. Acompanha reservas e resultado; escolhe assinatura ao continuar após o teste.
 
-## Estados da ação externa
+Upgrade Eleva de R$ 37 para R$ 57 custa R$ 20 e amplia para 30 dias totais desde o início original. Não apresentar como novos 30 dias.
 
-| Estado | Significado para o cliente |
-| --- | --- |
-| `DRAFT` | ainda editando |
-| `READY_TO_APPLY` | conteúdo pronto; falta aplicar na plataforma |
-| `CLIENT_CONFIRMED` | cliente confirmou que aplicou |
-| `SYNC_PENDING` | reservado para integração oficial futura |
-| `SYNCED` | confirmado por API oficial |
-| `FAILED` | não aplicado; mostrar correção e suporte |
+## Jornada do cliente final
 
-## Regras de interface
+Página pública → serviço → profissional ou primeiro disponível → horário → nome e WhatsApp → confirmar → reserva na tela e confirmação WhatsApp. Se houver um profissional, omitir seleção. Pagamento no atendimento, sem e-mail, senha, instalação ou checkout obrigatório.
 
-- O diagnóstico deve explicar como cada ponto foi calculado e permitir corrigir dados.
-- Um recurso bloqueado mostra benefício, resultado e preço; não mostra uma tela vazia.
-- O retorno do checkout não prova pagamento; exibir “aguardando confirmação” até o ateste da operação.
-- Todas as cópias e downloads geram evento; não interpretar clique como aplicação externa.
-- Acessibilidade mínima: contraste, foco visível, texto de botão concreto e alternativas aos ícones.
+A ação de confirmar deve explicar o recebimento das atualizações transacionais pelo WhatsApp do Eleva/Agenda. Marketing não é embutido nessa autorização.
 
-## Telas mínimas
+Cancelamento/reagendamento por link privado. Falha de mensagem não desfaz a reserva; mostrar estado correto e forma de ajuda. Atendimento humano permanece disponível.
 
-`/d/[token]` diagnóstico e onboarding; `/app/[businessId]` painel; `/app/[businessId]/aplicar/google`; `/app/[businessId]/instagram`; `/checkout/retorno`; `/ops` painel interno.
+## Plano com IA
+
+No mesmo WhatsApp, identificar a barbearia/contexto, descobrir serviço e horário, consultar disponibilidade e confirmar o resumo antes de gravar. Perguntar apenas o que falta. Necessidade de desambiguação não autoriza escolher barbearia ou profissional arbitrários.
+
+## Rotas e estados
+
+- Eleva: landing, diagnóstico, wizard, ofertas e área autenticada do dono.
+- Agenda: https://agenda.oracio.uk/b/[slug] e /b/[slug]/admin.
+- Link privado de reserva para consulta/cancelamento/reagendamento; slug público não autentica o dono.
+- Ação externa: DRAFT → READY_TO_APPLY → CLIENT_CONFIRMED; SYNC_PENDING/SYNCED só para integração validada.
+- Reserva, assinatura, pagamento e mensagem possuem estados independentes.
+
+Estados de carregamento, vazio, conflito, indisponibilidade e reconexão devem ter ação concreta. Navegação entre subdomínios preserva contexto de forma autenticada, sem transportar credenciais pela URL.

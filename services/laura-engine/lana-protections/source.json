@@ -1,0 +1,6 @@
+{
+  "source": "/home/ubuntu/orc-prospecting-runner/circuit-breaker.ts",
+  "sha256": "2e5c55a3cb54a99ed237119e97380715beb11cc0ab98cd0669e67f66136bab9a",
+  "copiedAt": "2026-10-29",
+  "changes": "none; db adapter supplied separately"
+}

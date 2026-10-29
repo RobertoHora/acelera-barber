@@ -1,34 +1,41 @@
-# Aquisição e Operação
+# Funil consultivo, operação e métricas
 
-## Reuso do Estúdio ORC
+Versão: 0.2 | Revisão: 2026-10-28 | Estado: especificação aprovada; implementação parcial.
 
-Reutilizar princípios, não infraestrutura: qualificação, evidência de origem, estado do lead, aprovação humana, handoff, opt-out, cadência limitada e registro de resultado. O Acelera Barber terá dados, credenciais, identidade e filas próprios.
+## Uma relação e uma instância
 
-## Funil
+Um motor e um WhatsApp vendem Eleva Gratuito → Google Pro/Completo → teste Agenda → Agenda R$ 37/R$ 67 → retenção/upgrade. O lead não é obrigado a comprar tudo; atendimento oferece a solução adequada às necessidades e aos direitos já adquiridos.
 
-```text
-Lead público qualificado
-  -> revisão de contato e base legal
-  -> contato humano/aprovado
-  -> resposta e consentimento quando necessário
-  -> link pessoal Acelera Barber
-  -> diagnóstico concluído
-  -> checkout iniciado
-  -> pagamento confirmado
-  -> ativação e acompanhamento
-```
+Reproduzir o sistema Lana como construído e configurado, conforme [contrato de reprodução](14-lana-replication-contract.md). Alterar copys, ofertas e contexto do produto; não reconstruir outro motor comercial.
 
-## Controles comerciais
+## Estado de relacionamento
 
-- Primeiro contato não é consentimento para automação posterior.
-- Número do WhatsApp, titularidade e consentimento são fatos distintos.
-- Opt-out encerra novas mensagens e fica auditável.
-- Copys de venda são sugestão editável e envio é humano até haver canal/compliance próprios homologados.
-- Nenhum dado de uma barbearia aparece no link, painel ou material de outra.
+Registrar descoberta, uso gratuito, oferta, compra Eleva, benefício disponível, teste ativo/expirado, assinatura ativa/inadimplente/cancelada. Dimensões são independentes: CUSTOMER/CONVERTED não encerra o funil nem autoriza continuar abertura fria.
 
-## Operação diária
+Após compra, cancelar abordagens frias já pendentes. Seguimento consultivo tem propósito, contexto e intervalo próprios. Nenhuma oferta pode ser repetida se o mesmo direito já está ativo. Opt-out/handoff prevalecem sobre metas de venda.
 
-- Revisar novos leads e evidências antes de contato.
-- Monitorar diagnósticos iniciados/concluídos, checkout, pagamentos e suporte.
-- Abordar bloqueios relatados pelo piloto antes de criar novas funcionalidades.
-- Registrar resultado comercial real: pago, não interessado, sem resposta, suporte necessário; nunca inferir venda de clique.
+## Descoberta e próxima ação
+
+NeedObservation guarda necessidade, evidência/origem e data. Ofertas guardam motivo, etapa, variante, preço/versão e resultado. Antes de responder, o bot consulta resumo persistido de uso, compras, teste, assinatura e atendimento humano.
+
+Exemplos: dificuldade de aplicar material → ajuda; compra Eleva sem ativar agenda → orientar ativação; uso de agenda com demanda de respostas no WhatsApp → apresentar modalidade IA; falha ou reclamação → suporte antes de nova oferta.
+
+Dados de agenda não viram consentimento comercial. Clientes finais da barbearia não são inscritos na prospecção do Eleva.
+
+## Métricas
+
+- Conversão entre diagnóstico, melhoria, compra Eleva, ativação, primeiro agendamento e assinatura.
+- Tempo por etapa, abandono e motivo de suporte.
+- Conversão por oferta, necessidade, origem e variante de abordagem.
+- Teste por modalidade, uso, expiração e conversão paga.
+- Entrega/latência das confirmações, falha definitiva e duplicação.
+- Agendamentos pela IA, taxa de sucesso e handoff.
+- Renovação, cancelamento e receita por negócio, separando Eleva, Agenda e indicação confirmada.
+
+Eventos devem ser deduplicados; conversão usa pagamento real e período/coorte explícitos. Clique não é compra, mensagem aceita não é entregue e comparação de avaliações não prova ranking causal.
+
+## Operação e canais
+
+A mesma instância conduz dono, cliente final e notificações com contexto de negócio e finalidade. Um telefone pode ter vários papéis; resolver contexto por reserva/link/conversa, pedir esclarecimento se necessário. Não associar automaticamente pelo último negócio atendido.
+
+Ativação de disparos ocorre depois dos aplicativos prontos, motor reproduzido e piloto. Preservar a operação Estúdio ORC e não importar seus contatos, filas ou sessões.

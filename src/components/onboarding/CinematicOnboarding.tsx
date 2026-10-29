@@ -15,34 +15,34 @@ interface CinematicOnboardingProps {
 const EDUCATIONAL_HEADLINES = [
   {
     tag: 'Comportamento do Cliente',
-    text: 'Mais de 70% das pessoas escolhem barbearias no Google Maps pela aparência das fotos e avaliações recentes.',
+    text: 'Fotos claras e avaliações recentes ajudam clientes a conhecer sua barbearia antes de visitar.',
   },
   {
     tag: 'Perda de Clientes',
-    text: 'Perfis sem catálogo de cortes e preços perdem clientes diariamente para barbearias da mesma região.',
+    text: 'Um catálogo com serviços, preços e duração facilita a escolha do cliente.',
   },
   {
     tag: 'Solução no Balcão',
-    text: 'Um display inteligente com QR Code transforma clientes que cortam com você todo dia em avaliações reais sem esforço.',
+    text: 'Um QR Code no balcão facilita o acesso ao formulário de avaliação do Google.',
   },
   {
-    tag: 'Análise Concorrencial',
-    text: 'Mapeando os principais concorrentes próximos para identificar exatamente o que falta no seu perfil...',
+    tag: 'Próximos passos',
+    text: 'Organizando os próximos passos com base nos dados disponíveis da sua barbearia.',
   },
 ];
 
 export default function CinematicOnboarding({
   lead,
   onComplete,
-  durationMs = 10000,
+  durationMs = 1500,
 }: CinematicOnboardingProps) {
   const [progress, setProgress] = useState(0);
   const [headlineIndex, setHeadlineIndex] = useState(0);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
 
   const steps = [
-    `Localizando perfil da ${lead.cleanName || lead.name} no Google Maps...`,
-    `Mapeando barbearias concorrentes em ${lead.neighborhood || 'sua região'}...`,
+    `Organizando os dados da ${lead.cleanName || lead.name}...`,
+    `Conferindo informações cadastradas de ${lead.neighborhood || 'sua região'}...`,
     'Analisando fotos cadastradas, catálogo de serviços e horários...',
     'Calculando score de presença digital e oportunidades de balcão...',
   ];
@@ -91,7 +91,7 @@ export default function CinematicOnboarding({
       <header className="flex w-full shrink-0 items-center justify-between px-2 pt-2 sm:px-8 sm:pt-4">
         <ORCBrand compact />
         <span className="text-[10px] font-bold uppercase tracking-wider text-[#A1A1AA] bg-white/[0.05] border border-white/10 px-3 py-1 rounded-full">
-          Auditoria Automatizada
+          Análise dos dados disponíveis
         </span>
       </header>
 

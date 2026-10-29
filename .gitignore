@@ -22,3 +22,9 @@ yarn-error.log*
 # OS Files
 .DS_Store
 *.pem
+
+# Backups
+backups/*.dump
+
+# Private assisted test state
+.runtime/

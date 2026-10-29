@@ -80,7 +80,7 @@ export default function ReportBenchmarkView({
               </h1>
               <p className="text-xs text-[#A1A1AA] flex items-center gap-1 mt-0.5">
                 <MapPin className="size-3.5 text-amber-400 shrink-0" />
-                <span className="truncate">{lead.neighborhood || 'Governador Valadares'} • MG</span>
+                <span className="truncate">{[lead.neighborhood, lead.city].filter(Boolean).join(', ') || 'sua região'}</span>
               </p>
             </div>
           </div>
@@ -139,12 +139,12 @@ export default function ReportBenchmarkView({
           <div className="flex items-center gap-2">
             <TrendingDown className="size-5 text-red-400" />
             <h2 className="text-lg sm:text-xl font-black text-white tracking-tight">
-              Concorrentes no seu bairro que estão na sua frente no Google Maps
+              Perfis de referência no seu bairro que transmitem mais confiança na busca local
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-[#A1A1AA]">
             Estes 2 estabelecimentos recebem mais visualizações e cliques em{' '}
-            <strong>{lead.neighborhood || 'Governador Valadares'}</strong> devido à estrutura do perfil:
+            <strong>{[lead.neighborhood, lead.city].filter(Boolean).join(', ') || 'sua região'}</strong> devido à estrutura do perfil:
           </p>
         </div>
 
@@ -182,7 +182,7 @@ export default function ReportBenchmarkView({
               {/* Destaques do Concorrente */}
               <div className="space-y-2">
                 <p className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">
-                  Por que este concorrente está melhor rankeado:
+                  Por que este perfil transmite mais confiança na busca local:
                 </p>
                 <p className="text-xs text-[#D4D4D8] leading-relaxed bg-[#1E1E1C] p-3 rounded-xl border border-[#383735]">
                   {comp.whyBetter}
@@ -213,10 +213,10 @@ export default function ReportBenchmarkView({
         </div>
         <p className="text-xs sm:text-sm text-amber-200/90 leading-relaxed">
           Toda semana, dezenas de clientes pesquisam por <em>"barbearia perto de mim"</em> em{' '}
-          <strong>{lead.neighborhood || 'Governador Valadares'}</strong>. Como seu perfil está com poucas fotos e avaliações paradas, o Google Maps recomenda seus concorrentes primeiro.
+          <strong>{[lead.neighborhood, lead.city].filter(Boolean).join(', ') || 'sua região'}</strong>. Quando um perfil tem poucas fotos e avaliações desatualizadas, clientes indecisos tendem a escolher perfis mais completos e ativos.
         </p>
         <p className="text-xs text-[#D4D4D8] leading-relaxed">
-          Para reverter isso, você não precisa pagar anúncios caros: basta organizar seu catálogo de serviços, ativar seu link direto de WhatsApp e colocar uma plaquinha no balcão para colher avaliações espontâneas.
+          Para reverter isso, você não precisa pagar anúncios caros: basta organizar seu catálogo de serviços, ativar seu link direto de agendamento e colher avaliações espontâneas no balcão.
         </p>
       </div>
 

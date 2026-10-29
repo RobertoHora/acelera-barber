@@ -1,0 +1,20 @@
+import {it,expect,vi,afterEach,afterAll} from 'vitest';
+import {prisma} from '@/lib/db';
+import {createBooking} from '@/lib/agenda/booking-service';
+import {createBookingCheckout,settleBookingPayment} from '@/lib/billing/booking-payments';
+const ids:string[]=[];
+afterEach(()=>{vi.unstubAllGlobals();vi.unstubAllEnvs();});
+afterAll(async()=>{if(ids.length){await prisma.booking.deleteMany({where:{businessId:{in:ids}}});await prisma.business.deleteMany({where:{id:{in:ids}}});}});
+it('sends payment directly to the barber tag and only trusts verified amount',async()=>{
+ const b=await prisma.business.create({data:{slug:'payment-safety-'+Date.now(),name:'Payment Safety',infiniteTag:'$barbermerchant',onlinePaymentsEnabled:true}});ids.push(b.id);
+ const p=await prisma.professional.create({data:{businessId:b.id,name:'Fixture'}});const s=await prisma.service.create({data:{businessId:b.id,name:'Corte',priceCents:3500}});
+ const reservation=await createBooking({businessId:b.id,serviceId:s.id,professionalId:p.id,customerName:'Fixture',customerPhone:'+5511988880111',startsAt:new Date(Date.now()+86400000)});
+ vi.stubEnv('E2E_RUN_ID','');vi.stubEnv('INFINITEPAY_BOOKING_WEBHOOK_URL','https://test.example/api/webhooks/infinitepay/booking');vi.stubEnv('INFINITEPAY_WEBHOOK_SECRET','test-secret');
+ const send=vi.fn().mockResolvedValueOnce({ok:true,json:async()=>({url:'https://buy.infinitepay.io/barbermerchant/fixture'})}).mockResolvedValueOnce({ok:true,json:async()=>({success:true,paid:true,amount:100})}).mockResolvedValueOnce({ok:true,json:async()=>({success:true,paid:true,amount:3500})});vi.stubGlobal('fetch',send);
+ const {payment}=await createBookingCheckout(reservation.bookingToken!);
+ const sent=JSON.parse(send.mock.calls[0][1].body);expect(sent.handle).toBe('barbermerchant');expect(sent.items[0].price).toBe(3500);expect(send.mock.calls[0][1].headers['X-Api-Key']).toBeUndefined();
+ await expect(settleBookingPayment({orderNsu:payment.orderNsu,transactionNsu:'fixture-transaction-'+b.id,slug:'invoice'})).rejects.toThrow('valor');
+ expect((await prisma.booking.findUniqueOrThrow({where:{id:reservation.booking.id}})).isPrepaid).toBe(false);
+ await settleBookingPayment({orderNsu:payment.orderNsu,transactionNsu:'fixture-transaction-'+b.id,slug:'invoice'});
+ expect((await prisma.booking.findUniqueOrThrow({where:{id:reservation.booking.id}})).prepaidAmountCents).toBe(3500);
+});
