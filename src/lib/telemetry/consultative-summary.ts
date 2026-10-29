@@ -80,7 +80,7 @@ export async function buildConsultativeSummary(
     .filter((c) => c.status === 'DONE')
     .map((c) => c.itemKey);
 
-  const activeEntitlements = business.entitlements.map((e) => e.sku);
+  const activeEntitlements = business.entitlements.filter(e => e.status === 'ACTIVE').map((e) => e.sku);
 
   const latestTrial = business.trialBenefit;
   let trialDaysRemaining = 0;

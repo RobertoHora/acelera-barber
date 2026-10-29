@@ -37,3 +37,7 @@ Falha no WhatsApp preserva reserva e vira pendência operacional. UNKNOWN/UNCERT
 ## Evidência de release
 
 Registrar commit, estado da árvore, hashes relevantes, ambiente, testes e limites; URL/release real, banco/migração e transporte comissionado são verificações separadas. Preparar rollback de aplicação, worker e migrações compatíveis. Não usar build local ou status ONLINE como prova de venda/entrega.
+
+## Validação assistida — 29/10/2026
+
+A execução de homologação tem roteiro, checkpoint, segundo cérebro e certificado de fontes em `qa/`. Cinquenta testes locais e smoke HTTP/móvel não substituem a validação humana de entrega WhatsApp, compra real, recebedor InfinitePay e publicação de produção.

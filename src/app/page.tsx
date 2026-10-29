@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Check } from 'lucide-react';
 
+import {trackUiEvent} from '@/lib/ui-events';
 import { BarbershopLead } from '@/lib/types';
 import { findLeadBySlugOrId } from '@/lib/leads';
 
@@ -36,6 +37,19 @@ function AceleraBarberApp() {
   // Toast
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  const reconciledReturn=useRef('');
+  useEffect(()=>{
+    const orderNsu=searchParams.get('order_nsu')||searchParams.get('nsu');
+    const transaction=searchParams.get('transaction_nsu');
+    const invoice=searchParams.get('slug');
+    if(!orderNsu||!transaction||!invoice||reconciledReturn.current===transaction)return;
+    reconciledReturn.current=transaction;
+    fetch(`/api/v1/orders/${encodeURIComponent(orderNsu)}/check`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({transaction_nsu:transaction,slug:invoice})}).then(async r=>{
+      if(!r.ok)throw Error('Pagamento em conferência. Você pode continuar quando a confirmação chegar.');
+      setToastMessage('Pagamento confirmado. Seus benefícios estão liberados.');window.dispatchEvent(new Event('orc:benefits-updated'));
+    }).catch(e=>setToastMessage(e.message));
+  },[searchParams]);
+
   // Inicialização e detecção de slug via URL
   useEffect(() => {
     const slugParam =
@@ -45,6 +59,10 @@ function AceleraBarberApp() {
       searchParams.get('loja');
 
     if (slugParam) {
+      const controller = new AbortController();
+      fetch(`/api/v1/businesses/${encodeURIComponent(slugParam)}`,{signal:controller.signal}).then(r=>r.ok?r.json():null).then(data=>{
+        if(data?.business){const b=data.business;setActiveLead({...b,reviewUrl:b.reviewUrl||'',neighborhood:b.neighborhood||'',cuts:b.services?.map((s:any)=>({id:s.id,name:s.name,price:s.priceCents/100,priceFormatted:`R$ ${(s.priceCents/100).toFixed(2)}`,durationMinutes:s.durationMinutes,imageUrl:''}))});}
+      }).catch(()=>{});
       const found = findLeadBySlugOrId(slugParam);
       if (found) {
         setActiveLead(found);
@@ -61,17 +79,27 @@ function AceleraBarberApp() {
     }, 2800);
   };
 
-  const handleStartAnalysis = (leadToAnalyze?: BarbershopLead) => {
+  useEffect(()=>{if(activeLead)trackUiEvent(activeLead.id,'lp.viewed');},[activeLead?.id]);
+
+  const handleStartAnalysis = async (leadToAnalyze?: BarbershopLead) => {
     const target = leadToAnalyze || activeLead;
     if (!target) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    setActiveLead(target);
-    setView('onboarding');
+    trackUiEvent(target.id,'analysis.started');
+    try {
+      const r=await fetch(`/api/v1/businesses/${target.id}/diagnose`);
+      const b=await r.json();
+      if(!r.ok) throw new Error(b.error||'Não foi possível analisar agora.');
+      setActiveLead({...target,opportunityScore:b.diagnosis.score,gaps:b.diagnosis.gaps});
+      trackUiEvent(target.id,'analysis.completed');
+      setView('onboarding');
+    } catch(e) { showToast(e instanceof Error?e.message:'Tente novamente em instantes.'); }
   };
 
   const handleOpenCheckout = (planId: string) => {
+    if(activeLead)trackUiEvent(activeLead.id,'offer.presented',planId);
     setCheckoutPlanId(planId);
     setIsPaymentModalOpen(true);
   };
@@ -92,7 +120,7 @@ function AceleraBarberApp() {
       {view === 'onboarding' && activeLead && (
         <CinematicOnboarding
           lead={activeLead}
-          durationMs={10000}
+          durationMs={1500}
           onComplete={() => setView('report')}
         />
       )}

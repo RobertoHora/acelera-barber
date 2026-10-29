@@ -1,3 +1,4 @@
+import { ownsBusiness } from '@/lib/auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
@@ -19,6 +20,8 @@ export async function GET(
     return NextResponse.json({ error: 'Barbearia não encontrada' }, { status: 404 });
   }
 
+    if (!await ownsBusiness(request, business.id)) return NextResponse.json({ error: 'Acesso restrito ao proprietário.' }, { status: 403 });
+
   return NextResponse.json({
     businessId: business.id,
     checklistItems: business.checklistItems,
@@ -33,7 +36,7 @@ export async function POST(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { itemKey, status } = body;
+    const { itemKey, status, action } = body;
 
     if (!itemKey || !status) {
       return NextResponse.json({ error: 'itemKey e status são obrigatórios' }, { status: 400 });
@@ -47,6 +50,13 @@ export async function POST(
       return NextResponse.json({ error: 'Barbearia não encontrada' }, { status: 404 });
     }
 
+    if (!await ownsBusiness(request, business.id)) return NextResponse.json({ error: 'Acesso restrito ao proprietário.' }, { status: 403 });
+
+    if(action==='COPIED') {
+      await prisma.growthEvent.upsert({where:{dedupeKey:`copied:${business.id}:${itemKey}`},update:{},create:{event:itemKey==='google_appointment_link'?'agenda.link_copied':'material.copied',businessId:business.id,metadata:{itemKey},dedupeKey:`copied:${business.id}:${itemKey}`}});
+      return NextResponse.json({success:true,prepared:true});
+    }
+    if (!['TODO','DONE','DISMISSED'].includes(status)) return NextResponse.json({error:'Status inválido.'},{status:400});
     const result = await prisma.$transaction(async (tx) => {
       // 1. Upsert no item de checklist
       const item = await tx.checklistItemProgress.upsert({
@@ -95,8 +105,10 @@ export async function POST(
         }
 
         // 3. Emite GrowthEvent deduplicado
-        await tx.growthEvent.create({
-          data: {
+        await tx.growthEvent.upsert({
+          where:{dedupeKey:`chk_done:${business.id}:${itemKey}`},
+          update:{},
+          create: {
             event: 'checklist.item_completed',
             businessId: business.id,
             metadata: { itemKey, status },

@@ -1,3 +1,4 @@
+import {withTestAccess} from '@/lib/test-links';
 import { prisma } from '@/lib/db';
 import { normalizePhoneE164 } from '@/lib/auth';
 import { getDayAvailability } from './availability';
@@ -104,6 +105,8 @@ export async function createBooking(params: CreateBookingParams, actorContext?: 
     throw new Error('Nenhum profissional disponível para este horário.');
   }
 
+  if (targetProId && !business.professionals.some(p=>p.id===targetProId)) throw new Error('Profissional não pertence a esta barbearia.');
+
   // Idempotência
   const finalIdempKey = idempotencyKey || `booking_${businessId}_${phoneE164}_${startTime.getTime()}`;
   const existingBooking = await prisma.booking.findUnique({
@@ -172,7 +175,7 @@ export async function createBooking(params: CreateBookingParams, actorContext?: 
         timeZone: business.timezone,
       }).format(startTime);
 
-      const cancelLink = `https://agenda.oracio.uk/b/${rawBookingToken}`;
+      const cancelLink = withTestAccess(`${process.env.NEXT_PUBLIC_AGENDA_URL||'https://agenda.oracio.uk'}/b/${rawBookingToken}`);
 
       await tx.outboxMessage.create({
         data: {
@@ -264,6 +267,7 @@ export async function getBookingByToken(bookingToken: string) {
           whatsapp: true,
           timezone: true,
           cancellationNoticeHours: true,
+          onlinePaymentsEnabled: true,
         },
       },
       service: true,
@@ -292,10 +296,6 @@ export async function cancelBooking(
     throw new Error('Agendamento não encontrado.');
   }
 
-  if (booking.status.startsWith('CANCELLED')) {
-    return { booking, alreadyCancelled: true };
-  }
-
   // Validação de Autorização
   if (actorContext?.role === 'CUSTOMER_TOKEN') {
     if (booking.cancelTokenHash !== actorContext.tokenHash) {
@@ -307,23 +307,28 @@ export async function cancelBooking(
     }
   }
 
+  if (actorContext && actorContext.businessId !== booking.businessId) throw new Error('Não autorizado para esta barbearia.');
+  if (actorContext?.role === 'OWNER_SESSION') {
+    if (booking.business.userId !== actorContext.userId) throw new Error('Não autorizado para esta barbearia.');
+  }
+  if (booking.status.startsWith('CANCELLED')) {
+    return { booking, alreadyCancelled: true, isLate: booking.isLateCancellation, voucherCode: null as string | null };
+  }
   const now = Date.now();
   const startsAtMs = booking.startsAt.getTime();
   const diffHours = (startsAtMs - now) / (3600 * 1000);
 
   // Trava Anti-Regressão #3: Janela canônica de 1 hora
-  const isLate = diffHours < (booking.business.cancellationNoticeHours || 1);
+  const isLate = diffHours < (booking.business.cancellationNoticeHours ?? 1);
 
   // O voucher de 50% só é gerado se:
   // 1. O cancelamento for tardio (isLate)
   // 2. O agendamento tiver sido PAGO ANTECIPADAMENTE (booking.isPrepaid === true)
   // 3. A barbearia estiver com a emissão de voucher habilitada (booking.business.lateCancellationVoucherEnabled !== false)
-  const shouldIssueVoucher =
-    isLate &&
-    Boolean(booking.isPrepaid) &&
-    booking.business.lateCancellationVoucherEnabled !== false;
-
   return await prisma.$transaction(async (tx) => {
+    await tx.$queryRaw`SELECT id FROM "Booking" WHERE id=${booking.id} FOR UPDATE`;
+    const paymentSnapshot=await tx.booking.findUniqueOrThrow({where:{id:booking.id}});
+    const shouldIssueVoucher=isLate && paymentSnapshot.isPrepaid && booking.business.lateCancellationVoucherEnabled!==false;
     let voucherCode: string | null = null;
 
     if (shouldIssueVoucher) {

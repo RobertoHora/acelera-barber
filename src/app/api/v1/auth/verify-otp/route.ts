@@ -55,10 +55,11 @@ export async function POST(request: NextRequest) {
 
     const result = await prisma.$transaction(async (tx) => {
       // 1. Marca OTP como verificado
-      await tx.otpVerification.update({
-        where: { id: pendingVerification.id },
+      const consumed = await tx.otpVerification.updateMany({
+        where: { id: pendingVerification.id, verifiedAt:null, expiresAt:{gt:new Date()}, attempts:{lt:5} },
         data: { verifiedAt: new Date() },
       });
+      if (!consumed.count) throw new Error('Código já utilizado ou expirado.');
 
       // 2. Busca ou cria o usuário proprietário
       let user = await tx.user.findUnique({

@@ -32,6 +32,8 @@ export async function grantOrderBenefits(
     throw new Error(`Pedido ${orderId} não encontrado.`);
   }
 
+  if (order.status !== 'PAID') throw new Error('Somente pedido confirmado pode liberar benefícios.');
+
   const sku = order.sku as PlanCode;
   const businessId = order.businessId;
 
@@ -160,9 +162,15 @@ export async function grantOrderBenefits(
     }
   }
 
+  if (trialBenefit?.status === 'ACTIVE' && trialBenefit.endsAt) {
+    await db.subscription.updateMany({where:{businessId,status:'TRIALING'},data:{currentPeriodEnd:trialBenefit.endsAt}});
+  }
+
   // 3. Emite GrowthEvent deduplicado
-  await db.growthEvent.create({
-    data: {
+  await db.growthEvent.upsert({
+    where: { dedupeKey: `order_paid:${order.id}` },
+    update: {},
+    create: {
       event: 'order.paid',
       businessId,
       orderId: order.id,

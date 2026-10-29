@@ -1,3 +1,7 @@
+> Estado operacional em 29/10/2026: o teste assistido usa homologação isolada na VPS.
+> A publicação de produção na Vercel ainda precisa receber as novas APIs e validar banco/domínio.
+> Retome pelo [guia de QA](docs/qa/README.md); implementação e limites em [execução](docs/qa/implementation.md).
+
 # Eleva ORC e Agenda ORC
 
 Plataforma integrada de presença digital, diagnóstico consultivo, agendamento online e atendimento inteligente via WhatsApp para barbearias.
@@ -14,7 +18,7 @@ Plataforma integrada de presença digital, diagnóstico consultivo, agendamento 
 2. **Persistência e Concorrência Física:** PostgreSQL 17 (`eleva_agenda_production` e `eleva_agenda_test`) na porta 5433 (`/home/ubuntu/orc-db`), isolado do banco do Estúdio ORC (`pulsor_production`). Unicidade de slots protegida a nível de engine com `EXCLUDE USING gist` (`btree_gist` + `tstzrange`).
 3. **Autenticação Passwordless:** Baseada em OTP de 6 dígitos via WhatsApp e sessões com HMAC SHA-256 e cookie assinado (`orc_owner_session` com escopo `.oracio.uk`).
 4. **Motor de IA Laura (`services/laura-engine`):** Atendente conversacional oficial "Laura" com roteamento multi-contexto (`PROSPECT_OWNER`, `ACTIVE_OWNER`, `END_CUSTOMER`, `AMBIGUOUS_MULTI_BUSINESS`), debounce de 20s, via rápida transacional para notificações e tools da agenda (`listServices`, `getAvailableSlots`, `createBooking`, `cancelBooking`, `handoffToHuman`).
-5. **Gateway de Pagamento:** InfinitePay (`$estudio-orc`) com prefixo determinístico de pedido `eleva_{orderId}`, webhook idempotente em `/api/webhooks/infinitepay` e reconciliação automática de direitos (`Entitlements`) e testes (`TrialBenefit`).
+5. **Gateway de Pagamento:** InfinitePay (tag da plataforma configurada no servidor) com prefixo determinístico de pedido `eleva_{orderId}`, webhook idempotente em `/api/webhooks/infinitepay` e reconciliação automática de direitos (`Entitlements`) e testes (`TrialBenefit`).
 6. **Módulo de Fidelização:** Cancelamento com $< 1\text{h}$ emite voucher de 50% de desconto (`DESC50-...`) para o próximo corte do cliente.
 
 ---
@@ -34,11 +38,13 @@ Plataforma integrada de presença digital, diagnóstico consultivo, agendamento 
 
 ## 🧪 Suíte de Testes Automatizados (Vitest)
 
-O projeto conta com **39 testes automatizados** cobrindo todas as camadas de negócio e infraestrutura:
+O projeto conta com **50 testes unitários e de integração**. A suíte usa banco isolado e provedores simulados; não comprova entrega física de WhatsApp ou pagamento real. Casos cobertos:
 
 ```bash
-npm test
+TEST_DATABASE_URL='postgresql://ubuntu@localhost:5433/eleva_agenda_test?host=/home/ubuntu/orc-db' npm test
 ```
+
+Validação completa da homologação configurada: `node scripts/e2e/validate.mjs`.
 
 - `tests/unit/plans-and-copy.test.ts`: Validação do catálogo e saneamento de termos proibidos de ranking.
 - `tests/integration/fase1-auth-db.test.ts`: Banco PostgreSQL, seed das 123 barbearias de GV, OTP passwordless e isolamento.

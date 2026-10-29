@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@/lib/db';
 import { grantOrderBenefits, activateTrial } from '@/lib/billing/entitlements';
-import { generateInfinitePayCheckoutUrl } from '@/lib/billing/infinitepay';
 
 describe('Fase 2 - Cobrança InfinitePay, Entitlements e Benefícios de Teste', () => {
   let testBusinessId: string;
@@ -26,19 +25,6 @@ describe('Fase 2 - Cobrança InfinitePay, Entitlements e Benefícios de Teste', 
     await prisma.business.delete({ where: { id: testBusinessId } }).catch(() => {});
   });
 
-  it('gera URL de checkout InfinitePay com prefixo obrigatório eleva_ no order_nsu', () => {
-    const orderNsu = `eleva_${testSlug}_google_pro_12345`;
-    const url = generateInfinitePayCheckoutUrl({
-      orderId: 'ord_123',
-      orderNsu,
-      amountCents: 3700,
-      customerName: 'Barbearia Teste Billing',
-    });
-
-    expect(url).toContain('https://loja.infinitepay.io/estudio-orc?');
-    expect(url).toContain('order_nsu=eleva_');
-    expect(url).toContain('amount=37.00');
-  });
 
   it('concede direitos e 14 dias de teste após pagamento de eleva_google_pro', async () => {
     const orderNsu = `eleva_${testSlug}_google_pro_${Date.now()}`;

@@ -1,3 +1,4 @@
+import { randomInt } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { normalizePhoneE164, hashOtpCode } from '@/lib/auth';
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Gera código numérico de 6 dígitos
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const code = randomInt(100000, 1000000).toString();
     const codeHash = hashOtpCode(code);
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
       });
     });
 
-    const isDev = process.env.NODE_ENV !== 'production' || process.env.WHATSAPP_TRANSPORT_MODE === 'SIMULATED';
+    const isDev = process.env.NODE_ENV === 'test' && process.env.WHATSAPP_TRANSPORT_MODE === 'SIMULATED';
 
     return NextResponse.json({
       success: true,

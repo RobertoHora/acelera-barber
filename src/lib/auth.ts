@@ -2,6 +2,12 @@ import { NextRequest } from 'next/server';
 import { prisma } from './db';
 import crypto from 'node:crypto';
 
+function requiredAuthSecret(): string {
+  const secret = process.env.AUTH_SECRET;
+  if (!secret || secret.length < 32) throw new Error('AUTH_SECRET must contain at least 32 characters.');
+  return secret;
+}
+
 export const SESSION_COOKIE_NAME = 'orc_owner_session';
 
 export function normalizePhoneE164(phone: string): string {
@@ -13,7 +19,7 @@ export function normalizePhoneE164(phone: string): string {
 }
 
 export function computePhoneHmac(phone: string): string {
-  const secret = process.env.AUTH_SECRET || 'orc_eleva_agenda_secure_auth_token_secret_2026';
+  const secret = requiredAuthSecret();
   let clean = phone.replace(/\D/g, '');
   if (clean.length >= 10 && !clean.startsWith('55')) {
     clean = `55${clean}`;
@@ -22,7 +28,7 @@ export function computePhoneHmac(phone: string): string {
 }
 
 export function hashOtpCode(code: string): string {
-  const secret = process.env.AUTH_SECRET || 'orc_eleva_agenda_secure_auth_token_secret_2026';
+  const secret = requiredAuthSecret();
   return crypto.createHmac('sha256', secret).update(code.trim()).digest('hex');
 }
 
@@ -88,4 +94,9 @@ export async function getCurrentOwner(request: NextRequest): Promise<OwnerSessio
   }
 
   return getSessionFromToken(cookie.value);
+}
+
+export async function ownsBusiness(request: NextRequest, businessId: string): Promise<boolean> {
+  const owner = await getCurrentOwner(request);
+  return !!owner?.businesses.some(b => b.id === businessId);
 }

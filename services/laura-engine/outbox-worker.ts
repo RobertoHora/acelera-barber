@@ -1,159 +1,70 @@
+import { canUseSharedTransport } from './transport-safety';
+import { getCircuitBreaker } from './lana-protections/circuit-breaker';
 import { prisma } from '@/lib/db';
+import { normalizePhoneE164 } from '@/lib/auth';
 
 export interface WhatsAppTransportProvider {
-  sendText: (toPhone: string, text: string) => Promise<{ success: boolean; externalId?: string; error?: string; ambiguousTimeout?: boolean }>;
+  sendText: (toPhone: string, text: string) => Promise<{ success: boolean; externalId?: string; messageId?: string; error?: string; ambiguousTimeout?: boolean }>;
 }
-
 export interface ClaimedOutboxItem {
-  id: string;
-  businessId: string | null;
-  direction: string;
-  destinationPhone: string;
-  content: string;
-  purpose: string;
-  template: string | null;
-  attempts: number;
+  id: string; businessId: string | null; direction: string; destinationPhone: string;
+  content: string; purpose: string; template: string | null; attempts: number;
 }
-
-/**
- * Busca e bloqueia a próxima mensagem elegível da outbox usando SKIP LOCKED
- */
-export async function claimNextOutboxMessage(
-  leaseSeconds = 60
-): Promise<ClaimedOutboxItem | null> {
-  return prisma.$transaction(async (tx) => {
-    const raw = await tx.$queryRaw<Array<{ id: string }>>`
-      SELECT m.id
-      FROM "OutboxMessage" m
+export async function claimNextOutboxMessage(leaseSeconds = 120): Promise<ClaimedOutboxItem | null> {
+  return prisma.$transaction(async tx => {
+    // A process crash after dispatch began is ambiguous, never an automatic retry.
+    await tx.outboxMessage.updateMany({where:{status:'DISPATCHING',leaseExpiresAt:{lt:new Date()}},data:{status:'UNCERTAIN',error:'DISPATCH_LEASE_EXPIRED',leaseExpiresAt:null}});
+    const raw = await tx.$queryRaw<Array<{id:string}>>`
+      SELECT m.id FROM "OutboxMessage" m
       WHERE m.direction = 'OUTBOUND'
-        AND (
-          m.status = 'QUEUED'
-          OR (m.status = 'CLAIMED' AND m."leaseExpiresAt" < NOW())
-        )
-        AND m."availableAt" <= NOW()
-      ORDER BY m."createdAt" ASC
-      LIMIT 1
-      FOR UPDATE SKIP LOCKED
-    `;
-
-    if (!raw || raw.length === 0) return null;
-    const msgId = raw[0].id;
-
-    const claimed = await tx.outboxMessage.update({
-      where: { id: msgId },
-      data: {
-        status: 'CLAIMED',
-        attempts: { increment: 1 },
-        leaseExpiresAt: new Date(Date.now() + leaseSeconds * 1000),
-      },
-    });
-
-    return claimed as ClaimedOutboxItem;
+      AND (m.status = 'QUEUED' OR (m.status = 'CLAIMED' AND m."leaseExpiresAt" < NOW()))
+      AND m."availableAt" <= NOW()
+      AND NOT EXISTS (SELECT 1 FROM "OutboxMessage" u WHERE u."destinationPhone"=m."destinationPhone" AND (u.status IN ('UNCERTAIN','UNKNOWN','DISPATCHING') OR (u.status='CLAIMED' AND u."leaseExpiresAt">=NOW() AND u.id<>m.id)))
+      ORDER BY m."createdAt" ASC LIMIT 1 FOR UPDATE SKIP LOCKED`;
+    if(!raw.length)return null;
+    return tx.outboxMessage.update({where:{id:raw[0].id},data:{status:'CLAIMED',attempts:{increment:1},leaseExpiresAt:new Date(Date.now()+leaseSeconds*1000)}});
   });
 }
-
-/**
- * Processa o despacho de uma mensagem da outbox com via rápida transacional
- */
-export async function processOutboxMessage(
-  item: ClaimedOutboxItem,
-  providerOverride?: WhatsAppTransportProvider
-) {
-  const isTransactional =
-    item.purpose === 'AUTH_OTP' ||
-    item.purpose === 'BOOKING_CUSTOMER_NOTICE' ||
-    item.purpose === 'BOOKING_BUSINESS_NOTICE' ||
-    item.purpose === 'PAYMENT_NOTICE';
-
-  // 1. Revalidação pré-disparo para mensagens comerciais frias
-  if (!isTransactional && item.businessId) {
-    const biz = await prisma.business.findUnique({
-      where: { id: item.businessId },
-      include: { entitlements: true },
-    });
-
-    // Se já comprou (CUSTOMER), cancela cadência fria de abordagem
-    const hasPaidEntitlement = biz?.entitlements.some((e) => e.status === 'ACTIVE');
-    if (hasPaidEntitlement) {
-      await prisma.outboxMessage.update({
-        where: { id: item.id },
-        data: { status: 'CANCELLED', error: 'CANCELLED_ALREADY_CUSTOMER', leaseExpiresAt: null },
-      });
-      return { dispatched: false, reason: 'CANCELLED_ALREADY_CUSTOMER' };
+export async function processOutboxMessage(item: ClaimedOutboxItem, providerOverride?: WhatsAppTransportProvider) {
+  const fence={id:item.id,status:'CLAIMED' as const,attempts:item.attempts};
+  const cold=['INITIAL_OUTREACH','CADENCE_FOLLOWUP'].includes(item.purpose);
+  if(cold && item.businessId){
+    const paid=await prisma.entitlement.findFirst({where:{businessId:item.businessId,status:'ACTIVE'}});
+    if(paid){await prisma.outboxMessage.updateMany({where:fence,data:{status:'CANCELLED',error:'CANCELLED_ALREADY_CUSTOMER',leaseExpiresAt:null}});return {dispatched:false,reason:'CANCELLED_ALREADY_CUSTOMER'};}
+  }
+  const real=process.env.WHATSAPP_TRANSPORT_MODE==='REAL';
+  if(real && !providerOverride){
+    // Fail closed until the runtime has validated gateway reservation AND inherited circuit state.
+    const expected=process.env.E2E_OPERATOR_PHONE;
+    if(!await canUseSharedTransport(item.purpose)||process.env.LAURA_REAL_GATES_PASSED!=='true'||!process.env.E2E_RUN_ID||!expected||normalizePhoneE164(item.destinationPhone)!==normalizePhoneE164(expected)){
+      await prisma.outboxMessage.updateMany({where:fence,data:{status:'QUEUED',error:'REAL_TRANSPORT_GATES_NOT_PASSED',availableAt:new Date(Date.now()+60000),leaseExpiresAt:null}});
+      return {dispatched:false,reason:'REAL_TRANSPORT_GATES_NOT_PASSED'};
     }
   }
-
-  // 2. Modo Simulado / Test Guard
-  const transportMode = process.env.WHATSAPP_TRANSPORT_MODE || 'SIMULATED';
-  if (transportMode === 'SIMULATED' && !providerOverride) {
-    const mockWaId = `sim_laura_${Date.now()}_${item.id}`;
-    await prisma.outboxMessage.update({
-      where: { id: item.id },
-      data: {
-        status: 'PROVIDER_ACCEPTED',
-        waMessageId: mockWaId,
-        sentAt: new Date(),
-        leaseExpiresAt: null,
-      },
-    });
-    return { dispatched: true, externalId: mockWaId, mode: 'SIMULATED' };
+  const acquired=await prisma.outboxMessage.updateMany({where:{...fence,leaseExpiresAt:{gt:new Date()}},data:{status:'DISPATCHING'}});
+  if(!acquired.count)return {dispatched:false,reason:'STALE_LEASE'};
+  if(!real && !providerOverride){
+    const id=`sim_laura_${item.id}`;
+    await prisma.outboxMessage.updateMany({where:{...fence,status:'DISPATCHING'},data:{status:'PROVIDER_ACCEPTED',waMessageId:id,sentAt:new Date(),leaseExpiresAt:null,error:null}});
+    return {dispatched:true,externalId:id,mode:'SIMULATED'};
   }
-
-  // 3. Despacho Real via Provider
-  const provider = providerOverride || {
-    sendText: async (toPhone: string, text: string) => {
-      const gatewayUrl = process.env.LAURA_WHATSAPP_GATEWAY_URL || 'http://localhost:3343';
-      const res = await fetch(`${gatewayUrl}/api/send-message`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: toPhone, text }),
-      });
-      if (!res.ok) throw new Error(`Gateway HTTP ${res.status}`);
-      return await res.json();
-    },
-  };
-
-  try {
-    const sendResult = await provider.sendText(item.destinationPhone, item.content);
-
-    if (sendResult.ambiguousTimeout) {
-      // Estado de incerteza (Docs 14: transiciona para UNCERTAIN e bloqueia novos envios para o mesmo lead)
-      await prisma.outboxMessage.update({
-        where: { id: item.id },
-        data: {
-          status: 'UNCERTAIN',
-          error: 'GATEWAY_AMBIGUOUS_TIMEOUT',
-          leaseExpiresAt: null,
-        },
-      });
-      return { dispatched: false, status: 'UNCERTAIN' };
-    }
-
-    if (sendResult.success) {
-      await prisma.outboxMessage.update({
-        where: { id: item.id },
-        data: {
-          status: 'PROVIDER_ACCEPTED',
-          waMessageId: sendResult.externalId || `wa_${Date.now()}`,
-          sentAt: new Date(),
-          leaseExpiresAt: null,
-        },
-      });
-      return { dispatched: true, externalId: sendResult.externalId };
-    }
-
-    throw new Error(sendResult.error || 'Falha no envio');
-  } catch (err: any) {
-    const isRetryable = item.attempts < 3;
-    await prisma.outboxMessage.update({
-      where: { id: item.id },
-      data: {
-        status: isRetryable ? 'QUEUED' : 'FAILED',
-        error: err.message,
-        availableAt: isRetryable ? new Date(Date.now() + 60 * 1000) : new Date(),
-        leaseExpiresAt: null,
-      },
-    });
-    return { dispatched: false, error: err.message };
+  const provider=providerOverride||{sendText:async(toPhone:string,text:string)=>{
+    const gateway=process.env.LAURA_WHATSAPP_GATEWAY_URL;
+    if(!gateway)throw Error('Gateway explicitly required');
+    const res=await fetch(`${gateway}/api/send-message`,{method:'POST',signal:AbortSignal.timeout(90000),headers:{'Content-Type':'application/json','x-orc-engine':'laura','x-laura-token':process.env.LAURA_INTERNAL_TOKEN||'','x-test-run-id':process.env.E2E_RUN_ID||''},body:JSON.stringify({to:toPhone,text})});
+    if(!res.ok)throw Error(`Gateway HTTP ${res.status}`);
+    return await res.json();
+  }};
+  try{
+    const result=await provider.sendText(item.destinationPhone,item.content);
+    const externalId=result.externalId||result.messageId;
+    if(!result.success||!externalId||result.ambiguousTimeout)throw Error(result.error||'GATEWAY_AMBIGUOUS_RESULT');
+    await prisma.outboxMessage.updateMany({where:{...fence,status:'DISPATCHING'},data:{status:'PROVIDER_ACCEPTED',waMessageId:externalId,sentAt:new Date(),leaseExpiresAt:null,error:null}});
+    return {dispatched:true,externalId};
+  }catch(error){
+    if (real && !providerOverride) getCircuitBreaker().recordFailure(error instanceof Error ? error.message : 'UNKNOWN');
+    // Network error and post-send persistence error both require reconciliation.
+    await prisma.outboxMessage.updateMany({where:{...fence,status:'DISPATCHING'},data:{status:'UNCERTAIN',error:error instanceof Error?error.message:'UNKNOWN_SEND_ERROR',leaseExpiresAt:null}});
+    return {dispatched:false,status:'UNCERTAIN'};
   }
 }

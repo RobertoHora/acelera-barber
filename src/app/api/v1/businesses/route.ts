@@ -31,7 +31,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Barbearia não encontrada' }, { status: 404 });
   }
 
-  return NextResponse.json({ business });
+  const {GET: publicBusiness}=await import('./[id]/route');
+  return publicBusiness(request,{params:Promise.resolve({id:business.id})});
 }
 
 export async function POST(request: NextRequest) {
@@ -78,9 +79,9 @@ export async function POST(request: NextRequest) {
           city: city?.trim() || 'Governador Valadares',
           state: state?.trim() || 'MG',
           address: address?.trim() || null,
-          rating: 4.8,
-          reviewsCount: 1,
-          photosCount: 2,
+          rating: 0,
+          reviewsCount: 0,
+          photosCount: 0,
         },
       });
 

@@ -8,8 +8,12 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 const connectionString =
-  process.env.DATABASE_URL ||
-  'postgresql://ubuntu@localhost:5433/eleva_agenda_production?host=/home/ubuntu/orc-db';
+  process.env.DATABASE_URL;
+
+if (!connectionString) throw new Error('DATABASE_URL must be explicitly configured.');
+if (process.env.NODE_ENV === 'test' && !/\/(eleva_agenda_test|eleva_agenda_e2e)(?:[?]|$)/.test(connectionString)) {
+  throw new Error('Tests require an explicitly isolated eleva_agenda_test or eleva_agenda_e2e database.');
+}
 
 const pool = globalForPrisma.pool ?? new Pool({ connectionString });
 const adapter = new PrismaPg(pool);

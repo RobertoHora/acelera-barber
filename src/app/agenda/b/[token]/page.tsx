@@ -1,4 +1,5 @@
 'use client';
+import BookingPaymentPanel from '@/components/BookingPaymentPanel';
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
@@ -110,6 +111,7 @@ export default function BookingManagementPage() {
   return (
     <div className="min-h-screen bg-[#111110] text-[#EFECE5] flex flex-col items-center py-8 px-4 sm:px-6">
       <div className="w-full max-w-md space-y-6">
+        {!isCancelled && booking.business.onlinePaymentsEnabled && <BookingPaymentPanel token={token} alreadyPaid={booking.isPrepaid}/>}
         {/* CABEÇALHO */}
         <div className="bg-[#1C1C1A] border border-[#2B2B28] rounded-3xl p-6 text-center space-y-3 shadow-xl">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-400/10 text-amber-300 border border-amber-400/20">

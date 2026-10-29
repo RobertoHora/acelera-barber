@@ -1,4 +1,5 @@
 'use client';
+import BookingPaymentPanel from '@/components/BookingPaymentPanel';
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
@@ -181,6 +182,8 @@ export default function PublicBookingPage() {
             <span>{[business.neighborhood, business.city].filter(Boolean).join(', ') || 'Centro'}</span>
           </p>
         </div>
+
+        {step===4 && bookingToken && business.onlinePaymentsEnabled && <BookingPaymentPanel token={bookingToken}/>}
 
         {/* PROGRESSO EM ETAPAS */}
         {step < 4 && (

@@ -1,3 +1,4 @@
+import { ownsBusiness } from '@/lib/auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { resolvePlanConfig } from '@/lib/plans';
@@ -27,6 +28,8 @@ export async function POST(request: NextRequest) {
     if (!business) {
       return NextResponse.json({ error: 'Barbearia não encontrada' }, { status: 404 });
     }
+
+    if (!await ownsBusiness(request,business.id)) return NextResponse.json({error:'Acesso restrito ao proprietário.'},{status:403});
 
     // Validações de Elegibilidade
     const hasPro = business.entitlements.some((e) => e.sku === 'eleva_google_pro' && e.status === 'ACTIVE');
@@ -63,10 +66,12 @@ export async function POST(request: NextRequest) {
       where: { idempotencyKey: finalIdempKey },
     });
 
+    if (existingOrder && (existingOrder.businessId !== business.id || existingOrder.sku !== plan.id)) return NextResponse.json({error:'Chave de idempotência incompatível.'},{status:409});
     if (existingOrder) {
       return NextResponse.json({
         order: existingOrder,
         checkoutUrl: existingOrder.infinitepayCheckoutUrl,
+        simulated: !existingOrder.infinitepayCheckoutUrl && !!process.env.E2E_RUN_ID,
       });
     }
 
@@ -74,13 +79,14 @@ export async function POST(request: NextRequest) {
     const uniqueSuffix = crypto.randomBytes(8).toString('hex');
     const orderNsu = `eleva_${business.slug}_${plan.id}_${uniqueSuffix}`;
 
-    const checkoutUrl = generateInfinitePayCheckoutUrl({
+    const simulated = !!process.env.E2E_RUN_ID && process.env.DATABASE_URL?.includes('/eleva_agenda_e2e?') && process.env.E2E_PAYMENT_MODE !== 'REAL';
+    const checkoutUrl = simulated ? null : await generateInfinitePayCheckoutUrl({
       orderId: orderNsu,
       orderNsu,
       amountCents: plan.priceCents,
       customerName: business.cleanName || business.name,
       customerPhone: business.whatsapp || business.phone || undefined,
-      redirectUrl: `${process.env.NEXT_PUBLIC_ELEVA_URL || 'https://eleva.oracio.uk'}/?payment=success&nsu=${orderNsu}`,
+      redirectUrl: `${process.env.NEXT_PUBLIC_ELEVA_URL || 'https://eleva.oracio.uk'}/?barber=${business.slug}&payment=success&nsu=${orderNsu}`,
     });
 
     const order = await prisma.$transaction(async (tx) => {
@@ -112,6 +118,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       order,
       checkoutUrl,
+      simulated,
     }, { status: 201 });
   } catch (err: any) {
     console.error('❌ [Orders API] Erro ao criar pedido:', err);

@@ -50,6 +50,7 @@ export async function handleInboundMessage(
 export async function flushBufferKey(phoneE164: string, explicitSlug?: string) {
   const item = bufferMap.get(phoneE164);
   if (!item) return;
+  clearTimeout(item.timer);
   bufferMap.delete(phoneE164);
 
   const aggregatedText = item.texts.join(' ');
@@ -72,7 +73,8 @@ export async function flushBufferKey(phoneE164: string, explicitSlug?: string) {
   // Disparo imediato se transporte for simulado
   const transportMode = process.env.WHATSAPP_TRANSPORT_MODE || 'SIMULATED';
   if (transportMode === 'SIMULATED') {
-    await processOutboxMessage(outboxItem);
+    const claimed = await prisma.outboxMessage.update({where:{id:outboxItem.id},data:{status:'CLAIMED',attempts:{increment:1},leaseExpiresAt:new Date(Date.now()+120000)}});
+    await processOutboxMessage(claimed);
     const reloaded = await prisma.outboxMessage.findUnique({ where: { id: outboxItem.id } });
     if (reloaded) finalOutbox = reloaded;
   }

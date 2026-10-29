@@ -25,3 +25,6 @@ yarn-error.log*
 
 # Backups
 backups/*.dump
+
+# Private assisted test state
+.runtime/

@@ -74,7 +74,7 @@ export default function OwnerDashboardPage() {
 
   const copyPublicLink = () => {
     if (!business?.slug) return;
-    const url = `https://agenda.oracio.uk/${business.slug}`;
+    const url = `${process.env.NEXT_PUBLIC_AGENDA_URL||'https://agenda.oracio.uk'}/${business.slug}`;
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
@@ -138,7 +138,7 @@ export default function OwnerDashboardPage() {
     return <OwnerLoginFallback onLoginSuccess={() => window.location.reload()} />;
   }
 
-  const publicUrl = `https://agenda.oracio.uk/${business?.slug || 'sua-barbearia'}`;
+  const publicUrl = `${process.env.NEXT_PUBLIC_AGENDA_URL||'https://agenda.oracio.uk'}/${business?.slug || 'sua-barbearia'}`;
 
   return (
     <div className="min-h-screen bg-[#111110] text-[#EFECE5] py-8 px-4 sm:px-8">

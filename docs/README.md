@@ -34,3 +34,7 @@ Esta revisão substitui as decisões anteriores de permanecer no GitHub Pages, e
 - Há um motor e um WhatsApp para todo o novo funil. O Estúdio ORC continua independente.
 - Pagamento confirmado exige evidência verificada no servidor ou conferência manual auditada; clique, redirect e localStorage não liberam recursos.
 - Primeiro concluir os aplicativos e os contratos com transporte simulado; depois reproduzir, integrar e ativar o motor.
+
+## Teste assistido Laura / Eleva / Agenda
+
+Entrada e comandos: [QA](qa/README.md). Decisões persistentes: [segundo cérebro](qa/second-brain.md). Implementação e limites: [execução](qa/implementation.md).

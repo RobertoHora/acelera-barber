@@ -1,3 +1,5 @@
+import {prisma} from '@/lib/db';
+import {getDayAvailability} from '@/lib/agenda/availability';
 import { NextRequest, NextResponse } from 'next/server';
 import { createBooking } from '@/lib/agenda/booking-service';
 
@@ -17,6 +19,16 @@ export async function POST(request: NextRequest) {
       prepaidAmountCents,
     } = body;
 
+    const business=await prisma.business.findUnique({where:{id:businessId},include:{trialBenefit:true,subscription:true}});
+    const trial=business?.trialBenefit;const sub=business?.subscription;
+    const activeTrial=trial?.status==='ACTIVE' && trial.endsAt && trial.endsAt>new Date();
+    const activeSub=sub?.status==='ACTIVE' && sub.currentPeriodEnd>new Date();
+    if(!activeTrial&&!activeSub)return NextResponse.json({error:'A agenda ainda não está publicada ou o acesso expirou.'},{status:403});
+    const requested=new Date(startsAt);
+    if(!Number.isFinite(requested.getTime()))return NextResponse.json({error:'Data inválida.'},{status:400});
+    const dateString=new Intl.DateTimeFormat('en-CA',{timeZone:business!.timezone}).format(requested);
+    const slots=await getDayAvailability({businessId,serviceId,professionalId,dateString});
+    if(!slots.some(s=>s.startsAt===requested.toISOString()))return NextResponse.json({error:'Horário não disponível.',code:'SLOT_UNAVAILABLE'},{status:409});
     const result = await createBooking(
       {
         businessId,
@@ -27,8 +39,8 @@ export async function POST(request: NextRequest) {
         customerPhone,
         notes,
         idempotencyKey,
-        isPrepaid: Boolean(isPrepaid),
-        prepaidAmountCents: prepaidAmountCents ? Number(prepaidAmountCents) : undefined,
+        isPrepaid: false,
+        prepaidAmountCents: undefined,
       },
       { role: 'PUBLIC_WEB', businessId }
     );

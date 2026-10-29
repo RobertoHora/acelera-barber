@@ -1,3 +1,4 @@
+import { ownsBusiness } from '@/lib/auth';
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { localToUtc } from '@/lib/agenda/availability';
@@ -18,6 +19,7 @@ export async function GET(
     return NextResponse.json({ error: 'Barbearia não encontrada' }, { status: 404 });
   }
 
+  if (!await ownsBusiness(request,business.id)) return NextResponse.json({error:'Acesso restrito ao proprietário.'},{status:403});
   const timezone = business.timezone || 'America/Sao_Paulo';
   const dayStartUtc = localToUtc(dateString, '00:00', timezone);
   const dayEndUtc = localToUtc(dateString, '23:59', timezone);

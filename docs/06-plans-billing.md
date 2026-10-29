@@ -46,3 +46,7 @@ O código atual só registra intenção e encaminha ao suporte. O destino é che
 Modo manual pode ser mantido explicitamente: operador confere recebimento, negócio e valor e registra ateste. Deduplicar comprovante/referência e pagamento entre pedidos. UNKNOWN exige reconciliação, não nova cobrança cega.
 
 R$ 37/mês e R$ 67/mês são preços recorrentes; débito automático no cartão depende de modalidade contratada/homologada. Renovação por checkout é uma alternativa operacional a especificar; não anunciar débito automático antes da validação.
+
+## Separação de pagamentos no teste assistido — 29/10/2026
+
+Compras dos planos Eleva e pagamentos de serviços da barbearia usam pedidos e recebedores independentes. No teste, serviços ficam simulados mesmo quando a compra Eleva avançar para R$37 + R$20 reais. A tag do barbeiro é declarada pelo proprietário autenticado; confirmação de pré-pagamento exige consulta server-side de valor e recebedor. Criar checkout não implementa débito mensal automático.

@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@/lib/db';
 import { createBooking, cancelBooking } from '@/lib/agenda/booking-service';
-import { calculateAvailableSlots } from '@/lib/agenda/availability';
 import { grantOrderBenefits, calculateUpgradePrice } from '@/lib/billing/entitlements';
 import { emitBookingNotice } from '@/lib/notifications/booking-notifications';
 import { PLANS_CONFIG } from '@/lib/plans';
@@ -297,6 +296,7 @@ describe('Fase 7 - Validação Completa das 3 Barbearias-Piloto e Isolamento Mul
       'Imprevisto de última hora',
       {
         role: 'CUSTOMER_TOKEN',
+        businessId: pilot3BizId,
         tokenHash: bookingLate.booking.cancelTokenHash,
       }
     );

@@ -1,3 +1,4 @@
+import {withTestAccess} from '@/lib/test-links';
 import { prisma } from '@/lib/db';
 import { NOTIFICATION_TEMPLATES } from './templates';
 
@@ -45,8 +46,8 @@ export async function emitBookingNotice(
   }
 
   const managementUrl = rawBookingToken
-    ? `https://agenda.oracio.uk/b/${rawBookingToken}`
-    : `https://agenda.oracio.uk/s/${booking.business.slug}`;
+    ? withTestAccess(`${process.env.NEXT_PUBLIC_AGENDA_URL||'https://agenda.oracio.uk'}/b/${rawBookingToken}`)
+    : `${process.env.NEXT_PUBLIC_AGENDA_URL||'https://agenda.oracio.uk'}/${booking.business.slug}`;
 
   const formattedDateTime = new Intl.DateTimeFormat('pt-BR', {
     dateStyle: 'short',

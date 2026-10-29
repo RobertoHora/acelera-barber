@@ -45,3 +45,7 @@ Uma conversa recebida deve identificar se trata de dono, cliente, reserva ou sup
 Iniciar tudo desativado/com transporte simulado. Testar paridade, concorrência, restrição, duas notificações e IA. Comissionar transacional em contatos de teste, depois piloto; só então prospecção. Falha do motor não cancela reserva.
 
 Registrar tentativas, recibos, restrições, próxima ação e intervenção humana. UNKNOWN/UNCERTAIN não geram reenvio automático. Não alegar garantia contra bloqueios externos. Definir rollback, parada e responsável antes de ligar tráfego real.
+
+## Exceção de homologação pessoal aprovada — 29/10/2026
+
+O teste assistido usa a sessão Baileys existente apenas com reserva exclusiva do telefone pessoal final 7759. A Lana continua operando seus outros contatos. Isso não autoriza campanhas gerais Laura nem cópia de sessões, credenciais ou filas. Consulte `qa/implementation.md` e `qa/second-brain.md`.

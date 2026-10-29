@@ -1,3 +1,4 @@
+import {withTestAccess} from '@/lib/test-links';
 import { prisma } from '@/lib/db';
 import { getDayAvailability } from '@/lib/agenda/availability';
 import { createBooking as internalCreateBooking, cancelBooking as internalCancelBooking } from '@/lib/agenda/booking-service';
@@ -68,7 +69,7 @@ export const LAURA_TOOLS = {
    * Cria o agendamento em nome do cliente conectado no chat
    */
   createBooking: async (
-    params: { serviceId: string; startsAt: string; customerName: string; professionalId?: string; notes?: string },
+    params: { serviceId: string; startsAt: string; customerName: string; professionalId?: string; notes?: string; idempotencyKey?: string },
     context: LauraToolContext
   ) => {
     // Verifica elegibilidade da barbearia para IA conversacional (Docs 06: plano agenda_ai_monthly ativo ou em teste)
@@ -77,15 +78,15 @@ export const LAURA_TOOLS = {
       include: { trialBenefit: true, subscription: true },
     });
 
-    const isAiTrial = business?.trialBenefit?.status === 'ACTIVE' && business.trialBenefit.selectedModality === 'agenda_ai_monthly';
-    const isAiSub = business?.subscription?.status === 'ACTIVE' && business.subscription.planCode === 'agenda_ai_monthly';
+    const isAiTrial = business?.trialBenefit?.status === 'ACTIVE' && business.trialBenefit.selectedModality === 'agenda_ai_monthly' && !!business.trialBenefit.endsAt && business.trialBenefit.endsAt > new Date();
+    const isAiSub = business?.subscription?.status === 'ACTIVE' && business.subscription.planCode === 'agenda_ai_monthly' && business.subscription.currentPeriodEnd > new Date();
 
     if (!isAiTrial && !isAiSub) {
       // Fallback gracioso: direciona para o link público se o plano não cobrir IA
       return {
         allowed: false,
         reason: 'PLAN_DOES_NOT_INCLUDE_AI',
-        publicBookingUrl: `https://agenda.oracio.uk/${business?.slug}`,
+        publicBookingUrl: withTestAccess(`${process.env.NEXT_PUBLIC_AGENDA_URL||'https://agenda.oracio.uk'}/${business?.slug}`),
         message: `Para agendar com rapidez, acesse o link de agendamento online da barbearia: https://agenda.oracio.uk/${business?.slug}`,
       };
     }
@@ -100,6 +101,7 @@ export const LAURA_TOOLS = {
           customerName: params.customerName,
           customerPhone: context.customerPhoneE164,
           notes: params.notes,
+          idempotencyKey: params.idempotencyKey,
         },
         {
           role: 'WHATSAPP_AI_AGENT',
@@ -117,7 +119,7 @@ export const LAURA_TOOLS = {
         serviceName: result.booking.service.name,
         professionalName: result.booking.professional.nickname || result.booking.professional.name,
         bookingToken: result.bookingToken,
-        managementUrl: result.bookingToken ? `https://agenda.oracio.uk/b/${result.bookingToken}` : undefined,
+        managementUrl: result.bookingToken ? withTestAccess(`${process.env.NEXT_PUBLIC_AGENDA_URL||'https://agenda.oracio.uk'}/b/${result.bookingToken}`) : undefined,
       };
     } catch (err: any) {
       if (err.code === 'SLOT_UNAVAILABLE') {

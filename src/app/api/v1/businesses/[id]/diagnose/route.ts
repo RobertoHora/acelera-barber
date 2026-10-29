@@ -22,6 +22,7 @@ export async function GET(
     return NextResponse.json({ error: 'Barbearia não encontrada' }, { status: 404 });
   }
 
+
   // Mapeia ações confirmadas
   const actions: Record<string, string> = {};
   for (const item of business.checklistItems) {
@@ -48,7 +49,7 @@ export async function GET(
   });
 
   // Salva relatório e NeedObservations no banco
-  await prisma.$transaction(async (tx) => {
+  if (!business.diagnosticReports[0] || business.diagnosticReports[0].createdAt.getTime() < Date.now()-3600000) await prisma.$transaction(async (tx) => {
     await tx.diagnosticReport.create({
       data: {
         businessId: business.id,

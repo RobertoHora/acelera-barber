@@ -1,4 +1,7 @@
 'use client';
+import {trackUiEvent} from '@/lib/ui-events';
+import {wifiQrPayload,reviewQrUrl} from '@/lib/qr-payloads';
+import WorkspacePanel from './WorkspacePanel';
 
 import React, { useState, useEffect, useRef } from 'react';
 import {
@@ -38,6 +41,8 @@ export default function ImprovementWizard({
   onToast,
 }: ImprovementWizardProps) {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isPro,setIsPro]=useState(false);const [isComplete,setIsComplete]=useState(false);
+  useEffect(()=>{const refresh=()=>fetch(`/api/v1/businesses/${lead.id}/workspace`).then(r=>r.json()).then(b=>{setIsPro(!!b.pro);setIsComplete(!!b.complete);}).catch(()=>{});refresh();window.addEventListener('orc:benefits-updated',refresh);return()=>window.removeEventListener('orc:benefits-updated',refresh);},[lead.id]);
   const [wifiSsid, setWifiSsid] = useState(`${lead.cleanName || lead.name} Wi-Fi`);
   const [wifiPassword, setWifiPassword] = useState('');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -65,6 +70,7 @@ export default function ImprovementWizard({
   const suggestedBio = `✂️ ${lead.cleanName || lead.name}\n💈 Cortes profissionais em ${locationText}\n📍 Agende seu horário no link abaixo 👇`;
 
   const copyToClipboard = (text: string, key: string, successMsg: string) => {
+    trackUiEvent(lead.id,'free.benefit_used',key);
     navigator.clipboard.writeText(text);
     setCopiedKey(key);
     onToast(successMsg);
@@ -139,8 +145,8 @@ export default function ImprovementWizard({
     ctx.fillText('AVALIAÇÃO NO GOOGLE', colRightX + colW / 2, colY + 18);
 
     // QR Codes
-    const qrReviewUrl = lead.reviewUrl || `https://search.google.com/local/writereview?placeid=${lead.placeId || 'acelera'}`;
-    const wifiString = wifiPassword ? `WIFI:S:${wifiSsid};T:WPA;P:${wifiPassword};;` : `WIFI:S:${wifiSsid};;`;
+    const qrReviewUrl = reviewQrUrl(lead.reviewUrl,lead.placeId);
+    const wifiString = wifiQrPayload(wifiSsid,wifiPassword);
 
     const tempWifi = document.createElement('canvas');
     QRCode.toCanvas(tempWifi, wifiString, { width: 85, margin: 1 })
@@ -150,7 +156,7 @@ export default function ImprovementWizard({
       .catch(() => {});
 
     const tempGoogle = document.createElement('canvas');
-    QRCode.toCanvas(tempGoogle, qrReviewUrl, { width: 85, margin: 1 })
+    if (qrReviewUrl) QRCode.toCanvas(tempGoogle, qrReviewUrl, { width: 85, margin: 1 })
       .then(() => {
         ctx.drawImage(tempGoogle, colRightX + (colW - 85) / 2, colY + 30);
       })
@@ -183,6 +189,7 @@ export default function ImprovementWizard({
 
   // Função para baixar a plaquinha em alta resolução (1240 x 1748 @ 300 DPI)
   const downloadHighResPlaque = async (onlyGoogle = false) => {
+    if (!onlyGoogle && !isPro) { onOpenCheckout('eleva_google_pro'); return; }
     const width = 1240;
     const height = 1748;
     const canvas = document.createElement('canvas');
@@ -210,7 +217,7 @@ export default function ImprovementWizard({
     const locDualHeader = [(lead.neighborhood || '').toUpperCase(), (lead.city || 'SUA REGIÃO').toUpperCase(), (lead.state || 'BRASIL').toUpperCase()].filter(Boolean).join(' • ');
     ctx.fillText(locDualHeader, width / 2, 215);
 
-    const qrReviewUrl = lead.reviewUrl || `https://search.google.com/local/writereview?placeid=${lead.placeId || 'acelera'}`;
+    const qrReviewUrl = reviewQrUrl(lead.reviewUrl,lead.placeId);
 
     if (!onlyGoogle) {
       // DUAL: WI-FI + GOOGLE
@@ -232,7 +239,7 @@ export default function ImprovementWizard({
       ctx.font = 'bold 36px sans-serif';
       ctx.fillText('📶 WI-FI GRÁTIS', leftColX + colW / 2, colY + 70);
 
-      const wifiString = wifiPassword ? `WIFI:S:${wifiSsid};T:WPA;P:${wifiPassword};;` : `WIFI:S:${wifiSsid};;`;
+      const wifiString = wifiQrPayload(wifiSsid,wifiPassword);
       const tempWifiCanvas = document.createElement('canvas');
       await QRCode.toCanvas(tempWifiCanvas, wifiString, { width: 380, margin: 1 });
       ctx.drawImage(tempWifiCanvas, leftColX + (colW - 380) / 2, colY + 140);
@@ -249,6 +256,7 @@ export default function ImprovementWizard({
       ctx.fillText('AVALIAÇÃO NO GOOGLE', rightColX + colW / 2, colY + 70);
 
       const tempGoogleCanvas = document.createElement('canvas');
+      if (!qrReviewUrl) { onToast('Informe um link válido de avaliação do Google antes de baixar.'); return; }
       await QRCode.toCanvas(tempGoogleCanvas, qrReviewUrl, { width: 380, margin: 1 });
       ctx.drawImage(tempGoogleCanvas, rightColX + (colW - 380) / 2, colY + 140);
 
@@ -304,6 +312,8 @@ export default function ImprovementWizard({
           Passo {currentStep} de 5
         </span>
       </div>
+
+      <WorkspacePanel lead={lead} onOpenCheckout={onOpenCheckout} onToast={onToast}/>
 
       {/* CARD PRINCIPAL DO WIZARD (DARK MATTE) */}
       <div className="bg-[#2B2B29] border border-[#3D3C3A] rounded-3xl p-5 sm:p-7 space-y-6 shadow-xl text-white">
@@ -473,7 +483,7 @@ export default function ImprovementWizard({
               </div>
               <button
                 type="button"
-                onClick={() => onOpenCheckout('google_pro')}
+                onClick={() => isComplete?document.getElementById('workspace-settings')?.scrollIntoView({behavior:'smooth'}):onOpenCheckout(isPro?'eleva_complete_upgrade':'eleva_google_pro')}
                 className="py-2 px-3.5 rounded-xl bg-[#EFECE5] hover:bg-[#E2DED6] text-[#111111] font-bold text-xs shrink-0 cursor-pointer"
               >
                 Ativar Google Pro
@@ -577,7 +587,7 @@ export default function ImprovementWizard({
               </div>
               <ul className="text-[11px] text-[#A1A1AA] space-y-1 list-disc list-inside">
                 <li><strong className="text-white">Papel:</strong> Fotográfico A6 (10x15cm), gramatura de 180g a 230g.</li>
-                <li><strong className="text-white">Custo médio:</strong> R$ 2 a R$ 4 em qualquer gráfica rápida de GV.</li>
+                <li><strong className="text-white">Impressão:</strong> Solicite orçamento na sua gráfica local.</li>
                 <li><strong className="text-white">Exposição:</strong> Display acrílico de mesa (tipo T invertido) no caixa ou balcão.</li>
               </ul>
             </div>
@@ -626,10 +636,10 @@ export default function ImprovementWizard({
           ) : (
             <button
               type="button"
-              onClick={() => onOpenCheckout('google_pro')}
+              onClick={() => isComplete?document.getElementById('workspace-settings')?.scrollIntoView({behavior:'smooth'}):onOpenCheckout(isPro?'eleva_complete_upgrade':'eleva_google_pro')}
               className="py-2 px-5 rounded-xl bg-amber-400 hover:bg-amber-300 text-[#111111] font-bold text-xs flex items-center gap-1 cursor-pointer"
             >
-              Ativar Pacote Completo <Sparkles className="size-3.5" />
+              {isComplete?'Configurar meu Completo':isPro?'Liberar Completo por R$20':'Ativar Google Pro por R$37'} <Sparkles className="size-3.5" />
             </button>
           )}
         </div>

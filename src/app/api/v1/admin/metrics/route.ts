@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
-const ADMIN_SECRET = process.env.ADMIN_METRICS_SECRET || 'orc_admin_secret_gv';
+const ADMIN_SECRET = process.env.ADMIN_METRICS_SECRET;
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization');
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
 
   const token = authHeader?.replace(/^Bearer\s+/i, '') || secretParam;
 
-  if (token !== ADMIN_SECRET) {
+  if (!ADMIN_SECRET || token !== ADMIN_SECRET) {
     return NextResponse.json({ error: 'Acesso não autorizado' }, { status: 403 });
   }
 

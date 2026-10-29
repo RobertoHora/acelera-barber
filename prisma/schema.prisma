@@ -77,6 +77,7 @@ model Business {
   timezone                   String                    @default("America/Sao_Paulo")
   cancellationNoticeHours    Int                       @default(1) // Janela canônica: 1h de antecedência
   lateCancellationVoucherEnabled Boolean               @default(true) // Habilita voucher de 50% em cancelamentos tardios de agendamentos pagos antecipadamente
+  onlinePaymentsEnabled      Boolean                   @default(false)
   infiniteTag                String?                   // Tag da barbearia (ex: $barbeariajoao)
   infinitepayReferralClickedAt DateTime?
   userId                     String?
@@ -417,6 +418,7 @@ model Booking {
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
   growthEvents       GrowthEvent[]
+  payment            BookingPayment?
 
   @@index([businessId, startsAt(sort: Asc)])
   @@index([professionalId, startsAt(sort: Asc)])
@@ -493,4 +495,48 @@ model GrowthEvent {
 
   @@index([event, occurredAt(sort: Desc)])
   @@index([businessId, occurredAt(sort: Desc)])
+}
+
+// Durable Laura inbox; provider replay never creates a second response.
+model LauraInbound {
+  id           String   @id @default(cuid())
+  providerId   String   @unique
+  phone        String
+  businessSlug String?
+  runId        String?
+  content      String   @db.Text
+  status       String   @default("PENDING")
+  availableAt  DateTime @default(now())
+  createdAt    DateTime @default(now())
+  processedAt  DateTime?
+  @@index([status, availableAt])
+}
+
+model LauraConversation {
+  id         String   @id @default(cuid())
+  phone      String
+  scope      String
+  state      Json
+  updatedAt  DateTime @updatedAt
+  @@unique([phone, scope])
+}
+
+model LauraSafetyState {
+ id String @id
+ value Json
+}
+
+model BookingPayment {
+ id String @id @default(cuid())
+ bookingId String @unique
+ booking Booking @relation(fields:[bookingId], references:[id], onDelete:Cascade)
+ orderNsu String @unique
+ merchantHandle String
+ amountCents Int
+ status String @default("PENDING")
+ checkoutUrl String?
+ transactionNsu String? @unique
+ paidAt DateTime?
+ createdAt DateTime @default(now())
+ updatedAt DateTime @updatedAt
 }

@@ -5,6 +5,7 @@ export default defineConfig({
   test: {
     environment: 'node',
     globals: true,
+    setupFiles: ['scripts/e2e/test-env.mjs'],
     fileParallelism: false,
     include: ['tests/**/*.test.ts'],
   },

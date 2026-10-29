@@ -34,3 +34,7 @@ Google/Instagram usam adaptadores de capacidade: leitura, preparação e escrita
 Contexto inclui negócio, participante, papel, finalidade e etapa. Comercial, transacional e IA da Agenda usam o mesmo motor, mas regras e direitos diferentes. Um telefone pode ter vários contextos. Eventos de produto alimentam um resumo persistido para a próxima ação consultiva.
 
 Referências: [dados](05-data-api.md), [agenda](12-booking-notifications-contract.md), [motor](14-lana-replication-contract.md).
+
+## Homologação assistida na VPS — 29/10/2026
+
+O runtime isolado usa `eleva_agenda_e2e`; suítes usam `eleva_agenda_test`. Serviços `eleva-e2e-app` e `eleva-e2e-laura` não iniciam outra sessão WhatsApp. O gateway compartilhado aplica reserva exclusiva e persiste eventos privados. A infraestrutura de produção da Vercel deve ser validada separadamente; veja `qa/implementation.md`.
