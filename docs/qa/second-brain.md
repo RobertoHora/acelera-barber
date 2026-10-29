@@ -48,8 +48,8 @@ O teste humano ainda não começou. Ver implementation.md para evidências atual
 ## Checkpoint real — 29/10/2026, 19:33 UTC
 
 Teste pessoal iniciado: primeira abordagem única aceita pelo gateway no contato
-final 7759, usando a sessão existente. A execução continua RUNNING, aguardando o
-responsável pela Barão responder e autorizar a análise grátis. Pagamentos Eleva e
+final 7759, usando a sessão existente. A Laura já processou respostas do operador.
+A execução continua RUNNING, na etapa de consentimento para a análise grátis. Pagamentos Eleva e
 pagamentos de serviços continuam simulados; nenhuma compra real foi feita.
 
 A instalação do roteador foi verificada com negativas reais HTTP 403: Lana não

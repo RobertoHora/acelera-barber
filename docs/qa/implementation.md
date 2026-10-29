@@ -56,7 +56,7 @@
 ## Execução humana iniciada
 
 Primeira abordagem aceita em 29/10/2026 às 19:33 UTC. Estado privado marca a etapa
-aguardando resposta do operador. O runtime da Laura está supervisionado e o
+de consentimento para análise grátis, após respostas do operador. O runtime da Laura está supervisionado e o
 roteamento exclusivo está instalado; a Lana mantém seus processos e demais leads.
 Ainda falta percorrer e validar as etapas humanas, compras reais autorizadas e
 encerramento/reconciliação. Não confundir esse checkpoint com liberação de produção.
